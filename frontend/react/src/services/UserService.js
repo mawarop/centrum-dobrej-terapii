@@ -1,17 +1,17 @@
 import axios from "axios";
-import { Buffer } from "buffer";
+// import { Buffer } from "buffer";
 
-const defaultOptions = {
-  baseURL: "/",
-  headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  },
-};
+// const defaultOptions = {
+//   baseURL: "/",
+//   headers: {
+//     Accept: "application/json",
+//     "Content-Type": "application/json",
+//     "Access-Control-Allow-Origin": "*",
+//   },
+// };
 
-// Create instance
-let axiosInstance = axios.create(defaultOptions);
+// // Create instance
+// let axiosInstance = axios.create(defaultOptions);
 
 class UserService {
   // basic auth

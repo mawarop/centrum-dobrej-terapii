@@ -22,7 +22,7 @@ public class AppUser implements UserDetails {
     @Id
     @NotNull
     @NotEmpty
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @NotNull

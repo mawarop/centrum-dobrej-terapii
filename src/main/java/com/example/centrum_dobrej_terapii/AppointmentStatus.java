@@ -4,7 +4,7 @@ import lombok.ToString;
 
 @ToString
 public enum AppointmentStatus {
+    FINALIZED,
     ACCEPTED,
-    WAITING,
     FREE_DATE
 }

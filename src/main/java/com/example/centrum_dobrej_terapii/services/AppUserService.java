@@ -3,6 +3,8 @@ package com.example.centrum_dobrej_terapii.services;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +23,7 @@ public class AppUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: %s not found", email)));
     }
-        public String signUpUser(AppUser appUser) {
+        public ResponseEntity signUpUser(AppUser appUser) {
         boolean userExists = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
 
         if(userExists)
@@ -34,6 +36,6 @@ public class AppUserService implements UserDetailsService {
         appUser.setPassword(encodedPassword);
         appUserRepository.save(appUser);
 
-            return "dziala";
+            return new ResponseEntity(HttpStatus.CREATED);
         }
 }

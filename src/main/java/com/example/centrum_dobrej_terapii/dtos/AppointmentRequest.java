@@ -1,11 +1,8 @@
 package com.example.centrum_dobrej_terapii.dtos;
 
-import com.example.centrum_dobrej_terapii.entities.AppUser;
-import com.sun.istack.NotNull;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 @AllArgsConstructor
 @ToString
@@ -13,8 +10,10 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 public class AppointmentRequest {
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime start;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime end;
     private String details;
-    private String doctor_email;
+    private String second_participant;
 }

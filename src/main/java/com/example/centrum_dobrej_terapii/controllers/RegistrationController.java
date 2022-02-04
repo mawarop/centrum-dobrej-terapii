@@ -3,6 +3,7 @@ package com.example.centrum_dobrej_terapii.controllers;
 import com.example.centrum_dobrej_terapii.dtos.RegistrationRequest;
 import com.example.centrum_dobrej_terapii.services.RegistrationService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,7 +17,7 @@ public class RegistrationController {
 
 
     @PostMapping()
-    public String register(@RequestBody RegistrationRequest request) {
+    public ResponseEntity register(@RequestBody RegistrationRequest request) {
         return registrationService.register(request);
 
     }

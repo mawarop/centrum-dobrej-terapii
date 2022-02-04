@@ -3,27 +3,21 @@ package com.example.centrum_dobrej_terapii.controllers;
 
 import com.example.centrum_dobrej_terapii.UserRole;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
-import com.example.centrum_dobrej_terapii.entities.Appointment;
 import com.example.centrum_dobrej_terapii.entities.Document;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import com.example.centrum_dobrej_terapii.repositories.DocumentRepository;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -107,7 +101,5 @@ public class FileUploadController {
             System.out.println(ioException.getMessage());
         }
 
-//        FileSystemResource fileSystemResource = new FileSystemResource(new File(document.getPath()));
-//            return fileSystemResource;
         }
 }

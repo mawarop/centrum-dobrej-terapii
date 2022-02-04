@@ -6,7 +6,7 @@ import RegistrationForm from "./components/RegistrationForm";
 import Userdashboard from "./components/UserDashboard/UserDashboard";
 import Navbar from "./components/UserDashboard/Navbar";
 import Sidebar from "./components/UserDashboard/Sidebar";
-import Appointment from "./components/UserDashboard/Appointment";
+import PatientAppointments from "./components/UserDashboard/PatientAppointments";
 import PrivateRoute from "./components/RequireAuth";
 import RequireAuth from "./components/RequireAuth";
 
@@ -26,7 +26,7 @@ function App() {
             }
           />
           <Route path="/user-dashboard" element={<Userdashboard />} />
-          <Route path="/add-appointment" element={<Appointment />} />
+          <Route path="/add-appointment" element={<PatientAppointments />} />
         </Routes>
       </div>
     </Router>

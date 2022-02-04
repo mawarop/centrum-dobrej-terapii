@@ -1,6 +1,5 @@
 package com.example.centrum_dobrej_terapii.services;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.function.Predicate;

@@ -1,12 +1,10 @@
 package com.example.centrum_dobrej_terapii.security.config;
 
-import com.example.centrum_dobrej_terapii.UserRole;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.services.AppUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,7 +13,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -35,6 +32,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 @Configuration
 @CrossOrigin
+
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AppUserService appUserService;
@@ -44,41 +42,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable()
-//                .authorizeRequests().
-//                antMatchers("/api/registration/**").permitAll()
-//                .anyRequest()
-//                .authenticated().and()
-//                .formLogin().loginPage("fron").defaultSuccessUrl("/zalogowano", true);
+        //Brak autoryzacji do testów
+//        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/").permitAll();
 
-//        http.csrf().disable().authorizeRequests().antMatchers(
-//                HttpMethod.GET,
-//                "/index*", "/static/**", "/*.js", "/*.json", "/*.ico")
-//                .permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin().loginPage("/index.html")
-//                .loginProcessingUrl("/perform_login")
-//                .defaultSuccessUrl("/homepage",true)
-//                .failureUrl("/index.html?error=true");
-
-//        http
-//                .authorizeRequests()
-//                .anyRequest()
-//                .authenticated()
-//                .and().httpBasic();
-
+        //Prawidłowa autoryzacja
         http.cors().and().csrf().disable()
-                .authorizeRequests().
-                antMatchers("/api/registration/**").permitAll()
-
-//                .antMatchers("/home/**").permitAll()
-//                .antMatchers("/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/api/registration/**").permitAll()
+                .antMatchers("/api/patient/**").hasAuthority("PATIENT")
+                .antMatchers("/api/doctor/**").hasAuthority("DOCTOR")
+                .antMatchers("/api/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/api/documents/**").hasAnyAuthority("ADMIN", "DOCTOR")
 
                 .anyRequest()
                 .authenticated()
                 .and().formLogin()
-                .loginPage("/login")
+                //.loginPage("/login")
                 .loginProcessingUrl("/login")
                 .successHandler(new MyAuthenticationSuccessHandler())
                 .failureHandler(new MyAuthenticationFailureHandler())
@@ -86,7 +65,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/logout")
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID");
-
     }
 
     @Override
