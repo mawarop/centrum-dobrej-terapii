@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import $ from "jquery";
 import UserService from "../services/UserService";
-import "./LoginForm.css";
-
+import "./Form.css";
+import { Form, Container, FormControl, Button, FormForm } from "react-bootstrap";
 class RegistrationForm extends Component {
   constructor(props) {
     super(props);
@@ -25,55 +25,53 @@ class RegistrationForm extends Component {
   }
   render() {
     return (
-      <div className="container login-card mx-auto">
-        <form id="registration-form" className="registration-form" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <label for="username">username</label>
-            <input type="text" name="username" className="form-control" id="username" placeholder="Enter username" />
-          </div>
+      <Container className="login-card mx-auto">
+        <Form id="registration-form" className="registration-form" onSubmit={this.handleSubmit}>
+          <Form.Group>
+            <Form.Label for="username">Username</Form.Label>
+            <Form.Control type="text" name="username" id="username" placeholder="Enter username" />
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="Password">Password</label>
-            <input type="password" name="password" className="form-control" id="password" placeholder="Password" />
-          </div>
+          <Form.Group>
+            <Form.Label for="Password">Password</Form.Label>
+            <Form.Control type="password" name="password" id="password" placeholder="Password" />
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="username">Email address</label>
-            <input type="text" name="email" className="form-control" id="email" placeholder="Enter email" />
-          </div>
+          <Form.Group>
+            <Form.Label for="username">Email address</Form.Label>
+            <Form.Control type="text" name="email" id="email" placeholder="Enter email" />
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="pesel">Pesel</label>
-            <input type="text" name="pesel" className="form-control" id="pesel" placeholder="Enter pesel" />
-          </div>
+          <Form.Group>
+            <Form.Label for="pesel">Pesel</Form.Label>
+            <Form.Control type="text" name="pesel" id="pesel" placeholder="Enter pesel" />
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="firstname">Firstname</label>
-            <input type="text" name="firstname" className="form-control" id="firstname" placeholder="Enter firstname" />
-          </div>
+          <Form.Group>
+            <Form.Label for="firstname">Firstname</Form.Label>
+            <Form.Control type="text" name="firstname" id="firstname" placeholder="Enter firstname" />
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="lastname">Lastname</label>
-            <input type="text" name="lastname" className="form-control" id="lastname" placeholder="Enter lastname" />
-          </div>
+          <Form.Group>
+            <Form.Label for="lastname">Lastname</Form.Label>
+            <Form.Control type="text" name="lastname" id="lastname" placeholder="Enter lastname" />
+          </Form.Group>
 
-          <div className="form-group">
-            <label for="phone_number">Phone number</label>
-            <input type="text" name="phone_number" className="form-control" id="phone_number" placeholder="Enter phone_number" />
-          </div>
+          <Form.Group>
+            <Form.Label for="phone_number">Phone number</Form.Label>
+            <Form.Control type="text" name="phone_number" id="phone_number" placeholder="Enter phone_number" />
+          </Form.Group>
 
           <div className="form-check">
-            <input type="checkbox" className="form-check-input" id="exampleCheck1" />
-            <label className="form-check-label" for="exampleCheck1">
-              Check me out
-            </label>
+            <Form.Check type="checkbox" id="exampleCheck1" />
+            <Form.Label for="exampleCheck1">Check me out</Form.Label>
           </div>
 
-          <button type="submit" className="btn btn-primary">
+          <Button type="submit" variant="primary">
             Submit
-          </button>
-        </form>
-      </div>
+          </Button>
+        </Form>
+      </Container>
     );
   }
 }

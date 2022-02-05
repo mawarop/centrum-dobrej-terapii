@@ -3,10 +3,12 @@ import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import bootstrapPlugin from "@fullcalendar/bootstrap";
+// import bootstrapPlugin from "@fullcalendar/bootstrap";
+// import jQuery from "jquery";
 
 import "./PatientAppointments.css";
 import PatientService from "../../services/PatientService";
+import { Modal, Button } from "react-bootstrap";
 class PatientAppointments extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +16,12 @@ class PatientAppointments extends Component {
       appointmentsStarts: "",
       appointmentsEnds: "",
       events: "",
+      isModalOpen: false,
     };
+
+    // $("#buttoncl").on("click", function () {
+    //   console.log("kliknieto!");
+    // });
   }
 
   componentDidMount() {
@@ -48,25 +55,60 @@ class PatientAppointments extends Component {
   }
   render() {
     return (
-      <FullCalendar
-        plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-        initialView="dayGridMonth"
-        height="auto"
-        dateClick={this.handleDateClick}
-        headerToolbar={{
-          left: "prev,next today",
-          center: "title",
-          right: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        events={this.state.events}
-      />
+      <React.Fragment>
+        <FullCalendar
+          plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+          initialView="dayGridMonth"
+          height="auto"
+          // dateClick={this.handleDateClick}
+          eventClick={(arg) => {
+            this.setState({ isModalOpen: true });
+          }}
+          headerToolbar={{
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          }}
+          events={this.state.events}
+        />
+
+        <Modal
+          show={this.state.isModalOpen}
+          onHide={() => {
+            this.setState({ isModalOpen: false });
+          }}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title id="contained-modal-title-vcenter">Modal heading</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4>Centered Modal</h4>
+            <p>
+              Cras mattis consectetur purus sit amet fermentum. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+              consectetur ac, vestibulum at eros.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              onClick={() => {
+                this.setState({ isModalOpen: false });
+              }}
+            >
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </React.Fragment>
     );
   }
 
-  handleDateClick = (arg) => {
-    // bind with an arrow function
-    alert(arg.dateStr);
-  };
+  // handleDateClick = (arg) => {
+  //   // bind with an arrow function
+  //   alert(arg.dateStr);
+  // };
 }
 
 export default PatientAppointments;

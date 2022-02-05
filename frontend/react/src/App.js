@@ -4,7 +4,7 @@ import LoginForm from "./components/LoginForm";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import RegistrationForm from "./components/RegistrationForm";
 import Userdashboard from "./components/UserDashboard/UserDashboard";
-import Navbar from "./components/UserDashboard/Navbar";
+import Navbar from "./components/UserDashboard/MainNavbar";
 import Sidebar from "./components/UserDashboard/Sidebar";
 import PatientAppointments from "./components/UserDashboard/PatientAppointments";
 import PrivateRoute from "./components/RequireAuth";
@@ -25,7 +25,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/user-dashboard" element={<Userdashboard />} />
+          {/* <Route path="/user-dashboard" element={<Userdashboard />} /> */}
           <Route path="/add-appointment" element={<PatientAppointments />} />
         </Routes>
       </div>
