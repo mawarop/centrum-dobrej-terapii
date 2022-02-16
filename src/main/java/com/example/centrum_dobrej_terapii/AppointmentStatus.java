@@ -6,5 +6,6 @@ import lombok.ToString;
 public enum AppointmentStatus {
     FINALIZED,
     ACCEPTED,
-    FREE_DATE
+    FREE_DATE,
+    CANCELED
 }

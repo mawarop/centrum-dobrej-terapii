@@ -3,13 +3,20 @@ package com.example.centrum_dobrej_terapii.entities;
 import com.example.centrum_dobrej_terapii.UserRole;
 import com.example.centrum_dobrej_terapii.dtos.RegistrationRequest;
 import com.sun.istack.NotNull;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.validator.constraints.pl.PESEL;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -20,38 +27,45 @@ import java.util.Collections;
 @Entity
 public class AppUser implements UserDetails {
     @Id
-    @NotNull
-    @NotEmpty
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Username nie może być pusty")
+    @Size(min = 3)
     private String username;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Hasło nie może być puste")
+//    @Size(min=8)
     private String password;
 
-    @NotNull
-    @NotEmpty
+    @NotBlank(message = "Pesel nie może być pusty")
+    @PESEL(message = "Niepoprawny pesel")
+    @Column(unique = true)
     private String pesel;
-    @NotNull
-    @NotEmpty
+
+    @Size(min = 3)
+    @NotBlank(message = "Firstname nie może być puste")
     private String firstname;
-    @NotNull
-    @NotEmpty
+
+    @Size(min = 3)
+    @NotBlank(message = "Lastname nie może być puste")
     private String lastname;
-    @NotNull
-    @NotEmpty
+
+    @NotBlank
+    @Email(message = "Email powinien być poprawny")
+    @Column(unique = true)
     private String email;
-    @NotNull
-    @NotEmpty
+
+    @NotBlank(message = "Numer telefonu nie może być pusty")
+    @Size(min = 9, max=9)
+    @Pattern(regexp = "\\d{9}", message = "Niepoprawny format numeru telefonu")
+    @Column(unique = true)
     private String phone_number;
-    @NotNull
-    @NotEmpty
+
     @Enumerated(EnumType.STRING)
+    @NotNull
     private UserRole userRole;
+
 
     private Boolean locked = false;
     private Boolean enabled = false;

@@ -1,7 +1,7 @@
 package com.example.centrum_dobrej_terapii.security.config;
 
 import com.example.centrum_dobrej_terapii.entities.AppUser;
-import com.example.centrum_dobrej_terapii.services.AppUserService;
+import com.example.centrum_dobrej_terapii.services.AppUserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +35,7 @@ import java.util.Arrays;
 
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AppUserService appUserService;
+    private final AppUserServiceImpl appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 

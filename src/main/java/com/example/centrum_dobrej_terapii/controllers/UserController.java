@@ -18,7 +18,7 @@ public class UserController {
     @ResponseBody
     @GetMapping
     String testU(){
-        return "xddd";
+        return "test dzialania";
     }
 
 

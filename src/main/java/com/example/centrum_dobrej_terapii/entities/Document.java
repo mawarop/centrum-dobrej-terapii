@@ -1,13 +1,12 @@
 package com.example.centrum_dobrej_terapii.entities;
 
-import com.sun.istack.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 
 
 @Getter
@@ -17,11 +16,11 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 public class Document {
     @Id
-    @NotNull
-    @NotEmpty
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @NotBlank
     private String path;
+    @NotBlank
     private String name;
     @ManyToOne
     AppUser doctor;

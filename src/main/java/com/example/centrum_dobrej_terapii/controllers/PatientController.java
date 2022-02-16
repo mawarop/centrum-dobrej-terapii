@@ -1,11 +1,13 @@
 package com.example.centrum_dobrej_terapii.controllers;
 
-import com.example.centrum_dobrej_terapii.dtos.AppointmentDTO;
+import com.example.centrum_dobrej_terapii.AppointmentStatus;
+import com.example.centrum_dobrej_terapii.dtos.AppUserDoctorBaseResponse;
+import com.example.centrum_dobrej_terapii.dtos.AppointmentResponse;
 import com.example.centrum_dobrej_terapii.services.PatientService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,9 +40,37 @@ public class PatientController {
 //@PreAuthorize("hasRole('PATIENT')")
     @GetMapping("appointments")
 
-    public List<AppointmentDTO> getAppointments()
+    public List<AppointmentResponse> getAppointments()
     {
         return patientService.getAppointments();
     }
 
+    @PatchMapping("appointment/{id}")
+    public ResponseEntity signUpFreeDateAppointment(@PathVariable("id") long id){
+        boolean updated = patientService.signUpFreeDateAppointment(id);
+        if(updated) {
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @GetMapping("doctors")
+    public List<AppUserDoctorBaseResponse>getDoctorsBaseData(){
+        return patientService.getDoctorsBaseData();
+    }
+
+    @GetMapping("doctor-appointments")
+    public List<AppointmentResponse> getDoctorAppointmentsByAppointmentStatus(@RequestParam String email)
+    {
+        return patientService.getDoctorAppointmentsByAppointmentStatus(email, AppointmentStatus.FREE_DATE);
+    }
+
+    @PatchMapping("cancel-appointment/{id}")
+    ResponseEntity cancelAppointment(@PathVariable("id") long id){
+        boolean canceledAppointment = patientService.cancelAppointment(id);
+        if (canceledAppointment){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

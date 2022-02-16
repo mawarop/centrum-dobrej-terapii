@@ -1,17 +1,5 @@
 import axios from "axios";
-// import { Buffer } from "buffer";
-
-// const defaultOptions = {
-//   baseURL: "/",
-//   headers: {
-//     Accept: "application/json",
-//     "Content-Type": "application/json",
-//     "Access-Control-Allow-Origin": "*",
-//   },
-// };
-
-// // Create instance
-// let axiosInstance = axios.create(defaultOptions);
+import axiosLoggedInConfig from "./AxiosLoggedInConfig";
 
 class UserService {
   // basic auth
@@ -67,14 +55,7 @@ class UserService {
   }
 
   testGet() {
-    return axios.get("/api/user", {
-      withCredentials: true,
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "http://localhost:3000/",
-      },
-    });
+    return axios.get("/api/user", axiosLoggedInConfig);
   }
 }
 

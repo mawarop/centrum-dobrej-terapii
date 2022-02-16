@@ -9,7 +9,7 @@ import java.time.LocalTime;
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor
-public class AppUserDoctorDTO {
+public class AppUserDoctorWorkTimeResponse {
     @JsonFormat(pattern="HH:mm:ss")
     LocalTime workHoursStart;
     @JsonFormat(pattern="HH:mm:ss")

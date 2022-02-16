@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,24 +18,25 @@ import java.time.LocalDateTime;
 @Entity
 public class Appointment {
     @Id
-    @NotNull
-    @NotEmpty
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @NotNull
-    @NotEmpty
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime start;
+
     @NotNull
-    @NotEmpty
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime end;
     private String details;
+
     @ManyToOne
     AppUser doctor;
     @ManyToOne(optional = true)
             //, fetch = FetchType.LAZY
     AppUser patient;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     AppointmentStatus appointmentStatus;
 

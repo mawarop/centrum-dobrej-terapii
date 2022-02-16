@@ -3,6 +3,7 @@ package com.example.centrum_dobrej_terapii.controllers;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
 import com.example.centrum_dobrej_terapii.services.AdminService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,11 @@ public class AdminController {
 
     @PostMapping("appointment/add-free-date")
     public ResponseEntity addFreeDateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-        return adminService.addFreeDateAppointment(appointmentRequest);
+        boolean addDateWithSuccess =adminService.addFreeDateAppointment(appointmentRequest);
+        if(addDateWithSuccess){
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        else return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
 }

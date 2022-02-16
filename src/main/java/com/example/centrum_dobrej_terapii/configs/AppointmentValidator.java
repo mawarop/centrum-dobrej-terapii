@@ -6,9 +6,11 @@ import lombok.AllArgsConstructor;
 import org.joda.time.Interval;
 import org.springframework.stereotype.Component;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -28,5 +30,25 @@ public class AppointmentValidator {
             }
         }
         return false;
+    }
+
+    public boolean isAppointmentCancellationPossible(Optional<Appointment> appointment){
+        final long DAY_IN_MINUTES = 1440;
+        try {
+            if(appointment.isPresent()) {
+                LocalDateTime now = LocalDateTime.now();
+                Duration duration = Duration.between(now, appointment.get().getStart());
+                long difference = Math.abs(duration.toMinutes());
+//            System.out.println("Roznica: " + difference);
+                if (difference < DAY_IN_MINUTES || now.isAfter(appointment.get().getStart())) {
+                    throw new IllegalStateException("Wizytę można anulować najpóźniej dzień przed");
+                }
+            }
+            else throw new IllegalStateException("Nie znaleziono wizyty");
+        }catch (Exception exception){
+            System.out.println(exception.getMessage());
+            return false;
+        }
+        return true;
     }
 }
