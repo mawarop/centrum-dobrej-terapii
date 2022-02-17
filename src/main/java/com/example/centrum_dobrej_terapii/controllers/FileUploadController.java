@@ -15,7 +15,7 @@ import java.io.IOException;
 @RequestMapping("api/documents")
 @AllArgsConstructor
 public class FileUploadController {
-    FileUploadService fileUploadService;
+    private final FileUploadService fileUploadService;
 
 
     @PostMapping("/upload")

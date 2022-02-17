@@ -20,7 +20,6 @@ public class RegistrationController {
 
     private final AppUserService appUserService;
 
-
     @PostMapping()
     public ResponseEntity register(@RequestBody RegistrationRequest request) {
         boolean succesfullCreatedUser = appUserService.signUpUser(new AppUser(request, UserRole.PATIENT));

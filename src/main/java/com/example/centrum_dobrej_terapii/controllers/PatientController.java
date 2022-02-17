@@ -3,7 +3,9 @@ package com.example.centrum_dobrej_terapii.controllers;
 import com.example.centrum_dobrej_terapii.AppointmentStatus;
 import com.example.centrum_dobrej_terapii.dtos.AppUserDoctorBaseResponse;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentResponse;
-import com.example.centrum_dobrej_terapii.services.PatientService;
+import com.example.centrum_dobrej_terapii.entities.Appointment;
+import com.example.centrum_dobrej_terapii.services.AppUserService;
+import com.example.centrum_dobrej_terapii.services.AppointmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,8 @@ import java.util.List;
 @RequestMapping("api/patient")
 //@PreAuthorize("hasRole('PATIENT')")
 public class PatientController {
-        PatientService patientService;
+        private final AppointmentService appointmentService;
+        private final AppUserService appUserService;
 
 //    @PostMapping("/appointment/add")
 //    public ResponseEntity addAppointment(@RequestBody AppointmentRequest appointmentRequest){
@@ -40,14 +43,16 @@ public class PatientController {
 //@PreAuthorize("hasRole('PATIENT')")
     @GetMapping("appointments")
 
-    public List<AppointmentResponse> getAppointments()
+    public List<AppointmentResponse> getAppointmentsResponseWithDoctorsNames()
     {
-        return patientService.getAppointments();
+        List<Appointment> appointments = appointmentService.getParticipantAppointments();
+        return appointments.stream().map(a -> new AppointmentResponse(a.getId(), a.getStart(), a.getEnd(), a.getDetails(),
+                a.getAppointmentStatus(), a.getDoctor().getFirstname(), a.getDoctor().getLastname())).toList();
     }
 
     @PatchMapping("appointment/{id}")
     public ResponseEntity signUpFreeDateAppointment(@PathVariable("id") long id){
-        boolean updated = patientService.signUpFreeDateAppointment(id);
+        boolean updated = appointmentService.signUpFreeDateAppointment(id);
         if(updated) {
             return new ResponseEntity(HttpStatus.OK);
         }
@@ -56,18 +61,20 @@ public class PatientController {
 
     @GetMapping("doctors")
     public List<AppUserDoctorBaseResponse>getDoctorsBaseData(){
-        return patientService.getDoctorsBaseData();
+        return appUserService.getDoctorsBaseData();
     }
 
     @GetMapping("doctor-appointments")
-    public List<AppointmentResponse> getDoctorAppointmentsByAppointmentStatus(@RequestParam String email)
+    public List<AppointmentResponse> getDoctorAppointmentsResponse(@RequestParam String email)
     {
-        return patientService.getDoctorAppointmentsByAppointmentStatus(email, AppointmentStatus.FREE_DATE);
+        List<Appointment> appointments = appointmentService.getUserAppointmentsByUserEmailAndAppointmentStatus(email, AppointmentStatus.FREE_DATE);
+        return appointments.stream().map(a -> new AppointmentResponse(a.getId(), a.getStart(), a.getEnd(), a.getDetails(),
+                a.getAppointmentStatus(), a.getDoctor().getFirstname(), a.getDoctor().getLastname())).toList();
     }
 
     @PatchMapping("cancel-appointment/{id}")
     ResponseEntity cancelAppointment(@PathVariable("id") long id){
-        boolean canceledAppointment = patientService.cancelAppointment(id);
+        boolean canceledAppointment = appointmentService.cancelAppointment(id);
         if (canceledAppointment){
             return new ResponseEntity(HttpStatus.OK);
         }

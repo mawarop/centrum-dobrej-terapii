@@ -1,12 +1,7 @@
 package com.example.centrum_dobrej_terapii.controllers;
 
-import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
-import com.example.centrum_dobrej_terapii.services.AdminService;
+import com.example.centrum_dobrej_terapii.services.AppointmentService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,19 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 //@PreAuthorize("hasRole('ROLE_ADMIN')")
 
 public class AdminController {
-    AdminService adminService;
+    private final AppointmentService appointmentService;
 
-
-    @PostMapping("appointment/add-free-date")
-    public ResponseEntity addFreeDateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-        boolean addDateWithSuccess =adminService.addFreeDateAppointment(appointmentRequest);
-        if(addDateWithSuccess){
-            return new ResponseEntity(HttpStatus.CREATED);
-        }
-        else return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
-    }
+// przed refactoryzacja
+//    @PostMapping("appointment/add-free-date")
+//    public ResponseEntity addFreeDateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+//        boolean addDateWithSuccess =adminService.addFreeDateAppointment(appointmentRequest);
+//        if(addDateWithSuccess){
+//            return new ResponseEntity(HttpStatus.CREATED);
+//        }
+//        else return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//
+//    }
 }
+
+
+
+
+
 //    @PostMapping("/add-doctor-appointments")
 //    ResponseEntity<HttpStatus> addDoctorAppointments(@RequestBody String email, int days)
 //    {

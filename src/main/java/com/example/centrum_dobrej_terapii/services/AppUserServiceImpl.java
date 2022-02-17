@@ -1,6 +1,8 @@
 package com.example.centrum_dobrej_terapii.services;
 
+import com.example.centrum_dobrej_terapii.dtos.AppUserDoctorBaseResponse;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
+import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,12 +11,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AppUserDoctorRepository appUserDoctorRepository;
 
 
     @Override
@@ -48,4 +54,15 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
             return true;
         }
+
+    @Override
+    public List<AppUserDoctorBaseResponse> getDoctorsBaseData() {
+        List<AppUserDoctorBaseResponse> appUserDoctorBaseResponseList = appUserDoctorRepository.findAppUserDoctorBaseData();
+        return appUserDoctorBaseResponseList;
+    }
+
+    @Override
+    public Optional<AppUser> getAppUser(String email) {
+        return appUserRepository.findByEmail(email);
+    }
 }
