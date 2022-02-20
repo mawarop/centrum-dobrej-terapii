@@ -5,6 +5,7 @@ import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
+    public static final int PAGE_SIZE = 5;
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserDoctorRepository appUserDoctorRepository;
@@ -64,5 +66,10 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
     @Override
     public Optional<AppUser> getAppUser(String email) {
         return appUserRepository.findByEmail(email);
+    }
+
+    @Override
+    public List<AppUser> getAllAppUsers(int page) {
+        return appUserRepository.findAllAppUsers(PageRequest.of(page, PAGE_SIZE));
     }
 }

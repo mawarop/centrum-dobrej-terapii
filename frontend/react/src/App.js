@@ -13,6 +13,12 @@ import PatientsFiles from "./components/Doctor/PatientsFiles";
 import UploadPatientFile from "./components/Doctor/UploadPatientFile";
 import DoctorAppointments from "./components/Doctor/DoctorAppointments";
 import SignUpNewAppointment from "./components/Patient/SignUpNewAppointment";
+import UserAppointments from "./components/UserAppointments";
+import PatientService from "./services/PatientService";
+import DoctorService from "./services/DoctorService";
+import {role} from "./role";
+
+
 
 function App() {
   return (
@@ -31,10 +37,12 @@ function App() {
           }
         />
         {/* <Route path="/user-dashboard" element={<Userdashboard />} /> */}
-        <Route path="/add-appointment" element={<PatientAppointments />} />
+        <Route path="/patient-appointments" element={<UserAppointments role={role.PATIENT}
+                                                                       makeRequest={() => {return PatientService.getAppointments()}}  />} />
         <Route path="/download-documents" element={<PatientsFiles />} />
         <Route path="/upload-documents" element={<UploadPatientFile />} />
-        <Route path="/doctor-appointments" element={<DoctorAppointments />} />
+        <Route path="/doctor-appointments" element={<UserAppointments role={role.DOCTOR}
+                                                                      makeRequest={() => {return DoctorService.getAppointments()}}/>} />
         <Route path="/sign-up-appointment" element={<SignUpNewAppointment />} />
       </Routes>
     </BrowserRouter>

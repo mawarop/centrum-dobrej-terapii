@@ -42,7 +42,7 @@ function LoginForm(props) {
             sessionStorage.setItem("participant-role", response.data.role);
             sessionStorage.setItem("participant-email", response.data.email);
             console.log("xd");
-            navigate("/add-appointment");
+            navigate("/patient-appointments");
           }
 
           // if (response.data.redirect == "/") window.location = "/";

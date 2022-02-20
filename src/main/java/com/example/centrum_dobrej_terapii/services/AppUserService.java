@@ -10,4 +10,5 @@ public interface AppUserService {
     boolean signUpUser(AppUser appUser);
     List<AppUserDoctorBaseResponse> getDoctorsBaseData();
     Optional<AppUser> getAppUser(String email);
+    List<AppUser> getAllAppUsers(int page);
 }

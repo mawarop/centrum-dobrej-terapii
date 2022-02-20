@@ -6,10 +6,11 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @Getter
+@Setter
 @NoArgsConstructor
 public class AppUserBaseResponse {
+
     private String firstname;
     private String lastname;
-//    private String pesel;
     private String email;
 }

@@ -6,9 +6,8 @@ import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
-
 import bootstrapPlugin from "@fullcalendar/bootstrap";
-
+import plLocale from '@fullcalendar/core/locales/pl'
 
 import PatientService from "../../services/PatientService";
 import { Modal, Button, Toast, ToastContainer } from "react-bootstrap";
@@ -70,6 +69,7 @@ class PatientAppointments extends Component {
                 <FullCalendar
                     plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, bootstrapPlugin]}
                     displayEventTime={true}
+                    locale={plLocale}
                     // eventTimeFormat="H:mm"
                     themeSystem="bootstrap"
                     initialView="dayGridMonth"
@@ -119,8 +119,13 @@ class PatientAppointments extends Component {
                                         <p>Koniec: {moment(this.state.modalEvent.end).format('LLLL')} </p>
                                         <p>Szczegóły: {this.state.modalEvent.extendedProps.details} </p>
                                         <p>Czy odwołać wizytę?</p>
-                                    </div>)
-                                    case "FREE_DATE": return "Przedział czasowy do zapisu wizyty";
+                                    </div>);
+                                    // case "FREE_DATE": return "Przedział czasowy do zapisu wizyty";
+                                    case "FREE_DATE": return (<div>
+                                        <p>Start: {moment(this.state.modalEvent.start).format('LLLL')} </p>
+                                        <p>Koniec: {moment(this.state.modalEvent.end).format('LLLL')} </p>
+                                        <p>"Czy chcesz zapisać sie na wizytę o podanej godzinie?"</p>
+                                    </div>);
                                     case "CANCELED": return "Wizyta została anulowana";
                                 }
                             })()}
@@ -128,13 +133,26 @@ class PatientAppointments extends Component {
                         </Modal.Body>
 
                         <Modal.Footer>
-                            {
-                                this.state.modalEvent.extendedProps.appointmentStatus === "ACCEPTED" &&
-                                <Button onClick={() => {
-                                        let appointmentSignUp = DoctorService.cancelAppointment(this.state.modalEvent.id);
-                                        console.log("anulowanie wykonane");
-                                    }}>Zrezygnuj z wizyty </Button>
-                            }
+                            {(()=>{
+                                switch(this.state.modalEvent.extendedProps.appointmentStatus) {
+                                    case "ACCEPTED":
+                                        return (<Button onClick={() => {
+                                            let appointmentSignUp = DoctorService.cancelAppointment(this.state.modalEvent.id);
+                                            console.log("anulowanie wykonane");
+                                        }}>Zrezygnuj z wizyty </Button>);
+                                    case "FREE_DATE":
+                                        return (<Button
+                                            onClick={() => {
+                                                let appointmentSignUp = PatientService.appointmentSignUp(this.state.modalEvent.id);
+                                                console.log("patch wykonany");
+                                            }}
+                                        >
+                                            Zapisz się na wizytę
+                                        </Button>);
+                                }
+                            })()}
+
+
                                 <Button onClick={() => {
                                     this.setState({isModalOpen: false});
                                 }}>Close</Button>

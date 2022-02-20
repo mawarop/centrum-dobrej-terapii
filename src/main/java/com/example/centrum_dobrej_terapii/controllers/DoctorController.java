@@ -42,7 +42,7 @@ private final AppointmentService appointmentService;
     {
         List<Appointment> appointments = appointmentService.getParticipantAppointments();
         return appointments.stream().map(a -> new AppointmentResponse(a.getId(), a.getStart(), a.getEnd(), a.getDetails(),
-                a.getAppointmentStatus(), a.getPatient().getFirstname(), a.getPatient().getLastname())).toList();
+                a.getAppointmentStatus(), a.getPatient()!=null ? a.getPatient().getFirstname(): null, a.getPatient()!=null ? a.getPatient().getLastname(): null)).toList();
     }
 
 //    @GetMapping("patients")

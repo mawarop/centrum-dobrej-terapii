@@ -1,9 +1,17 @@
 package com.example.centrum_dobrej_terapii.controllers;
 
+import com.example.centrum_dobrej_terapii.MapStructMapper;
+import com.example.centrum_dobrej_terapii.dtos.AppUserResponse;
+import com.example.centrum_dobrej_terapii.entities.AppUser;
+import com.example.centrum_dobrej_terapii.services.AppUserService;
 import com.example.centrum_dobrej_terapii.services.AppointmentService;
 import lombok.AllArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 //@Secured("ADMIN")
 @RestController
@@ -13,6 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class AdminController {
     private final AppointmentService appointmentService;
+    private final AppUserService appUserService;
+    private MapStructMapper mapStructMapper;
+
+
+    @GetMapping("users/{page}")
+    public List<AppUserResponse> getUsers(@PathVariable("page") int page){
+        List<AppUser> users =appUserService.getAllAppUsers(page);
+        return mapStructMapper.appUsersToAppUserResponses(users);
+    }
+
+
+
+
 
 // przed refactoryzacja
 //    @PostMapping("appointment/add-free-date")

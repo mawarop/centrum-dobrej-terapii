@@ -8,7 +8,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import timeGridPlugin from "@fullcalendar/timegrid";
 
 import bootstrapPlugin from "@fullcalendar/bootstrap";
-
+import plLocale from '@fullcalendar/core/locales/pl'
 
 import PatientService from "../../services/PatientService";
 import { Modal, Button, Spinner } from "react-bootstrap";
@@ -66,6 +66,7 @@ class PickedDoctorFreeDates extends Component {
                 {this.state.events !== null &&
                     <React.Fragment>
                     <FullCalendar
+                        locale={plLocale}
                         plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin, bootstrapPlugin]}
                         displayEventTime={true}
                         // eventTimeFormat="H:mm"

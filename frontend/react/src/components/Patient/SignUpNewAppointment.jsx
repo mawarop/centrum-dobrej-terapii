@@ -4,12 +4,14 @@ import UserInfoCard from "./UserInfoCard";
 import {useState} from "react";
 import {CardGroup, Col, Container, Row, Button} from "react-bootstrap";
 import PickedDoctorFreeDates from "./PickedDoctorFreeDates";
+import UserAppointments from "../UserAppointments";
+import {role} from "../../role";
 
 
 
 function SignUpNewAppointment(props) {
     const [doctorsData, setDoctorsData] = useState(null);
-    const [choosenDoctorEmail, setChoosenDoctorEmail] = useState(null);
+    const [chosenDoctorEmail, setChosenDoctorEmail] = useState(null);
 
     useEffect(() => {
         let doctorsPromise = PatientService.getDoctorsBaseData();
@@ -22,7 +24,7 @@ function SignUpNewAppointment(props) {
 
     return(
         <Container className="mx-auto">
-            { choosenDoctorEmail === null &&
+            { chosenDoctorEmail === null &&
                 <Row xs={1} md={2} xl={3} className=" mt-2">
                     {/*<CardGroup>*/}
                     {(doctorsData !== null) &&
@@ -34,21 +36,20 @@ function SignUpNewAppointment(props) {
                 </Row>
             }
             {
-                choosenDoctorEmail !== null &&
+                chosenDoctorEmail !== null &&
                 <div>
-                <PickedDoctorFreeDates doctorEmail={choosenDoctorEmail} onBackClick={() => handleBackClick()}> </PickedDoctorFreeDates>
+                <UserAppointments role={role.PATIENT}  makeRequest={() => {return PatientService.getDoctorFreeDates(chosenDoctorEmail)}} onBackClick={() => handleBackClick()}> </UserAppointments>
                 </div>
             }
-
 
         </Container>
 
     )
     function handleCardButtonClick(index){
-        setChoosenDoctorEmail(doctorsData[index].email);
+        setChosenDoctorEmail(doctorsData[index].email);
     }
     function handleBackClick(){
-        setChoosenDoctorEmail(null)
+        setChosenDoctorEmail(null)
     }
 }
 
