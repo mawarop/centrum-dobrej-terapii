@@ -4,6 +4,7 @@ import {APPOINTMENT_BG_COL, TEXT_COL} from "../ConditionalEnums/FullCalendarEnum
 import AppointmentsCalendar from "./AppointmentsCalendar";
 import AppointmentModal from "./AppointmentModal";
 import {Button} from "react-bootstrap";
+import "./UserAppointments.css";
 
 const eventTitlePrefix ={
     "DOCTOR": "Wizyta pacjenta " ,

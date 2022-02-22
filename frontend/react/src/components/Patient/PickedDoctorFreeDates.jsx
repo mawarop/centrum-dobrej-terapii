@@ -12,7 +12,6 @@ import plLocale from '@fullcalendar/core/locales/pl'
 
 import PatientService from "../../services/PatientService";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import "./PatientAppointments.css";
 import {APPOINTMENT_BG_COL, TEXT_COL} from "../../ConditionalEnums/FullCalendarEnum";
 import moment from "moment";
 import DoctorService from "../../services/DoctorService";

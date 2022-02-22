@@ -9,7 +9,7 @@ import lombok.*;
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor
-public class RegistrationRequest {
+public class AppUserRequest {
 
     private String username;
     private String password;

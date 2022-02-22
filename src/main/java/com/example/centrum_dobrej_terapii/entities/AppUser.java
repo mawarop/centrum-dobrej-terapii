@@ -1,7 +1,7 @@
 package com.example.centrum_dobrej_terapii.entities;
 
 import com.example.centrum_dobrej_terapii.UserRole;
-import com.example.centrum_dobrej_terapii.dtos.RegistrationRequest;
+import com.example.centrum_dobrej_terapii.dtos.AppUserRequest;
 import com.sun.istack.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -85,7 +85,7 @@ public class AppUser implements UserDetails {
         this.enabled = enabled;
     }
 
-    public AppUser(RegistrationRequest request, UserRole role) {
+    public AppUser(AppUserRequest request, UserRole role) {
         this.username = request.getUsername();
         this.password = request.getPassword();
         this.pesel = request.getPesel();

@@ -1,37 +1,73 @@
 package com.example.centrum_dobrej_terapii.controllers;
 
-import com.example.centrum_dobrej_terapii.MapStructMapper;
+import com.example.centrum_dobrej_terapii.UserRole;
+import com.example.centrum_dobrej_terapii.dtos.AppUserMapper;
+import com.example.centrum_dobrej_terapii.dtos.AppUserRequest;
 import com.example.centrum_dobrej_terapii.dtos.AppUserResponse;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.services.AppUserService;
 import com.example.centrum_dobrej_terapii.services.AppointmentService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-//@Secured("ADMIN")
 @RestController
 @RequestMapping("api/admin")
 @AllArgsConstructor
-//@PreAuthorize("hasRole('ROLE_ADMIN')")
 
 public class AdminController {
     private final AppointmentService appointmentService;
     private final AppUserService appUserService;
-    private MapStructMapper mapStructMapper;
+    private AppUserMapper appUserMapper;
 
 
     @GetMapping("users/{page}")
-    public List<AppUserResponse> getUsers(@PathVariable("page") int page){
+    public ResponseEntity<?> getUsers(@PathVariable("page") int page){
         List<AppUser> users =appUserService.getAllAppUsers(page);
-        return mapStructMapper.appUsersToAppUserResponses(users);
+        List<AppUserResponse> appUserResponses = appUserMapper.appUsersToAppUserResponses(users);
+        long numberOfUsers = appUserService.getNumberOfUsers();
+        long numberOfPages = appUserService.getNumberOfPages(numberOfUsers);
+        Map<String, Object> response = new HashMap<>();
+        response.put("users", appUserResponses);
+        response.put("totalUsers", numberOfUsers);
+        response.put("totalPages", numberOfPages);
+        response.put("currentPage", page);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
+    @PostMapping("user")
+    public ResponseEntity createUser(@RequestParam(value = "userRoleParam",required = false) UserRole userRoleParam, @RequestBody AppUserRequest request){
+        if(userRoleParam == null) {
+            boolean succesfullCreatedUser = appUserService.signUpUser(new AppUser(request, UserRole.PATIENT));
+        }
+        else {
+            boolean succesfullCreatedUser =  appUserService.signUpUser(new AppUser(request, userRoleParam));
+        }
 
+        boolean succesfullCreatedUser =  appUserService.signUpUser(new AppUser(request, userRoleParam));
+        if(succesfullCreatedUser){
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @PatchMapping("user/{id}")
+    public ResponseEntity updateUser(@PathVariable("id") int id, @RequestBody AppUserRequest appUserRequest){
+        appUserService.updateAppUser(id, appUserRequest);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PatchMapping("user/{id}/block")
+    public ResponseEntity blockUser(@PathVariable("id") int id)
+    {
+        appUserService.blockAppUser(id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
 

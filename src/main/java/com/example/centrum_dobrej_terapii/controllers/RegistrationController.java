@@ -1,7 +1,7 @@
 package com.example.centrum_dobrej_terapii.controllers;
 
 import com.example.centrum_dobrej_terapii.UserRole;
-import com.example.centrum_dobrej_terapii.dtos.RegistrationRequest;
+import com.example.centrum_dobrej_terapii.dtos.AppUserRequest;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.services.AppUserService;
 import lombok.AllArgsConstructor;
@@ -21,7 +21,7 @@ public class RegistrationController {
     private final AppUserService appUserService;
 
     @PostMapping()
-    public ResponseEntity register(@RequestBody RegistrationRequest request) {
+    public ResponseEntity register( @RequestBody AppUserRequest request) {
         boolean succesfullCreatedUser = appUserService.signUpUser(new AppUser(request, UserRole.PATIENT));
         if(succesfullCreatedUser){
             return new ResponseEntity(HttpStatus.CREATED);

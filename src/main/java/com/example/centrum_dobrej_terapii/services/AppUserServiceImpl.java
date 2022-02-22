@@ -1,6 +1,8 @@
 package com.example.centrum_dobrej_terapii.services;
 
 import com.example.centrum_dobrej_terapii.dtos.AppUserDoctorBaseResponse;
+import com.example.centrum_dobrej_terapii.dtos.AppUserMapper;
+import com.example.centrum_dobrej_terapii.dtos.AppUserRequest;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
@@ -12,7 +14,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -23,13 +28,16 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserDoctorRepository appUserDoctorRepository;
+    private final AppUserMapper appUserMapper;
 
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: %s not found", email)));
     }
-        public boolean signUpUser(AppUser appUser) {
+
+    @Transactional
+    public boolean signUpUser(AppUser appUser) {
         boolean userWithEmailExists = appUserRepository.findByEmail(appUser.getEmail()).isPresent();
         boolean userWithPeselExists = appUserRepository.findByPesel(appUser.getPesel()).isPresent();
         boolean userWithPhoneNumberExists = appUserRepository.findByPhone_number((appUser.getPhone_number())).isPresent();
@@ -72,4 +80,50 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
     public List<AppUser> getAllAppUsers(int page) {
         return appUserRepository.findAllAppUsers(PageRequest.of(page, PAGE_SIZE));
     }
+
+    @Override
+    public Optional<AppUser> getAppUser(long id) {
+        return appUserRepository.findById(id);
+    }
+
+    @Override
+    public void updateAppUser(int id, AppUserRequest appUserRequest) {
+        Optional<AppUser> appUserOptional = this.getAppUser(id);
+        if(appUserOptional.isPresent()){
+            AppUser user = appUserOptional.get();
+            appUserMapper.updateAppUserFromAppUserRequest(appUserRequest, user);
+            appUserRepository.save(user);
+        }
+        else throw new IllegalStateException("User not found");
+    }
+
+    @Override
+    public void blockAppUser(int id) {
+        Optional<AppUser> appUserOptional = this.getAppUser(id);
+        if(appUserOptional.isPresent()){
+            AppUser user = appUserOptional.get();
+            user.setLocked(true);
+            appUserRepository.save(user);
+        }
+        else throw new IllegalStateException("User not found");
+    }
+
+    @Override
+    public long getNumberOfUsers() {
+        return appUserRepository.count();
+    }
+
+    @Override
+    public long getNumberOfPages(long numberOfUsers) {
+        return (long) Math.ceil((double)numberOfUsers/(double) PAGE_SIZE);
+    }
+
+//    @Override
+//    public Map<String, Long> getNumbersOfUsersAndPages() {
+//        Map<String, Long> numbersOfUsersAndPages = new HashMap<>();
+//        long numberOfUsers = this.getNumberOfUsers();
+//        numbersOfUsersAndPages.put("numberOfUsers", numberOfUsers);
+//        numbersOfUsersAndPages.put("numberOfPages", (long) Math.ceil((double)numberOfUsers/(double)PAGE_SIZE));
+//        return numbersOfUsersAndPages;
+//    }
 }

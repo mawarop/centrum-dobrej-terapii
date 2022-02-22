@@ -22,6 +22,7 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long>{
     List<AppUser> findByUserRole(String userRole);
     @Query("select u from AppUser u")
     List<AppUser> findAllAppUsers(Pageable pageable);
+
 }
 
 
