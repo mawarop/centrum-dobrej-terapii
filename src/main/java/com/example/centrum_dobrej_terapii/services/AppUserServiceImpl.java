@@ -15,9 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -88,10 +86,12 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
     @Override
     public void updateAppUser(int id, AppUserRequest appUserRequest) {
+        System.out.println("appuserRequest: " + appUserRequest);
         Optional<AppUser> appUserOptional = this.getAppUser(id);
         if(appUserOptional.isPresent()){
             AppUser user = appUserOptional.get();
             appUserMapper.updateAppUserFromAppUserRequest(appUserRequest, user);
+            System.out.println("userUpdated: " + user);
             appUserRepository.save(user);
         }
         else throw new IllegalStateException("User not found");

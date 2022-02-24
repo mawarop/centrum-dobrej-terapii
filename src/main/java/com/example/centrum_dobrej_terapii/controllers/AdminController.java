@@ -42,14 +42,14 @@ public class AdminController {
 
     @PostMapping("user")
     public ResponseEntity createUser(@RequestParam(value = "userRoleParam",required = false) UserRole userRoleParam, @RequestBody AppUserRequest request){
+        boolean succesfullCreatedUser = false;
         if(userRoleParam == null) {
-            boolean succesfullCreatedUser = appUserService.signUpUser(new AppUser(request, UserRole.PATIENT));
+            succesfullCreatedUser = appUserService.signUpUser(new AppUser(request, UserRole.PATIENT));
         }
         else {
-            boolean succesfullCreatedUser =  appUserService.signUpUser(new AppUser(request, userRoleParam));
+            succesfullCreatedUser =  appUserService.signUpUser(new AppUser(request, userRoleParam));
         }
 
-        boolean succesfullCreatedUser =  appUserService.signUpUser(new AppUser(request, userRoleParam));
         if(succesfullCreatedUser){
             return new ResponseEntity(HttpStatus.CREATED);
         }

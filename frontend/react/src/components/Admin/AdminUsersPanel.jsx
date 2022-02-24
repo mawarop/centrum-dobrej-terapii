@@ -1,7 +1,10 @@
 import {useCallback, useEffect, useState} from "react";
 import {APPOINTMENT_BG_COL, TEXT_COL} from "../../ConditionalEnums/FullCalendarEnum";
-import {Pagination, Table, Container} from "react-bootstrap";
-import {useParams} from "react-router-dom";
+import {Pagination, Table, Container, Button} from "react-bootstrap";
+import {useNavigate, useParams} from "react-router-dom";
+import ConfirmationModal from "./ConfirmationModal";
+import AdminService from "../../services/AdminService";
+import CreateUpdateUserForm from "../CreateUpdateUserForm";
 
 
 
@@ -10,6 +13,12 @@ function AdminUsersPanel(props) {
     const [totalUsers, setTotalUsers] = useState(null);
     const [totalPages, setTotalPages] = useState(null);
     const [currentPage, setCurrentPage] = useState(null);
+    // const [isUpdate, setIsUpdate] = useState(false);
+    const [userData, setUserData] = useState(null);
+
+
+    const [showModal, setShowModal] = useState(false);
+    const [chosenUserId, setChosenUserId] = useState(null);
     // const {page} = useParams();
     useEffect(()=>{
         fetchPageData();
@@ -28,97 +37,112 @@ function AdminUsersPanel(props) {
                 console.log(error);
             });
     }
-    const fetchRequest= useCallback(
-        (number) => {
-            fetchPageData(number)
-        },
-        []
-    );
-    
+    // const fetchRequest= useCallback(
+    //     (number) => {
+    //         fetchPageData(number)
+    //     },
+    //     []
+    // );
+
+
+    let navigate = useNavigate();
+
+    function updateUserHandler(user){
+        setUserData(user);
+    }
+    function blockUserHandler(id){
+        setChosenUserId(id);
+        setShowModal(true);
+    }
 
     // console.log(users)
-    return(
-        <Container className="text-center">
+    if(!userData)
+        return (
+            <>
+                <Container className="text-center">
+                    <Button onClick={() => {
+                        navigate("/create-user");
+                    }}>Dodaj użytkownika</Button>
+                    <Table striped bordered hover>
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>Imię</th>
+                            <th>Nazwisko</th>
+                            <th>Nazwa użytkownika</th>
+                            <th>Email</th>
+                            <th>Number telefonu</th>
+                            <th>Rola</th>
+                            <th colSpan={2}>Akcje</th>
+                        </tr>
+                        </thead>
 
-            <Table striped bordered hover>
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Imię</th>
-                    <th>Nazwisko</th>
-                    <th>Nazwa użytkownika</th>
-                    <th>Email</th>
-                    <th>Number telefonu</th>
-                    <th>Rola</th>
-                </tr>
-                </thead>
+                        <tbody>
+                        {
+                            users !== null && users.map((user) => {
+                                return (
+                                    <tr>
+                                        <td>{user.id}</td>
+                                        <td>{user.firstname}</td>
+                                        <td>{user.lastname}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.phone_number}</td>
+                                        <td>{user.userRole}</td>
+                                        <td><Button onClick={() => {
+                                            updateUserHandler(user)
+                                        }}>
+                                            Aktualizuj</Button></td>
+                                        <td><Button variant="secondary" onClick={() => {
+                                            blockUserHandler(user.id)
+                                        }}>
+                                            Zablokuj</Button></td>
+                                    </tr>
+                                );
+                            })
+                        }
+                        </tbody>
 
-                <tbody>
-                {
-                    users!== null && users.map((user) => {
-                        return(
-                            <tr>
-                                <td>{user.id}</td>
-                                <td>{user.firstname}</td>
-                                <td>{user.lastname}</td>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.phone_number}</td>
-                                <td>{user.userRole}</td>
-                            </tr>
-                        );
-                    })
-                }
-                </tbody>
+                    </Table>
 
-            </Table>
+                    {
+                        totalPages !== null && currentPage !== null && (() => {
+                            let active = currentPage + 1;
+                            let items = [];
+                            for (let number = 1; number <= totalPages; number++) {
+                                items.push(
+                                    <Pagination.Item key={number} onClick={() => {
+                                        fetchPageData(number - 1);
+                                        console.log(number)
+                                    }} active={number === active}>
+                                        {number}
+                                    </Pagination.Item>,
+                                );
+                            }
+                            return <div className="text-center"><Pagination>{items}</Pagination></div>
 
-            {
-                totalPages!==null && currentPage!==null && (()=>{
-                    let active = currentPage + 1;
-                    let items = [];
-                    for (let number = 1; number <= totalPages; number++) {
-                        items.push(
-                            <Pagination.Item key={number} onClick={() =>{fetchPageData(number-1);
-                            console.log(number)}} active={number === active}>
-                                {number}
-                            </Pagination.Item>,
-                        );
+                        })()
                     }
-                    return <div className="text-center"><Pagination>{items}</Pagination></div>
 
-                })()
-            }
+                </Container>
+                {
+                    (showModal === true && chosenUserId !== null) &&
+                    <ConfirmationModal title="Blokowanie użytkownika" body="Czy zablokować użytkowanika?"
+                                       footerButtonText="Zablokuj" chosenUserId={chosenUserId} show={showModal}
+                                       onHide={() => setShowModal(false)}
+                                       onBlock={(id) => {
+                                           AdminService.blockUser(id)
+                                       }}
+                    />
+                }
+            </>
+        )
 
-            {/*<Row className="rounded bg-primary mt-2"  >*/}
-            {/*<Col>Imię</Col>*/}
-            {/*<Col>Nazwisko</Col>*/}
-            {/*<Col>Nazwa użytkownika</Col>*/}
-            {/*<Col>Email</Col>*/}
-            {/*<Col>Numer telefonu</Col>*/}
-            {/*<Col>Rola</Col>*/}
-            {/*</Row>*/}
-
-
-            {/*{*/}
-            {/*    users!== null && users.map((user) => {*/}
-            {/*        return(*/}
-            {/*            <Row className="mt-2">*/}
-            {/*                <Col>{user.firstname}</Col>*/}
-            {/*                <Col>{user.lastname}</Col>*/}
-            {/*                <Col>{user.username}</Col>*/}
-            {/*                <Col>{user.email}</Col>*/}
-            {/*                <Col>{user.phone_number}</Col>*/}
-            {/*                <Col>{user.userRole}</Col>*/}
-            {/*            </Row>*/}
-            {/*        );*/}
-            {/*    })*/}
-            {/*}*/}
-
-        </Container>
-
-    )
-    
+    if(userData)
+        return (<CreateUpdateUserForm formData={userData}  redirectUrl="/show-users" makeRequest={(jsonFormData, id) => {
+            return AdminService.updateUser(jsonFormData, id)
+        }} onNavigate={() => {setUserData(null);
+        fetchPageData()}}/>)
 }
 
 export default AdminUsersPanel;

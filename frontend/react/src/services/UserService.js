@@ -54,6 +54,11 @@ class UserService {
     });
   }
 
+  logout(){
+    localStorage.clear();
+    return axios.get("/logout", axiosLoggedInConfig);
+  }
+
   testGet() {
     return axios.get("/api/user", axiosLoggedInConfig);
   }

@@ -4,8 +4,13 @@ import moment from "moment";
 import PatientService from "../services/PatientService";
 import DoctorService from "../services/DoctorService";
 import {role} from "../role";
+import 'moment/locale/pl'
 
 class AppointmentModal extends Component {
+    constructor() {
+        super();
+        moment.locale("pl");
+    }
     render() {
         return (
             <Modal
@@ -35,13 +40,13 @@ class AppointmentModal extends Component {
                                 <p>Start: {moment(this.props.modalEvent.start).format('LLLL')} </p>
                                 <p>Koniec: {moment(this.props.modalEvent.end).format('LLLL')} </p>
                                 <p>Szczegóły: {this.props.modalEvent.extendedProps.details} </p>
-                                <p>Czy odwołać wizytę?</p>
+                                {Date.now() < this.props.modalEvent.start && <p>Czy odwołać wizytę?</p>}
                             </div>);
                             // case "FREE_DATE": return "Przedział czasowy do zapisu wizyty";
                             case "FREE_DATE": if(this.props.role=== role.PATIENT) {return (<div>
                                 <p>Start: {moment(this.props.modalEvent.start).format('LLLL')} </p>
                                 <p>Koniec: {moment(this.props.modalEvent.end).format('LLLL')} </p>
-                                <p>Czy chcesz zapisać sie na wizytę o podanej godzinie?</p>
+                                {Date.now() < this.props.modalEvent.start ? <p>Czy chcesz zapisać sie na wizytę o podanej godzinie?</p>:''}
                             </div>)}
                             else if (this.props.role === role.DOCTOR) return "Przedział czasowy do zapisu wizyty";
                             case "CANCELED": return "Wizyta została anulowana";
@@ -65,21 +70,23 @@ class AppointmentModal extends Component {
                     {(()=>{
                         switch(this.props.modalEvent.extendedProps.appointmentStatus) {
                             case "ACCEPTED":
-                                return (<Button onClick={() => {
+                                return (Date.now() < this.props.modalEvent.start && <Button onClick={() => {
                                     switch (this.props.role){
                                         case role.PATIENT: PatientService.cancelAppointment(this.props.modalEvent.id);
                                         break;
                                         case role.DOCTOR: DoctorService.cancelAppointment(this.props.modalEvent.id);
                                         break;
                                     }
-                                    console.log("anulowanie wykonane");
+                                    console.log("anulowanie wykonane")
+                                    this.props.onHide();
                                 }}>Zrezygnuj z wizyty </Button>);
                             case "FREE_DATE":
-                                if(this.props.role===role.PATIENT)
+                                if(this.props.role===role.PATIENT && (Date.now() < this.props.modalEvent.start))
                                 return (<Button
                                     onClick={() => {
                                         let appointmentSignUp = PatientService.appointmentSignUp(this.props.modalEvent.id);
                                         console.log("patch wykonany");
+                                        this.props.onHide();
                                     }}
                                 >
                                     Zapisz się na wizytę

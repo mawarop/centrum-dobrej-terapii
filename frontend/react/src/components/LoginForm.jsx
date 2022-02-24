@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 // import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
@@ -17,6 +17,7 @@ function LoginForm(props) {
   const [validated, setValidated] = useState(false);
   const [credentialsFeedback, setcredentialsFeedback] = useState("");
   let navigate = useNavigate();
+
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -37,10 +38,10 @@ function LoginForm(props) {
           if (response.status == 200) {
             setcredentialsFeedback("");
             console.log("zalogowano!");
-            sessionStorage.setItem("logged-in", "true");
+            localStorage.setItem("logged-in", "true");
             console.log(response.data.role);
-            sessionStorage.setItem("participant-role", response.data.role);
-            sessionStorage.setItem("participant-email", response.data.email);
+            localStorage.setItem("participant-role", response.data.role);
+            // localStorage.setItem("participant-email", response.data.email);
             console.log("xd");
             navigate("/patient-appointments");
           }
