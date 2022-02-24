@@ -1,10 +1,14 @@
-import {Button, Container, Form} from "react-bootstrap";
+import {Button, Container, Form, ToastContainer} from "react-bootstrap";
 import React, {useState} from "react";
 import documentFile from "./DocumentFile";
 import DoctorService from "../../services/DoctorService";
+import {Toast} from "react-bootstrap";
 
 function UploadPatientFile() {
     const [validated, setValidated] = useState(false);
+    const [showToast, setShowToast] = useState(false);
+
+    const toggleShow = () => setShowToast(!showToast);
 
     function handleSubmit(event){
         event.preventDefault();
@@ -17,7 +21,11 @@ function UploadPatientFile() {
             var formData = new FormData(event.target);
             let fileUploadPromise = DoctorService.fileUpload(formData)
             fileUploadPromise.then(
-                (res) => console.log(res.status)
+                (res) =>
+                {console.log(res.status)
+                    setShowToast(true);
+                    console.log("test");
+                }
             ).catch((error) => console.log(error))
 
         }
@@ -25,6 +33,7 @@ function UploadPatientFile() {
     }
 
     return(
+        <>
         <Container>
             <Form id="file-upload-form"
                   noValidate
@@ -47,6 +56,15 @@ function UploadPatientFile() {
                 </Button>
             </Form>
         </Container>
+            <ToastContainer position="top-end" className="p-3">
+            <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide>
+                <Toast.Header>
+                    <strong className="me-auto">Potwierdzenie akcji</strong>
+                </Toast.Header>
+                <Toast.Body>Przesłano pomyślnie plik</Toast.Body>
+            </Toast>
+            </ToastContainer>
+            </>
         );
 }
 

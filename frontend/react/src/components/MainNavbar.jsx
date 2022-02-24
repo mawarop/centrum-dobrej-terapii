@@ -3,12 +3,13 @@ import { Navbar, Nav, Container, NavDropdown, Button } from "react-bootstrap";
 import UserService from "../services/UserService";
 import {useNavigate} from "react-router-dom";
 import NavbarLinks from "../NavbarLinks";
+import userMainPath from "../userMainPath";
 function MainNavbar(props){
     let navigate = useNavigate();
     return (
       <Navbar bg="primary" expand="lg" variant="dark">
         {/* <Container> */}
-        <Navbar.Brand href="/login">Centrum dobrej terapii</Navbar.Brand>
+        <Navbar.Brand onClick={() => navigate(userMainPath.getPath())}>Centrum dobrej terapii</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

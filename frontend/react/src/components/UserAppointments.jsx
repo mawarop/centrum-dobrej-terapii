@@ -30,7 +30,8 @@ class UserAppointments extends Component {
                 let events = response.data.map((d) => {
                     return {
                         id: d.id,
-                        title: eventTitlePrefix[this.props.role] + d.secondParticipantFirstname + " " + d.secondParticipantLastname,
+                        title: d.secondParticipantFirstname ? eventTitlePrefix[this.props.role] +
+                            d.secondParticipantFirstname + " " + d.secondParticipantLastname : "Wolny blok",
                         start: new Date(d.start),
                         end: new Date(d.end),
                         backgroundColor : APPOINTMENT_BG_COL[d.appointmentStatus],

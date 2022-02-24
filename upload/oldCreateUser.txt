@@ -1,0 +1,147 @@
+import React, { Component } from "react";
+import $ from "jquery";
+import UserService from "../services/UserService";
+import "./Form.css";
+import { Form, Container, FormControl, Button, FormForm } from "react-bootstrap";
+import {Navigate} from "react-router-dom";
+
+class CreateUserForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.state = { validated: false, credentialsFeedback: "", redirect: false };
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      event.preventDefault();
+      event.stopPropagation();
+    } else {
+      let formData = new FormData(event.target);
+      let role = event.target.elements.role.value;
+      let jsonFormData = JSON.stringify(Object.fromEntries(formData));
+      console.log(jsonFormData);
+      this.props.makeRequest(jsonFormData, role)
+        .then((res) => {
+          console.log(res.status);
+          if (res.status === 201) {
+            this.setState({ credentialsFeedback: "" });
+            console.log("nie dziala navigate");
+            this.setState({redirect: true });
+            // history.push('/show-users')
+            // this.props.navigation.navigate("/show-users").then(() =>console.log("dziala navigate"));
+
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(error.status);
+          this.setState({ validated: false });
+          form.reset();
+
+          this.setState({ credentialsFeedback: "Podano niepoprawne dane" });
+        });
+    }
+    this.setState({ validated: true });
+  }
+  render() {
+    const { match, location, history } = this.props;
+
+    return (
+        <>
+      <Container className="form-card mx-auto">
+        <Form
+          noValidate
+          validated={this.state.validated}
+          id="registration-form"
+          className="registration-form"
+          onSubmit={this.handleSubmit}
+          method="Post"
+        >
+          <Form.Group>
+            <Form.Label for="username">Username</Form.Label>
+            <Form.Control required type="text" name="username" id="username" placeholder="Enter username" value={this.props.formData.username} />
+          </Form.Group>
+
+          { this.props.hasPasswordInput &&
+            <Form.Group>
+              <Form.Label for="Password">Password</Form.Label>
+              <Form.Control required type="password" name="password" id="password" placeholder="Password"/>
+            </Form.Group>
+          }
+
+          <Form.Group>
+            <Form.Label for="email">Email address</Form.Label>
+            <Form.Control required type="email" name="email" id="email" placeholder="Enter email" value={this.props.formData.email}/>
+          </Form.Group>
+
+          {this.props.hasPeselInput &&
+              <Form.Group>
+                <Form.Label for="pesel">Pesel</Form.Label>
+                <Form.Control required type="text" pattern="\d{11}" name="pesel" id="pesel" placeholder="Enter pesel"
+                              maxLength={11} minLength={11}/>
+              </Form.Group>
+          }
+          <Form.Group>
+            <Form.Label for="firstname">Firstname</Form.Label>
+            <Form.Control required type="text" name="firstname" id="firstname" placeholder="Enter firstname" value={this.props.formData.firstname}/>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label for="lastname">Lastname</Form.Label>
+            <Form.Control required type="text" name="lastname" id="lastname" placeholder="Enter lastname" value={this.props.formData.lastname}/>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Label for="phone_number">Phone number</Form.Label>
+            <Form.Control
+              required
+              type="text"
+              pattern="\d{9}"
+              name="phone_number"
+              id="phone_number"
+              placeholder="Enter phone_number"
+              maxLength={9}
+              minLength={9}
+              value={this.props.formData.phoneNumber}
+            />
+          </Form.Group>
+
+          {this.props.hasRoleInput &&
+              <Form.Group>
+                <Form.Label for="role">Role</Form.Label>
+                <Form.Select required name="role" id="role">
+                  <option value="PATIENT">PATIENT</option>
+                  <option value="DOCTOR">DOCTOR</option>
+                </Form.Select>
+              </Form.Group>
+          }
+
+          <Form.Group className="my-2">
+            <Form.Check
+              required
+              type="checkbox"
+              id="exampleCheck1"
+              feedback="You must agree before submitting."
+              feedbackType="invalid"
+              label="Check me out"
+            />
+          </Form.Group>
+
+          <Button type="submit" variant="primary">
+            Submit
+          </Button>
+          <div style={{ color: "#dc3545", textAlign: "center" }}>{this.state.credentialsFeedback}</div>
+        </Form>
+      </Container>
+          {this.state.redirect && <Navigate to={this.props.redirectUrl}/> }
+    </>
+    );
+  }
+}
+
+export default CreateUserForm;

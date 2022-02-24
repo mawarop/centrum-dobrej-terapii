@@ -16,6 +16,9 @@ public class DocumentServiceImpl implements  DocumentService{
     @Override
     public List<NamePathFileResponse> getPatientDocuments(String pesel) {
         List<String> patientDocumentsNames = documentRepository.findPathsByPatientPesel(pesel);
+        if(patientDocumentsNames.isEmpty()){
+            throw new IllegalStateException("Użytkownik nie posiada dokumentów lub podany pesel jest nieprawidłowy");
+        }
         List<NamePathFileResponse> namePathFileResponseList = new ArrayList<NamePathFileResponse>();
         for (String name :patientDocumentsNames){
             namePathFileResponseList.add(new NamePathFileResponse(name, URL + name));

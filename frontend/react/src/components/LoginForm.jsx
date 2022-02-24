@@ -7,6 +7,8 @@ import axios from "axios";
 import UserService from "../services/UserService";
 import { Form, Container, FormControl, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import {role} from "../role";
+import userMainPath from "../userMainPath";
 
 function LoginForm(props) {
   // this.state = {
@@ -15,7 +17,7 @@ function LoginForm(props) {
   // };
 
   const [validated, setValidated] = useState(false);
-  const [credentialsFeedback, setcredentialsFeedback] = useState("");
+  const [credentialsFeedback, setCredentialsFeedback] = useState("");
   let navigate = useNavigate();
 
 
@@ -36,14 +38,16 @@ function LoginForm(props) {
         .then((response) => {
           console.log("odpowiedź");
           if (response.status == 200) {
-            setcredentialsFeedback("");
+            setCredentialsFeedback("");
             console.log("zalogowano!");
             localStorage.setItem("logged-in", "true");
             console.log(response.data.role);
             localStorage.setItem("participant-role", response.data.role);
             // localStorage.setItem("participant-email", response.data.email);
             console.log("xd");
-            navigate("/patient-appointments");
+
+            let redirectPath = userMainPath.getPath();
+            navigate(redirectPath);
           }
 
           // if (response.data.redirect == "/") window.location = "/";
@@ -55,7 +59,7 @@ function LoginForm(props) {
           setValidated(false);
           form.reset();
 
-          setcredentialsFeedback("Podano niepoprawne dane logowania");
+          setCredentialsFeedback("Podano niepoprawne dane logowania");
         });
     }
     setValidated(true);

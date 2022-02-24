@@ -32,9 +32,10 @@ private final AppointmentService appointmentService;
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
     @PostMapping("patient-documents-paths")
-    public List<NamePathFileResponse> getPatientDocumentsPaths(@RequestBody String pesel)
+    public List<NamePathFileResponse> getPatientDocumentsPaths(@RequestBody Object pesel)
     {
-        return documentService.getPatientDocuments(pesel);
+        System.out.println(pesel.toString());
+        return documentService.getPatientDocuments(pesel.toString());
     }
 
     @GetMapping("appointments")
