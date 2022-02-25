@@ -5,12 +5,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal";
 import AdminService from "../../services/AdminService";
 import CreateUpdateUserForm from "../CreateUpdateUserForm";
+import CenteredSpinner from "../CenteredSpinner";
 
 
 
 function AdminUsersPanel(props) {
     const [users, setUsers] = useState(null);
-    const [totalUsers, setTotalUsers] = useState(null);
+    // const [totalUsers, setTotalUsers] = useState(null);
     const [totalPages, setTotalPages] = useState(null);
     const [currentPage, setCurrentPage] = useState(null);
     // const [isUpdate, setIsUpdate] = useState(false);
@@ -28,7 +29,7 @@ function AdminUsersPanel(props) {
         props.makeRequest(page)
             .then((res) => {
                 setUsers(res.data.users);
-                setTotalUsers(res.data.totalUsers);
+                // setTotalUsers(res.data.totalUsers);
                 setTotalPages(res.data.totalPages);
                 console.log(users)
                 setCurrentPage(res.data.currentPage);
@@ -59,11 +60,15 @@ function AdminUsersPanel(props) {
     if(!userData)
         return (
             <>
-                <Container className="text-center">
+                {(!users || !totalPages || currentPage ===null) &&
+                    <CenteredSpinner/>
+                }
+
+                <Container className="text-center mt-3">
                     <Button onClick={() => {
                         navigate("/create-user");
                     }}>Dodaj użytkownika</Button>
-                    <Table striped bordered hover>
+                    <Table className="my-3" striped bordered hover>
                         <thead>
                         <tr>
                             <th>id</th>

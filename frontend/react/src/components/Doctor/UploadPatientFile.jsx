@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import documentFile from "./DocumentFile";
 import DoctorService from "../../services/DoctorService";
 import {Toast} from "react-bootstrap";
+import InfoToast from "../InfoToast";
 
 function UploadPatientFile() {
     const [validated, setValidated] = useState(false);
@@ -56,16 +57,15 @@ function UploadPatientFile() {
                 </Button>
             </Form>
         </Container>
-            <ToastContainer position="top-end" className="p-3">
-            <Toast show={showToast} onClose={() => setShowToast(false)} delay={3000} autohide>
-                <Toast.Header>
-                    <strong className="me-auto">Potwierdzenie akcji</strong>
-                </Toast.Header>
-                <Toast.Body>Przesłano pomyślnie plik</Toast.Body>
-            </Toast>
-            </ToastContainer>
+            <InfoToast bodyContent="Przesłano pomyślnie plik" headerContent = "Potwierdzenie akcji" showToast={showToast} onClose={() => handleToastClose()} />
             </>
         );
+
+    function handleToastClose()
+    {
+        setShowToast(false);
+
+    }
 }
 
 export default UploadPatientFile;

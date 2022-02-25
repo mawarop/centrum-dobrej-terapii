@@ -5,6 +5,8 @@ import AppointmentsCalendar from "./AppointmentsCalendar";
 import AppointmentModal from "./AppointmentModal";
 import {Button} from "react-bootstrap";
 import "./UserAppointments.css";
+import InfoToast from "./InfoToast";
+import CenteredSpinner from "./CenteredSpinner";
 
 const eventTitlePrefix ={
     "DOCTOR": "Wizyta pacjenta " ,
@@ -26,7 +28,7 @@ class UserAppointments extends Component {
     componentDidMount() {
         this.props.makeRequest()
             .then((response) => {
-                console.log(response.data);
+                // console.log(response.data);
                 let events = response.data.map((d) => {
                     return {
                         id: d.id,
@@ -40,7 +42,7 @@ class UserAppointments extends Component {
                         appointmentStatus: d.appointmentStatus,
                     };
                 });
-                console.log(events);
+                // console.log(events);
                 this.setState({ events: events });
 
             })
@@ -52,11 +54,19 @@ class UserAppointments extends Component {
     render() {
         return (
             <React.Fragment>
-            <AppointmentsCalendar eventClick={(e) => this.eventClickHandler(e)} events={this.state.events}/>
+
+
+                {this.state.events !== null &&
+                    <AppointmentsCalendar eventClick={(e) => this.eventClickHandler(e)} events={this.state.events}/>
+                }
 
                 {this.state.modalEvent !== null &&
                     <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen} onHide={() => this.hideModalHandler()}
                     modalEvent ={this.state.modalEvent}/>
+                }
+
+                {!this.state.events &&
+                    <CenteredSpinner/>
                 }
                 {this.props.onBackClick !== undefined &&
                     <Button id="btn-go-back" onClick={() => this.props.onBackClick()}>Powrót</Button>}

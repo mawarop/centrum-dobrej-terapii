@@ -49,7 +49,12 @@ class AppointmentModal extends Component {
                                 {Date.now() < this.props.modalEvent.start ? <p>Czy chcesz zapisać sie na wizytę o podanej godzinie?</p>:''}
                             </div>)}
                             else if (this.props.role === role.DOCTOR) return "Przedział czasowy do zapisu wizyty";
-                            case "CANCELED": return "Wizyta została anulowana";
+                            case "CANCELED": return (<div>
+                                <p>Start: {moment(this.props.modalEvent.start).format('LLLL')} </p>
+                                <p>Koniec: {moment(this.props.modalEvent.end).format('LLLL')} </p>
+                                <p>Szczegóły: {this.props.modalEvent.extendedProps.details} </p>
+                                <p>Wizyta została anulowana</p>
+                            </div>);
                             case "FINALIZED": return (<div>
                                 <p>Start: {moment(this.props.modalEvent.start).format('LLLL')} </p>
                                 <p>Koniec: {moment(this.props.modalEvent.end).format('LLLL')} </p>
@@ -98,7 +103,7 @@ class AppointmentModal extends Component {
                             this.props.onHide();
                         }}
                     >
-                        Close
+                        Zamknij
                     </Button>
                 </Modal.Footer>
             </Modal>

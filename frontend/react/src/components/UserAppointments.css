@@ -14,3 +14,7 @@
 .fc-col-header-cell-cushion {
     text-decoration: none !important;
 }
+
+.fc-event{
+    cursor: pointer;
+}

@@ -4,11 +4,13 @@ import UserService from "../services/UserService";
 import "./Form.css";
 import { Form, Container, FormControl, Button, FormForm } from "react-bootstrap";
 import {Navigate} from "react-router-dom";
+import InfoToast from "./InfoToast";
 
 function CreateUpdateUserForm(props) {
   const [validated, setValidated] = useState(false);
   const [credentialsFeedback, setCredentialsFeedback] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   function setInputValueIfExist(value)
   {
@@ -34,10 +36,13 @@ function CreateUpdateUserForm(props) {
       props.makeRequest(jsonFormData, roleValue ? roleValue : props.formData.id )
         .then((res) => {
           console.log(res.status);
-          if (res.status <= 200 && res.status < 300) {
+          if (res.status >= 200 && res.status < 300) {
             setCredentialsFeedback("");
-            props.onNavigate();
-            setRedirect(true);
+            if(props.onNavigate) {
+              props.onNavigate();
+              setRedirect(true);
+            }
+            setShowToast(true);
           }
         })
         .catch((error) => {
@@ -53,6 +58,8 @@ function CreateUpdateUserForm(props) {
  
     return (
         <>
+          <InfoToast bodyContent="Pomyślnie wykonano operację" headerContent = "Potwierdzenie akcji" showToast={showToast} onClose={() => setShowToast(false)} />
+
       <Container className="form-card mx-auto">
         <Form
           noValidate
@@ -137,7 +144,15 @@ function CreateUpdateUserForm(props) {
           </Button>
           <div style={{ color: "#dc3545", textAlign: "center" }}>{credentialsFeedback}</div>
         </Form>
+
       </Container>
+
+          {props.onNavigate && <div className="text-center my-2"><Button style={{width: "200px"}} onClick={() => {
+            props.onNavigate();
+            setRedirect(true);
+          }}>Powrót</Button></div>
+          }
+
           {redirect && <Navigate to={props.redirectUrl}/> }
     </>
     );

@@ -27,11 +27,16 @@ function NavbarLinks(props){
         case role.ADMIN: links = adminLinks;
         break;
     }
-        if(links && localStorage.getItem("participant-role"))
+    let actualLocation = window.location.pathname;
+        if(links && localStorage.getItem("participant-role") && actualLocation !== "/" && actualLocation !=="/login")
         return(links.map(link =>{
-            return <Nav.Link onClick={() => navigate(link.href)}>{link.name}</Nav.Link>
+            return <Nav.Link onClick={() => navigate(link.href)} >{link.name}</Nav.Link>
         }));
-        else return(<Nav.Link onClick={() => navigate("/registration")}>Rejestracja pacjenta</Nav.Link>);
+        else
+        {
+            localStorage.clear();
+            return(<Nav.Link onClick={() => navigate("/registration")}>Rejestracja pacjenta</Nav.Link>);
+        }
 }
 
 export default NavbarLinks;

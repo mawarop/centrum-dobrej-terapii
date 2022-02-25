@@ -9,7 +9,7 @@ function MainNavbar(props){
     return (
       <Navbar bg="primary" expand="lg" variant="dark">
         {/* <Container> */}
-        <Navbar.Brand onClick={() => navigate(userMainPath.getPath())}>Centrum dobrej terapii</Navbar.Brand>
+        <Navbar.Brand onClick={() => navigate(userMainPath.getPath())} href="#">Centrum dobrej terapii</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">

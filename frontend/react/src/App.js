@@ -27,7 +27,7 @@ function App() {
     return (
 
     <BrowserRouter>
-      <Navbar />
+      <Navbar/>
       <Routes>
         <Route exact path="/" element={<LoginForm />} />
         <Route path="/login" element={<LoginForm />} />

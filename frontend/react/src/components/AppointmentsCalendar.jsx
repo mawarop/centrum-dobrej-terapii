@@ -1,3 +1,6 @@
+// import "bootstrap/dist/css/bootstrap.css";
+import "@fortawesome/fontawesome-free/css/all.css"; // needs additional webpack config!
+
 import React, {Component} from 'react';
 import FullCalendar from "@fullcalendar/react";
 import plLocale from "@fullcalendar/core/locales/pl";
@@ -29,6 +32,7 @@ class AppointmentsCalendar extends Component {
                 moreLinkClick="day"
                 events={this.props.events}
                 eventDisplay= 'block'
+
             />
         );
     }

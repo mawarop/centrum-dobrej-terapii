@@ -15,7 +15,7 @@ function LoginForm(props) {
   //   validated: false,
   //   credentialsFeedback: "",
   // };
-
+  // props.onNavbarUpdate();
   const [validated, setValidated] = useState(false);
   const [credentialsFeedback, setCredentialsFeedback] = useState("");
   let navigate = useNavigate();

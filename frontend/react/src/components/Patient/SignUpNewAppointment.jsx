@@ -3,7 +3,6 @@ import PatientService from "../../services/PatientService";
 import UserInfoCard from "./UserInfoCard";
 import {useState} from "react";
 import {CardGroup, Col, Container, Row, Button} from "react-bootstrap";
-import PickedDoctorFreeDates from "./PickedDoctorFreeDates";
 import UserAppointments from "../UserAppointments";
 import {role} from "../../role";
 
@@ -17,7 +16,7 @@ function SignUpNewAppointment(props) {
         let doctorsPromise = PatientService.getDoctorsBaseData();
         doctorsPromise.then((res) =>
         {setDoctorsData(res.data);
-            console.log(res.data);
+            // console.log(res.data);
             }
         ).catch((error) => console.log(error))
     }, [])
