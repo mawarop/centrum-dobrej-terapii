@@ -12,6 +12,8 @@ function CreateUpdateUserFormPage(props) {
   const [redirect, setRedirect] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
+
+
   function setInputValueIfExist(value)
   {
     if (props.formData !== undefined)
@@ -29,19 +31,24 @@ function CreateUpdateUserFormPage(props) {
     } else {
       let formData = new FormData(event.target);
       let role = event.target.elements.role;
+      console.log("role elem:" + role);
       let roleValue;
       role ? roleValue= role.value : roleValue = undefined;
       let jsonFormData = JSON.stringify(Object.fromEntries(formData));
       console.log(jsonFormData);
-      props.makeRequest(jsonFormData, roleValue ? roleValue : props.formData.id )
+      props.makeRequest(jsonFormData, roleValue ? roleValue : props.formData ? props.formData.id : null)
         .then((res) => {
           console.log(res.status);
           if (res.status >= 200 && res.status < 300) {
             setCredentialsFeedback("");
-            if(props.onNavigate) {
-              props.onNavigate();
-              setRedirect(true);
-            }
+
+            //TODO
+            // if(props.onNavigate) {
+            //   props.onNavigate();
+            //   setRedirect(true);
+            // }
+
+
             setShowToast(true);
           }
         })
@@ -58,7 +65,7 @@ function CreateUpdateUserFormPage(props) {
  
     return (
         <>
-          <InfoToast bodyContent="Pomyślnie wykonano operację" headerContent = "Potwierdzenie akcji" showToast={showToast} onClose={() => setShowToast(false)} />
+          <InfoToast isActionSuccess={true} showToast={showToast} onClose={() => setShowToast(false)} />
 
       <Container className="form-card mx-auto">
         <Form
@@ -128,7 +135,7 @@ function CreateUpdateUserFormPage(props) {
               </Form.Group>
           }
 
-          {props.role && props.role !== "ADMIN" &&
+          {props.role === undefined && localStorage.getItem("participant-role") !== "ADMIN" &&
 
             <Form.Group className="my-2">
               <Form.Check
@@ -149,6 +156,8 @@ function CreateUpdateUserFormPage(props) {
         </Form>
 
       </Container>
+
+
 
           {props.onNavigate && <div className="text-center my-2"><Button style={{width: "200px"}} onClick={() => {
             props.onNavigate();

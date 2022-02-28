@@ -1,14 +1,14 @@
-import {role} from "../../enums/role";
+import {Role} from "../../enums/role";
 
 class userMainPath{
 getPath(){
 let redirectPath;
 switch (localStorage.getItem("participant-role")){
-    case role.PATIENT: redirectPath = "/patient-appointments";
+    case Role.PATIENT: redirectPath = "/patient-appointments";
         break;
-    case role.DOCTOR: redirectPath = "/doctor-appointments";
+    case Role.DOCTOR: redirectPath = "/doctor-appointments";
         break;
-    case role.ADMIN: redirectPath = "/show-users"
+    case Role.ADMIN: redirectPath = "/show-users"
         break;
     default: redirectPath = "/login";
 }

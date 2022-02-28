@@ -4,7 +4,7 @@ import UserInfoCard from "./UserInfoCard";
 import {useState} from "react";
 import {CardGroup, Col, Container, Row, Button} from "react-bootstrap";
 import UserAppointmentsPage from "../../pages/UserAppointmentsPage";
-import {role} from "../../enums/role";
+import {Role} from "../../enums/role";
 
 
 
@@ -37,7 +37,7 @@ function SignUpNewAppointment(props) {
             {
                 chosenDoctorEmail !== null &&
                 <div>
-                <UserAppointmentsPage role={role.PATIENT} makeRequest={() => {return PatientService.getDoctorFreeDates(chosenDoctorEmail)}} onBackClick={() => handleBackClick()} > </UserAppointmentsPage>
+                <UserAppointmentsPage role={Role.PATIENT} makeRequest={() => {return PatientService.getDoctorFreeDates(chosenDoctorEmail)}} onBackClick={() => handleBackClick()} > </UserAppointmentsPage>
                 </div>
             }
 

@@ -1,4 +1,4 @@
-import {role} from "./enums/role";
+import {Role} from "./enums/role";
 import {Nav} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 function NavbarLinks(props){
@@ -20,11 +20,11 @@ function NavbarLinks(props){
     let links;
 
     switch (localStorage.getItem("participant-role")){
-        case role.PATIENT: links = patientLinks;
+        case Role.PATIENT: links = patientLinks;
         break;
-        case role.DOCTOR: links = doctorLinks;
+        case Role.DOCTOR: links = doctorLinks;
         break;
-        case role.ADMIN: links = adminLinks;
+        case Role.ADMIN: links = adminLinks;
         break;
     }
     let actualLocation = window.location.pathname;

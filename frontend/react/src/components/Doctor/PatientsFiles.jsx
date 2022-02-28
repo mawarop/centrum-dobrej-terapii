@@ -37,7 +37,7 @@ function PatientsFiles(props){
                                   maxLength={11} minLength={11}/>
                 </Form.Group>
                 <Button className="mt-2" type="submit" variant="primary">
-                    Submit
+                    Szukaj
                 </Button>
                 <div style={{ color: "#dc3545", textAlign: "center" }}>{credentialsFeedback}</div>
             </Form>
@@ -65,7 +65,6 @@ function PatientsFiles(props){
             // let formData = new FormData(event.target);
             // formData.get("pesel")
             let pesel = event.target.elements.pesel.value;
-            console.log(pesel);
             let pathsPromise = DoctorService.getPatientDocumentsPaths(pesel);
             pathsPromise.then(
                 (res) => {
@@ -83,6 +82,7 @@ function PatientsFiles(props){
                 setCredentialsFeedback("Użytkownik nie posiada dokumentów lub podany pesel jest nieprawidłowy");
             })
         }
+        setValidated(true);
     }
 }
 

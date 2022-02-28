@@ -7,7 +7,7 @@ import axios from "axios";
 import UserService from "../services/UserService";
 import { Form, Container, FormControl, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {role} from "../enums/role";
+import {Role} from "../enums/role";
 import userMainPath from "../utilities/pagePath/userMainPath";
 
 function LoginFormPage(props) {

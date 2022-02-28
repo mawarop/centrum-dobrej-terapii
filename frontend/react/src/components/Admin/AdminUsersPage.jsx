@@ -6,10 +6,11 @@ import ConfirmationModal from "./ConfirmationModal";
 import AdminService from "../../services/AdminService";
 import CreateUpdateUserFormPage from "../../pages/CreateUpdateUserFormPage";
 import CenteredSpinner from "../CenteredSpinner";
+import InfoToast from "../InfoToast";
 
 
 
-function AdminUsersPanel(props) {
+function AdminUsersPage(props) {
     const [users, setUsers] = useState(null);
     // const [totalUsers, setTotalUsers] = useState(null);
     const [totalPages, setTotalPages] = useState(null);
@@ -20,6 +21,9 @@ function AdminUsersPanel(props) {
 
     const [showModal, setShowModal] = useState(false);
     const [chosenUserId, setChosenUserId] = useState(null);
+
+    const [showToast, setShowToast] = useState(false);
+    const [isActionSuccess, setIsActionSuccess] = useState(false);
     // const {page} = useParams();
     useEffect(()=>{
         fetchPageData();
@@ -136,9 +140,16 @@ function AdminUsersPanel(props) {
                                        footerButtonText="Zablokuj" chosenUserId={chosenUserId} show={showModal}
                                        onHide={() => setShowModal(false)}
                                        onBlock={(id) => {
-                                           AdminService.blockUser(id)
+                                           AdminService.blockUser(id).then(() => {setShowToast(true);
+                                           setIsActionSuccess(true)}).catch(
+                                               () => {setShowToast(true);setIsActionSuccess(false)}
+                                           );
+                                           setShowModal(false)
                                        }}
                     />
+                }
+                { showToast &&
+                    <InfoToast show={showToast} isActionSuccess={isActionSuccess} onClose={()=>setShowToast(false)}/>
                 }
             </>
         )
@@ -150,4 +161,4 @@ function AdminUsersPanel(props) {
         fetchPageData()}}/>)
 }
 
-export default AdminUsersPanel;
+export default AdminUsersPage;

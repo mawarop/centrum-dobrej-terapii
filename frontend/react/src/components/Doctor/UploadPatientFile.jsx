@@ -50,7 +50,7 @@ function UploadPatientFile() {
                 </Form.Group>
             <Form.Group controlId="formFile" className="mb-3">
                 <Form.Label>Plik pacjenta</Form.Label>
-                <Form.Control id="document-file" type="file" name={"file"} />
+                <Form.Control required id="document-file" type="file" name={"file"} />
             </Form.Group>
                 <Button className="mb-2" type="submit" variant="primary">
                     Submit

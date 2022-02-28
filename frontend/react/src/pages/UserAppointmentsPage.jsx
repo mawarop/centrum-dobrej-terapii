@@ -20,14 +20,17 @@ class UserAppointmentsPage extends Component {
             events: null,
             isModalOpen: false,
             modalEvent: null,
+            showToast: false,
+            isActionSuccess: false
         };
         this.eventClickHandler = this.eventClickHandler.bind(this);
         this.hideModalHandler = this.hideModalHandler.bind(this);
-        this.fetchAppointments = this.fetchAppointments.bind(this);
+        this.fetchAndSetAppointments = this.fetchAndSetAppointments.bind(this);
+        this.actionButtonClickHandler = this.actionButtonClickHandler.bind(this);
 
     }
 
-    fetchAppointments(){
+    fetchAndSetAppointments(){
         this.props.makeRequest()
             .then((response) => {
                 console.log(response.data);
@@ -53,7 +56,7 @@ class UserAppointmentsPage extends Component {
             });
     }
     componentDidMount() {
-        this.fetchAppointments();
+        this.fetchAndSetAppointments();
     }
 
     render() {
@@ -66,7 +69,7 @@ class UserAppointmentsPage extends Component {
                 }
 
                 {this.state.modalEvent !== null &&
-                    <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen} onHide={() => this.hideModalHandler()} onActionButtonClick={() =>{this.fetchAppointments();}}
+                    <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen} onHide={() => this.hideModalHandler()} onActionButtonClick={(isSuccess) =>this.actionButtonClickHandler(isSuccess)}
                     modalEvent ={this.state.modalEvent}/>
                 }
 
@@ -76,6 +79,10 @@ class UserAppointmentsPage extends Component {
                 {this.props.onBackClick !== undefined &&
                     <Button id="btn-go-back" onClick={() => this.props.onBackClick()}>Powrót</Button>}
 
+                {/*{this.state.showToast &&*/}
+                {/*<InfoToast/>}*/}
+                {this.state.showToast &&
+                <InfoToast show={this.state.showToast} isActionSuccess={this.state.isActionSuccess} onClose={()=>this.setState({showToast: false, isActionSuccess: false})}/>}
             </React.Fragment>
         );
     }
@@ -87,6 +94,16 @@ class UserAppointmentsPage extends Component {
     hideModalHandler(){
         this.setState({isModalOpen: false})
     }
+    actionButtonClickHandler(isSuccess){
+        console.log("siccess: " + isSuccess);
+        if(isSuccess) {
+            this.fetchAndSetAppointments();
+        }
+        this.setState({isActionSuccess: isSuccess});
+        this.setState({showToast: true});
+
+    }
+
 }
 
 export default UserAppointmentsPage;

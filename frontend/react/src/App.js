@@ -12,8 +12,8 @@ import SignUpNewAppointment from "./components/patient/SignUpNewAppointment";
 import UserAppointmentsPage from "./pages/UserAppointmentsPage";
 import PatientService from "./services/PatientService";
 import DoctorService from "./services/DoctorService";
-import {role} from "./enums/role";
-import AdminUsersPanel from "./components/admin/AdminUsersPanel";
+import {Role} from "./enums/role";
+import AdminUsersPage from "./components/admin/AdminUsersPage";
 import AdminService from "./services/AdminService";
 import UserService from "./services/UserService";
 import React, {useState} from "react";
@@ -35,19 +35,19 @@ function App() {
           path="/registration"
           element={
             // <RequireAuth>
-              <CreateUpdateUserFormPage redirectUrl ="/login" role={role.PATIENT} hasPasswordInput={true} hasPeselInput={true} makeRequest={(jsonFormData) => {return UserService.register(jsonFormData)}} />
+              <CreateUpdateUserFormPage redirectUrl ="/login" hasPasswordInput={true} hasPeselInput={true} makeRequest={(jsonFormData) => {return UserService.register(jsonFormData)}} />
             // </RequireAuth>
           }
         />
         {/* <Route path="/user-dashboard" element={<Userdashboard />} /> */}
-        <Route path="/patient-appointments" element={<UserAppointmentsPage role={role.PATIENT}
+        <Route path="/patient-appointments" element={<UserAppointmentsPage role={Role.PATIENT}
                                                                            makeRequest={() => {return PatientService.getAppointments()}}  />} />
         <Route path="/download-documents" element={<PatientsFiles />} />
         <Route path="/upload-documents" element={<UploadPatientFile />} />
-        <Route path="/doctor-appointments" element={<UserAppointmentsPage role={role.DOCTOR}
+        <Route path="/doctor-appointments" element={<UserAppointmentsPage role={Role.DOCTOR}
                                                                           makeRequest={() => {return DoctorService.getAppointments()}}/>} />
         <Route path="/sign-up-appointment" element={<SignUpNewAppointment />} />
-        <Route path="/show-users" element={<AdminUsersPanel makeRequest={(page) => {return AdminService.getUsers(page)}}/>}/>
+        <Route path="/show-users" element={<AdminUsersPage makeRequest={(page) => {return AdminService.getUsers(page)}}/>}/>
         <Route path="/create-user" element={<CreateUpdateUserFormPage hasRoleInput={true} hasPasswordInput={true} hasPeselInput={true} redirectUrl ="/show-users" makeRequest={(jsonFormData, role) => {return AdminService.createUser(jsonFormData, role)}}/>}/>
 
         {/*<Route path="/update-user/:id" element={<CreateUpdateUserFormPage hasRoleInput={true} redirectUrl ="/show-users" makeRequest={(jsonFormData, role) => {return AdminService.createUser(jsonFormData, role)}}/>}/>*/}

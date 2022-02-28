@@ -3,7 +3,7 @@ import {Button, Modal, Card, FormControl, InputGroup} from "react-bootstrap";
 import moment from "moment";
 import PatientService from "../../services/PatientService";
 import DoctorService from "../../services/DoctorService";
-import {role} from "../../enums/role";
+import {Role} from "../../enums/role";
 import 'moment/locale/pl'
 import AppointmentModalHeader from "./appointmentModalContent/AppointmentModalHeader";
 import AppointmentModalBody from "./appointmentModalContent/AppointmentModalBody";
@@ -37,7 +37,7 @@ class AppointmentModal extends Component {
                 </div></Modal.Body>
                 <Modal.Footer>
                     <AppointmentModalFooter modalEvent={this.props.modalEvent} role={this.props.role}
-                                            onActionButtonClick={() =>this.props.onActionButtonClick()} onHide={() =>this.props.onHide()}/>
+                                            onActionButtonClick={(isSuccess) =>this.props.onActionButtonClick(isSuccess)} onHide={() =>this.props.onHide()}/>
                 </Modal.Footer>
             </Modal>
 

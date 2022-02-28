@@ -26,7 +26,7 @@ function MainNavbar(props){
             {/*</NavDropdown>*/}
           </Nav>
             <Nav>
-                <Button onClick={()=>{
+                <Button onClick={() => {
                     UserService.logout();
                     navigate("/login");
                 }} variant="outline-light">Wyloguj</Button>
