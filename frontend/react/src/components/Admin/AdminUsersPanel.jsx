@@ -1,10 +1,10 @@
 import {useCallback, useEffect, useState} from "react";
-import {APPOINTMENT_BG_COL, TEXT_COL} from "../../ConditionalEnums/FullCalendarEnum";
+import {APPOINTMENT_BG_COL, TEXT_COL} from "../../enums/conditionalEnums/FullCalendarEnum";
 import {Pagination, Table, Container, Button} from "react-bootstrap";
 import {useNavigate, useParams} from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal";
 import AdminService from "../../services/AdminService";
-import CreateUpdateUserForm from "../CreateUpdateUserForm";
+import CreateUpdateUserFormPage from "../../pages/CreateUpdateUserFormPage";
 import CenteredSpinner from "../CenteredSpinner";
 
 
@@ -144,7 +144,7 @@ function AdminUsersPanel(props) {
         )
 
     if(userData)
-        return (<CreateUpdateUserForm formData={userData}  redirectUrl="/show-users" makeRequest={(jsonFormData, id) => {
+        return (<CreateUpdateUserFormPage formData={userData} redirectUrl="/show-users" makeRequest={(jsonFormData, id) => {
             return AdminService.updateUser(jsonFormData, id)
         }} onNavigate={() => {setUserData(null);
         fetchPageData()}}/>)

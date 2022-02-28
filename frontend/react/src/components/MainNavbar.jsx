@@ -3,7 +3,7 @@ import { Navbar, Nav, Container, NavDropdown, Button } from "react-bootstrap";
 import UserService from "../services/UserService";
 import {useNavigate} from "react-router-dom";
 import NavbarLinks from "../NavbarLinks";
-import userMainPath from "../userMainPath";
+import userMainPath from "../utilities/pagePath/userMainPath";
 function MainNavbar(props){
     let navigate = useNavigate();
     return (

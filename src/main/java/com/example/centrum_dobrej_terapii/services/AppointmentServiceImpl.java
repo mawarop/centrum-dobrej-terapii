@@ -3,6 +3,7 @@ package com.example.centrum_dobrej_terapii.services;
 import com.example.centrum_dobrej_terapii.AppointmentStatus;
 import com.example.centrum_dobrej_terapii.UserRole;
 import com.example.centrum_dobrej_terapii.configs.AppointmentValidator;
+import com.example.centrum_dobrej_terapii.dtos.AppointmentMapper;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.entities.Appointment;
@@ -23,6 +24,7 @@ public class AppointmentServiceImpl implements AppointmentService{
     final AppointmentRepository appointmentRepository;
     final AppUserDoctorRepository appUserDoctorRepository;
     final AppointmentValidator appointmentValidator;
+    final AppointmentMapper appointmentMapper;
 
     boolean isDoctor(AppUser user){
         return user.getUserRole().name().equals(UserRole.DOCTOR.name());
@@ -149,5 +151,23 @@ public class AppointmentServiceImpl implements AppointmentService{
         } else throw new IllegalStateException("Invalid user role");
     }
 
-    }
+    @Override
+    public boolean updateAppointment(long id, AppointmentRequest appointmentRequest) {
+        Optional<Appointment> optionalAppointment =appointmentRepository.findById(id);
+        try {
+            if (optionalAppointment.isPresent()) {
+                Appointment appointment = optionalAppointment.get();
+                appointmentMapper.updateAppointmentFromAppointmentRequest(appointmentRequest, appointment);
+                appointmentRepository.save(appointment);
+            } else {
+                throw new IllegalStateException("User not find");
+            }
+        }catch (IllegalStateException illegalStateException)
+        {
+            System.out.println(illegalStateException.getMessage());
+            return false;
+        }
+            return true;
+        }
+}
 

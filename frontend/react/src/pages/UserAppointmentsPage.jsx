@@ -1,19 +1,19 @@
 import React, {Component} from 'react';
 import PatientService from "../services/PatientService";
-import {APPOINTMENT_BG_COL, TEXT_COL} from "../ConditionalEnums/FullCalendarEnum";
-import AppointmentsCalendar from "./AppointmentsCalendar";
-import AppointmentModal from "./AppointmentModal";
+import {APPOINTMENT_BG_COL, TEXT_COL} from "../enums/conditionalEnums/FullCalendarEnum";
+import AppointmentsCalendar from "../components/appointment/AppointmentsCalendar";
+import AppointmentModal from "../components/appointment/AppointmentModal";
 import {Button} from "react-bootstrap";
-import "./UserAppointments.css";
-import InfoToast from "./InfoToast";
-import CenteredSpinner from "./CenteredSpinner";
+import "./UserAppointmentsPage.css";
+import InfoToast from "../components/InfoToast";
+import CenteredSpinner from "../components/CenteredSpinner";
 
 const eventTitlePrefix ={
     "DOCTOR": "Wizyta pacjenta " ,
     "PATIENT": "Wizyta u doktora "
 }
 
-class UserAppointments extends Component {
+class UserAppointmentsPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -23,12 +23,14 @@ class UserAppointments extends Component {
         };
         this.eventClickHandler = this.eventClickHandler.bind(this);
         this.hideModalHandler = this.hideModalHandler.bind(this);
+        this.fetchAppointments = this.fetchAppointments.bind(this);
+
     }
 
-    componentDidMount() {
+    fetchAppointments(){
         this.props.makeRequest()
             .then((response) => {
-                // console.log(response.data);
+                console.log(response.data);
                 let events = response.data.map((d) => {
                     return {
                         id: d.id,
@@ -50,6 +52,9 @@ class UserAppointments extends Component {
                 console.log(error);
             });
     }
+    componentDidMount() {
+        this.fetchAppointments();
+    }
 
     render() {
         return (
@@ -61,7 +66,7 @@ class UserAppointments extends Component {
                 }
 
                 {this.state.modalEvent !== null &&
-                    <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen} onHide={() => this.hideModalHandler()}
+                    <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen} onHide={() => this.hideModalHandler()} onActionButtonClick={() =>{this.fetchAppointments();}}
                     modalEvent ={this.state.modalEvent}/>
                 }
 
@@ -84,4 +89,4 @@ class UserAppointments extends Component {
     }
 }
 
-export default UserAppointments;
+export default UserAppointmentsPage;

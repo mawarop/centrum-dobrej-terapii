@@ -1,4 +1,4 @@
-import {role} from "./role";
+import {role} from "../../enums/role";
 
 class userMainPath{
 getPath(){

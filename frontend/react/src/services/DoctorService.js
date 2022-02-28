@@ -21,5 +21,8 @@ class DoctorService {
         return axios.patch("/api/doctor/cancel-appointment/" + id, null,axiosLoggedInConfig
             )
     }
+    updateAppointmentDetails(id, details){
+        return axios.patch("/api/doctor/appointment/" + id, {details: details}, axiosLoggedInConfig);
+    }
 }
 export default new DoctorService();

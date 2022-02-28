@@ -59,9 +59,9 @@ class UserService {
     return axios.get("/logout", axiosLoggedInConfig);
   }
 
-  testGet() {
-    return axios.get("/api/user", axiosLoggedInConfig);
-  }
+  // testGet() {
+  //   return axios.get("/api/user", axiosLoggedInConfig);
+  // }
 }
 
 export default new UserService();

@@ -59,4 +59,12 @@ private final AppointmentService appointmentService;
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @PatchMapping("appointment/{id}")
+    ResponseEntity updateAppointmentDetails(@PathVariable("id")long id, @RequestBody AppointmentRequest appointmentRequest)
+    {
+        if(appointmentService.updateAppointment(id, appointmentRequest)){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

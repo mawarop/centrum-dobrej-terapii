@@ -7,10 +7,10 @@ import axios from "axios";
 import UserService from "../services/UserService";
 import { Form, Container, FormControl, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {role} from "../role";
-import userMainPath from "../userMainPath";
+import {role} from "../enums/role";
+import userMainPath from "../utilities/pagePath/userMainPath";
 
-function LoginForm(props) {
+function LoginFormPage(props) {
   // this.state = {
   //   validated: false,
   //   credentialsFeedback: "",
@@ -44,18 +44,12 @@ function LoginForm(props) {
             console.log(response.data.role);
             localStorage.setItem("participant-role", response.data.role);
             // localStorage.setItem("participant-email", response.data.email);
-            console.log("xd");
-
             let redirectPath = userMainPath.getPath();
             navigate(redirectPath);
           }
-
-          // if (response.data.redirect == "/") window.location = "/";
-          // console.log(response);
         })
         .catch((error) => {
           console.log(error);
-          // document.getElementById("login-form").reset();
           setValidated(false);
           form.reset();
 
@@ -72,60 +66,45 @@ function LoginForm(props) {
         noValidate
         validated={validated}
         onSubmit={handleSubmit}
-        // feedback="Please provide a valid email and password"
-        // feedbackType="invalid"
         method="Post"
       >
         <Form.Group className="mb-2">
-          <Form.Label for="exampleInputEmail1">Email address</Form.Label>
+          <Form.Label for="emailInput">Email</Form.Label>
           <Form.Control
             required
             type="email"
             name="email"
             className="form-control"
-            id="exampleInputEmail1"
+            id="emailInput"
             aria-describedby="emailHelp"
-            placeholder="Enter email"
+            placeholder="Wprowadź email"
           />
         </Form.Group>
         <Form.Group className="mb-2">
-          <Form.Label for="exampleInputPassword1">Password</Form.Label>
-          <Form.Control required type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+          <Form.Label for="passwordInput">Hasło</Form.Label>
+          <Form.Control required type="password" name="password" className="form-control" id="passwordInput" placeholder="Wprowadź hasło" />
         </Form.Group>
         {/* <div className="form-check"> */}
-        <Form.Group className="mb-2">
-          <Form.Check
-            required
-            id="exampleCheck1"
-            type="checkbox"
-            label="Check me out"
-            feedback="You must agree before submitting."
-            feedbackType="invalid"
-          />
-          {/* </div> */}
-        </Form.Group>
+        {/*<Form.Group className="mb-2">*/}
+        {/*  <Form.Check*/}
+        {/*    required*/}
+        {/*    type="checkbox"*/}
+        {/*    label="Check me out"*/}
+        {/*    feedback="Musisz wyrazić zgodę przed zalogowaniem"*/}
+        {/*    feedbackType="invalid"*/}
+        {/*  />*/}
+        {/*  /!* </div> *!/*/}
+        {/*</Form.Group>*/}
 
         <Button className="mb-2" type="submit" variant="primary">
-          Submit
+          Zaloguj
         </Button>
         <div style={{ color: "#dc3545", textAlign: "center" }}>{credentialsFeedback}</div>
         {/* <Form.Control. */}
       </Form>
-      <input
-        type="submit"
-        onClick={() => {
-          UserService.testGet()
-            .then(function (response) {
-              console.log("odpowiedź2");
-              console.log(response);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }}
-      />
+
     </Container>
   );
 }
 
-export default LoginForm;
+export default LoginFormPage;

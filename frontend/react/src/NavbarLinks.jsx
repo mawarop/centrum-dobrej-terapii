@@ -1,4 +1,4 @@
-import {role} from "./role";
+import {role} from "./enums/role";
 import {Nav} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 function NavbarLinks(props){
@@ -14,7 +14,7 @@ function NavbarLinks(props){
         {name: "Pobierz dokumenty",href: "/download-documents"}
     ];
     const adminLinks =[
-        {name: "Edytuj użytkowników", href: "/show-users"},
+        {name: "Edytuj użytkownika", href: "/show-users"},
         {name: "Dodaj użytkownika", href: "/create-user"}]
     ;
     let links;

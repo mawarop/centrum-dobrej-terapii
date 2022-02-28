@@ -4,9 +4,9 @@ import UserService from "../services/UserService";
 import "./Form.css";
 import { Form, Container, FormControl, Button, FormForm } from "react-bootstrap";
 import {Navigate} from "react-router-dom";
-import InfoToast from "./InfoToast";
+import InfoToast from "../components/InfoToast";
 
-function CreateUpdateUserForm(props) {
+function CreateUpdateUserFormPage(props) {
   const [validated, setValidated] = useState(false);
   const [credentialsFeedback, setCredentialsFeedback] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -70,48 +70,48 @@ function CreateUpdateUserForm(props) {
           method="Post"
         >
           <Form.Group>
-            <Form.Label for="username">Username</Form.Label>
-            <Form.Control required type="text" name="username" id="username" placeholder="Enter username" defaultValue={props.formData? setInputValueIfExist(props.formData.username): ""} />
+            <Form.Label for="username">Nazwa użytkownika</Form.Label>
+            <Form.Control required type="text" name="username" id="username" placeholder="Wprowadź nazwę użytkownika" defaultValue={props.formData? setInputValueIfExist(props.formData.username): ""} />
           </Form.Group>
 
           { props.hasPasswordInput &&
             <Form.Group>
-              <Form.Label for="Password">Password</Form.Label>
-              <Form.Control required type="password" name="password" id="password" placeholder="Password"/>
+              <Form.Label for="Password">Hasło</Form.Label>
+              <Form.Control required type="password" name="password" id="password" placeholder="Wprowadź hasło"/>
             </Form.Group>
           }
 
           <Form.Group>
-            <Form.Label for="email">Email address</Form.Label>
-            <Form.Control required type="email" name="email" id="email" placeholder="Enter email" defaultValue={props.formData? setInputValueIfExist(props.formData.email): ""}/>
+            <Form.Label for="email">Email</Form.Label>
+            <Form.Control required type="email" name="email" id="email" placeholder="Wprowadź email" defaultValue={props.formData? setInputValueIfExist(props.formData.email): ""}/>
           </Form.Group>
 
           {props.hasPeselInput &&
               <Form.Group>
                 <Form.Label for="pesel">Pesel</Form.Label>
-                <Form.Control required type="text" pattern="\d{11}" name="pesel" id="pesel" placeholder="Enter pesel"
+                <Form.Control required type="text" pattern="\d{11}" name="pesel" id="pesel" placeholder="Wprowadź pesel"
                               maxLength={11} minLength={11}/>
               </Form.Group>
           }
           <Form.Group>
-            <Form.Label for="firstname">Firstname</Form.Label>
-            <Form.Control required type="text" name="firstname" id="firstname" placeholder="Enter firstname" defaultValue={props.formData? setInputValueIfExist(props.formData.firstname): ""}/>
+            <Form.Label for="firstname">Imię</Form.Label>
+            <Form.Control required type="text" name="firstname" id="firstname" placeholder="Wprowadź imię" defaultValue={props.formData? setInputValueIfExist(props.formData.firstname): ""}/>
           </Form.Group>
 
           <Form.Group>
-            <Form.Label for="lastname">Lastname</Form.Label>
-            <Form.Control required type="text" name="lastname" id="lastname" placeholder="Enter lastname" defaultValue={props.formData? setInputValueIfExist(props.formData.lastname): ""}/>
+            <Form.Label for="lastname">Nazwisko</Form.Label>
+            <Form.Control required type="text" name="lastname" id="lastname" placeholder="Wprowadź nazwisko" defaultValue={props.formData? setInputValueIfExist(props.formData.lastname): ""}/>
           </Form.Group>
 
           <Form.Group>
-            <Form.Label for="phone_number">Phone number</Form.Label>
+            <Form.Label for="phone_number">Numer telefonu</Form.Label>
             <Form.Control
               required
               type="text"
               pattern="\d{9}"
               name="phone_number"
               id="phone_number"
-              placeholder="Enter phone_number"
+              placeholder="Wprowadź numer telefonu"
               maxLength={9}
               minLength={9}
               defaultValue={setInputValueIfExist(props.formData? props.formData.phone_number: "")}
@@ -122,25 +122,28 @@ function CreateUpdateUserForm(props) {
               <Form.Group>
                 <Form.Label for="role">Role</Form.Label>
                 <Form.Select required name="role" id="role">
-                  <option value="PATIENT">PATIENT</option>
-                  <option value="DOCTOR">DOCTOR</option>
+                  <option value="PATIENT">PACJENT</option>
+                  <option value="DOCTOR">DOKTOR</option>
                 </Form.Select>
               </Form.Group>
           }
 
-          <Form.Group className="my-2">
-            <Form.Check
-              required
-              type="checkbox"
-              id="exampleCheck1"
-              feedback="You must agree before submitting."
-              feedbackType="invalid"
-              label="Check me out"
-            />
-          </Form.Group>
+          {props.role && props.role !== "ADMIN" &&
 
-          <Button type="submit" variant="primary">
-            Submit
+            <Form.Group className="my-2">
+              <Form.Check
+                  required
+                  type="checkbox"
+                  id="exampleCheck1"
+                  feedback="Musisz wyrazić zgodę na przetwarzanie danych osobowych"
+                  feedbackType="invalid"
+                  label="Wyrażam zgodę na przetwarzanie moich danych osobowych"
+              />
+            </Form.Group>
+          }
+
+          <Button className="mt-2" type="submit" variant="primary">
+            Wyślij
           </Button>
           <div style={{ color: "#dc3545", textAlign: "center" }}>{credentialsFeedback}</div>
         </Form>
@@ -158,4 +161,4 @@ function CreateUpdateUserForm(props) {
     );
   }
 
-export default CreateUpdateUserForm;
+export default CreateUpdateUserFormPage;

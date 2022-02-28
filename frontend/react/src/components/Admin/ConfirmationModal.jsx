@@ -16,7 +16,7 @@ function ConfirmationModal(props) {
 
             <Modal.Footer>
                 <Button variant="danger" onClick={() => props.onBlock(props.chosenUserId)}>{props.footerButtonText}</Button>
-                <Button variant="secondary" onClick={() => props.onHide()}>Close</Button>
+                <Button variant="secondary" onClick={() => props.onHide()}>Zamknij</Button>
             </Modal.Footer>
         </Modal>
     )
