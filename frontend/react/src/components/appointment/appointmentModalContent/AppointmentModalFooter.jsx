@@ -4,8 +4,10 @@ import PatientService from "../../../services/PatientService";
 import DoctorService from "../../../services/DoctorService";
 import React from "react";
 import {appointmentStatus} from "../../../enums/appointmentStatus";
+import {useNavigate} from "react-router-dom";
+import AppointmentHelper from "../../../utilities/AppointmentHelper";
 
-function AppointmentModalFooter(props) {
+function  AppointmentModalFooter(props) {
 
     function makeCancelAppointmentRequest(role, appointmentId){
         console.log("role:" + role);
@@ -18,9 +20,20 @@ function AppointmentModalFooter(props) {
         }
     }
 
+    function chooseAndMakeAppointmentSignUpRequest(){
+        console.log("appointmentIdtoChange: " + props.appointmentIdToChangeDate)
+        if(props.appointmentIdToChangeDate)
+            return PatientService.changeAppointment(props.appointmentIdToChangeDate, props.modalEvent.id);
+
+        return PatientService.appointmentSignUp(props.modalEvent.id);
+    }
+
+
+    const isPatient = () => {return props.role===Role.PATIENT};
+
     const appointmentStatusConditionalFooterContentEnum={
 
-    [appointmentStatus.ACCEPTED]: (()=> {return (Date.now() < props.modalEvent.start &&
+    [appointmentStatus.ACCEPTED]: ( () => {return (AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start) &&
         <>
         <Button onClick={() => {
             let requestPromise = makeCancelAppointmentRequest(props.role, props.modalEvent.id)
@@ -37,12 +50,15 @@ function AppointmentModalFooter(props) {
             props.onHide();
         }}>Zrezygnuj z wizyty </Button>
             {props.role===Role.DOCTOR && <Button type="submit" form="appointment-details-form">Edytuj szczegóły</Button>}
+            {props.role === Role.PATIENT && <Button onClick={() => {props.onAppointmentDateChange(props.modalEvent.id); props.onHide();}}>Zmień termin wizyty</Button>}
         </>
         );})(),
 
+
     [appointmentStatus.FREE_DATE]: (() => {if(props.role===Role.PATIENT && (Date.now() < props.modalEvent.start))
         return (<Button onClick={() => {
-            PatientService.appointmentSignUp(props.modalEvent.id)
+            // PatientService.appointmentSignUp(props.modalEvent.id)
+                chooseAndMakeAppointmentSignUpRequest()
                 .then((res) =>{
                     console.log(res);
                     let isSuccess=true;

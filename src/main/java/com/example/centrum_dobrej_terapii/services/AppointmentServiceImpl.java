@@ -169,5 +169,13 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
             return true;
         }
+
+    @Override
+    public boolean changeAppointment(long appointmentIdToCancel, long freeDateAppointmentId) {
+        System.out.println("ToCancleId: " + appointmentIdToCancel + " FreeDateId: " +freeDateAppointmentId);;
+        if (!this.cancelAppointment(appointmentIdToCancel))
+            return false;
+        return this.signUpFreeDateAppointment(freeDateAppointmentId);
+    }
 }
 

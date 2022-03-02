@@ -21,6 +21,13 @@ class PatientService {
     )
   }
 
+  changeAppointment(appointmentIdToCancel, freeDateAppointmentId){
+    console.log("toCancelId: " +  appointmentIdToCancel +" freeDateid: " + freeDateAppointmentId);
+    return axios.post("api/patient/change-appointment", null, {
+      params:{appointmentIdToCancel: appointmentIdToCancel,
+        freeDateAppointmentId: freeDateAppointmentId}, ...axiosLoggedInConfig})
+  }
+
 }
 
 export default new PatientService();

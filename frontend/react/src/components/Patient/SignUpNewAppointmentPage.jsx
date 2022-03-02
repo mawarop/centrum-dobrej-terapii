@@ -8,7 +8,7 @@ import {Role} from "../../enums/role";
 
 
 
-function SignUpNewAppointment(props) {
+function SignUpNewAppointmentPage(props) {
     const [doctorsData, setDoctorsData] = useState(null);
     const [chosenDoctorEmail, setChosenDoctorEmail] = useState(null);
 
@@ -37,7 +37,8 @@ function SignUpNewAppointment(props) {
             {
                 chosenDoctorEmail !== null &&
                 <div>
-                <UserAppointmentsPage role={Role.PATIENT} makeRequest={() => {return PatientService.getDoctorFreeDates(chosenDoctorEmail)}} onBackClick={() => handleBackClick()} > </UserAppointmentsPage>
+                <UserAppointmentsPage role={Role.PATIENT} makeRequest={() => props.makeRequest(chosenDoctorEmail)} onBackClick={() => handleBackClick()}
+                                      appointmentIdToChangeDate ={props.appointmentIdToChangeDate}> </UserAppointmentsPage>
                 </div>
             }
 
@@ -54,4 +55,4 @@ function SignUpNewAppointment(props) {
 
 
 
-export default SignUpNewAppointment;
+export default SignUpNewAppointmentPage;

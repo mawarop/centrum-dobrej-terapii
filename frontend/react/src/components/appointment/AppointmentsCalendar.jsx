@@ -32,7 +32,6 @@ class AppointmentsCalendar extends Component {
                 moreLinkClick="day"
                 events={this.props.events}
                 eventDisplay= 'block'
-
             />
         );
     }

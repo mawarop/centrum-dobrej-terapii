@@ -7,6 +7,7 @@ import {Button} from "react-bootstrap";
 import "./UserAppointmentsPage.css";
 import InfoToast from "../components/InfoToast";
 import CenteredSpinner from "../components/CenteredSpinner";
+import SignUpNewAppointmentPage from "../components/patient/SignUpNewAppointmentPage";
 
 const eventTitlePrefix ={
     "DOCTOR": "Wizyta pacjenta " ,
@@ -21,12 +22,16 @@ class UserAppointmentsPage extends Component {
             isModalOpen: false,
             modalEvent: null,
             showToast: false,
-            isActionSuccess: false
+            isActionSuccess: false,
+            // isAppointmentDateChange: false,
+            appointmentIdToChangeDate : null,
+            showAppointmentsCalendar : true
         };
         this.eventClickHandler = this.eventClickHandler.bind(this);
         this.hideModalHandler = this.hideModalHandler.bind(this);
         this.fetchAndSetAppointments = this.fetchAndSetAppointments.bind(this);
         this.actionButtonClickHandler = this.actionButtonClickHandler.bind(this);
+        this.onAppointmentDateChangeHandler = this.onAppointmentDateChangeHandler.bind(this);
 
     }
 
@@ -64,12 +69,16 @@ class UserAppointmentsPage extends Component {
             <React.Fragment>
 
 
-                {this.state.events !== null &&
+                {this.state.events !== null && this.state.showAppointmentsCalendar &&
                     <AppointmentsCalendar eventClick={(e) => this.eventClickHandler(e)} events={this.state.events}/>
                 }
 
                 {this.state.modalEvent !== null &&
-                    <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen} onHide={() => this.hideModalHandler()} onActionButtonClick={(isSuccess) =>this.actionButtonClickHandler(isSuccess)}
+                    <AppointmentModal role ={this.props.role} isModalOpen={this.state.isModalOpen}
+                                      onHide={() => this.hideModalHandler()}
+                                      onActionButtonClick={(isSuccess) =>this.actionButtonClickHandler(isSuccess)}
+                                      onAppointmentDateChange={(id) => this.onAppointmentDateChangeHandler(id)}
+                                      appointmentIdToChangeDate = {this.props.appointmentIdToChangeDate}
                     modalEvent ={this.state.modalEvent}/>
                 }
 
@@ -83,6 +92,11 @@ class UserAppointmentsPage extends Component {
                 {/*<InfoToast/>}*/}
                 {this.state.showToast &&
                 <InfoToast show={this.state.showToast} isActionSuccess={this.state.isActionSuccess} onClose={()=>this.setState({showToast: false, isActionSuccess: false})}/>}
+
+                {this.state.appointmentIdToChangeDate &&
+                <SignUpNewAppointmentPage appointmentIdToChangeDate = {this.state.appointmentIdToChangeDate} makeRequest={(chosenDoctorEmail) => {return PatientService.getDoctorFreeDates(chosenDoctorEmail)}}/>}
+
+
             </React.Fragment>
         );
     }
@@ -102,6 +116,13 @@ class UserAppointmentsPage extends Component {
         this.setState({isActionSuccess: isSuccess});
         this.setState({showToast: true});
 
+    }
+    onAppointmentDateChangeHandler(id)
+    {
+        console.log("IDDD: " +id);
+        this.setState({showAppointmentsCalendar: false});
+        this.setState({appointmentIdToChangeDate: id});
+        // this.setState({isAppointmentDateChange: true});
     }
 
 }

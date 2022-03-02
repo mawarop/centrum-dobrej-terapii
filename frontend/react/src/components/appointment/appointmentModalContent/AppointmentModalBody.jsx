@@ -4,6 +4,7 @@ import {Card, Form, FormControl, InputGroup} from "react-bootstrap";
 import React from "react";
 import {appointmentStatus} from "../../../enums/appointmentStatus";
 import DoctorService from "../../../services/DoctorService";
+import AppointmentHelper from "../../../utilities/AppointmentHelper";
 
 function AppointmentModalBody(props) {
 
@@ -15,9 +16,9 @@ function AppointmentModalBody(props) {
         DoctorService.updateAppointmentDetails(props.modalEvent.id, details).then((res)=> console.log(res));
     }
 
-    function isAppointmentAfterTodayDate(){
-        return Date.now() < props.modalEvent.start;
-    }
+    // function AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start){
+    //     return Date.now() < props.modalEvent.start;
+    // }
 
     const appointmentStatusConditionalBodyContentEnum={
         [appointmentStatus.ACCEPTED]:
@@ -27,7 +28,7 @@ function AppointmentModalBody(props) {
                     <Form id="appointment-details-form" onSubmit={handleDetailsFormSubmit}>
                     <InputGroup>
                         <InputGroup.Text> Szczegóły odnośnie wizyty:</InputGroup.Text>
-                        <FormControl name="details" as="textarea" defaultValue={props.modalEvent.extendedProps.details}  disabled={!isAppointmentAfterTodayDate()}/>
+                        <FormControl name="details" as="textarea" defaultValue={props.modalEvent.extendedProps.details}  disabled={!AppointmentHelper.AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start)}/>
                     </InputGroup>
                     </Form>
                     </Card>
@@ -35,12 +36,12 @@ function AppointmentModalBody(props) {
             {props.role !== Role.DOCTOR &&
                 <p>Szczegóły: {props.modalEvent.extendedProps.details} </p>
             }
-            {isAppointmentAfterTodayDate() && <p>Czy odwołać wizytę?</p>}
+            {AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start) && <p>Czy odwołać wizytę?</p>}
             </div>);})(),
 
         [appointmentStatus.FREE_DATE]:
             (()=>{if(props.role=== Role.PATIENT) {return (<div>
-            {isAppointmentAfterTodayDate() ? <p>Czy chcesz zapisać sie na wizytę o podanej godzinie?</p>:''}
+            {AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start) ? <p>Czy chcesz zapisać sie na wizytę o podanej godzinie?</p>:''}
         </div>)}
         else if (props.role === Role.DOCTOR) return "Przedział czasowy do zapisu wizyty";})(),
 

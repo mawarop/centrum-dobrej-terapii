@@ -80,4 +80,11 @@ public class PatientController {
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @PostMapping("change-appointment")
+    ResponseEntity changeAppointment(@RequestParam("appointmentIdToCancel") long appointmentIdToCancel,
+                                     @RequestParam("freeDateAppointmentId") long freeDateAppointmentId) {
+        if(appointmentService.changeAppointment(appointmentIdToCancel, freeDateAppointmentId))
+            return new ResponseEntity(HttpStatus.OK);
+        else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

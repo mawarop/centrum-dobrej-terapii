@@ -8,7 +8,7 @@ import Navbar from "./components/MainNavbar";
 import RequireAuth from "./components/auth/RequireAuth";
 import PatientsFiles from "./components/doctor/PatientsFiles";
 import UploadPatientFile from "./components/doctor/UploadPatientFile";
-import SignUpNewAppointment from "./components/patient/SignUpNewAppointment";
+import SignUpNewAppointmentPage from "./components/patient/SignUpNewAppointmentPage";
 import UserAppointmentsPage from "./pages/UserAppointmentsPage";
 import PatientService from "./services/PatientService";
 import DoctorService from "./services/DoctorService";
@@ -46,7 +46,7 @@ function App() {
         <Route path="/upload-documents" element={<UploadPatientFile />} />
         <Route path="/doctor-appointments" element={<UserAppointmentsPage role={Role.DOCTOR}
                                                                           makeRequest={() => {return DoctorService.getAppointments()}}/>} />
-        <Route path="/sign-up-appointment" element={<SignUpNewAppointment />} />
+        <Route path="/sign-up-appointment" element={<SignUpNewAppointmentPage makeRequest={(chosenDoctorEmail) => {return PatientService.getDoctorFreeDates(chosenDoctorEmail)}}/>} />
         <Route path="/show-users" element={<AdminUsersPage makeRequest={(page) => {return AdminService.getUsers(page)}}/>}/>
         <Route path="/create-user" element={<CreateUpdateUserFormPage hasRoleInput={true} hasPasswordInput={true} hasPeselInput={true} redirectUrl ="/show-users" makeRequest={(jsonFormData, role) => {return AdminService.createUser(jsonFormData, role)}}/>}/>
 
