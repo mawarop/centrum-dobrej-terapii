@@ -17,6 +17,8 @@ public interface AppUserService {
     void blockAppUser(int id);
     long getNumberOfUsers();
     long getNumberOfPages(long numberOfUsers);
+    String confirmToken(String token);
+    int enableAppUser(String email);
 //    Map<String, Long> getNumbersOfUsersAndPages();
 
 }

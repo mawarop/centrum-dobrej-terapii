@@ -14,4 +14,5 @@ public interface AppointmentService {
     List<Appointment> getUserAppointmentsByUserEmailAndAppointmentStatus(String email, AppointmentStatus appointmentStatus);
     boolean updateAppointment(long id, AppointmentRequest appointmentRequest);
     boolean changeAppointment(long appointmentIdToCancel, long freeDateAppointmentId);
+
 }

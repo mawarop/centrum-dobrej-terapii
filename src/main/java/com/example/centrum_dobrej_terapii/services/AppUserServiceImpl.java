@@ -4,6 +4,7 @@ import com.example.centrum_dobrej_terapii.dtos.AppUserDoctorBaseResponse;
 import com.example.centrum_dobrej_terapii.dtos.AppUserMapper;
 import com.example.centrum_dobrej_terapii.dtos.AppUserRequest;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
+import com.example.centrum_dobrej_terapii.entities.ConfirmationToken;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import lombok.AllArgsConstructor;
@@ -15,8 +16,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -27,6 +30,8 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserDoctorRepository appUserDoctorRepository;
     private final AppUserMapper appUserMapper;
+    private final ConfirmationTokenService confirmationTokenService;
+    private final EmailSender emailSender;
 
 
     @Override
@@ -60,8 +65,39 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
         appUser.setPassword(encodedPassword);
         appUserRepository.save(appUser);
 
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(20),
+                appUser);
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
+
+        final String LINK = "http://localhost:8080/api/registration/confirm?token=" + token;
+        emailSender.send(appUser.getEmail(),
+                buildEmail(appUser.getFirstname() +" "+ appUser.getLastname(), LINK));
+
             return true;
         }
+
+    @Transactional()
+    public String confirmToken(String token){
+        ConfirmationToken confirmationToken = confirmationTokenService.getToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
+        if(confirmationToken.getConfirmedDateTime() != null){
+            throw new IllegalStateException("email already confirmed");
+        }
+        LocalDateTime expiresDateTime = confirmationToken.getExpiresDateTime();
+        if(expiresDateTime.isBefore(LocalDateTime.now())){
+            throw new IllegalStateException("token expired");
+        }
+        confirmationTokenService.setConfirmedDateTime(token);
+        this.enableAppUser(confirmationToken.getAppUser().getEmail());
+        return "confirmed";
+    }
+
+    @Override
+    public int enableAppUser(String email) {
+        return appUserRepository.enableAppUser(email);
+    }
 
     @Override
     public List<AppUserDoctorBaseResponse> getDoctorsBaseData() {
@@ -126,4 +162,12 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 //        numbersOfUsersAndPages.put("numberOfPages", (long) Math.ceil((double)numberOfUsers/(double)PAGE_SIZE));
 //        return numbersOfUsersAndPages;
 //    }
+
+    private String buildEmail(String name, String link){
+//        return name + link;
+        return "<p>Dziękujemy za wybranie naszej placówki " + name + "</p>" +
+                "<p>Aby dokończyć proces rejestracji proszę aktywować poniższy link</p>"+
+                "<p><a href=\"" + link + "\">"+ "Aktywuj" +"</a></p>" +
+                "<p>Link wygaśnie w ciągu 20 minut</p>";
+    }
 }
