@@ -15,4 +15,10 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     @Query("select d.name from Document d where d.patient.pesel = :pesel")
     List<String> findPathsByPatientPesel(@Param("pesel") String pesel);
 
+    @Query("select d.name from Document d where d.patient.pesel = :patient_pesel AND d.doctor.pesel = :doctor_pesel")
+    List<String> findPathsByPatientPeselAndDoctorPesel(
+            @Param("patient_pesel") String patientPesel,
+            @Param("doctor_pesel") String doctorPesel
+            );
+
 }

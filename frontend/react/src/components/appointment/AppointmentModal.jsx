@@ -33,7 +33,7 @@ class AppointmentModal extends Component {
                     <AppointmentModalHeader modalEvent={this.props.modalEvent} role={this.props.role}/>
                 </Modal.Header>
                 <Modal.Body><div>
-                    <AppointmentModalBody modalEvent={this.props.modalEvent} role={this.props.role}/>
+                    <AppointmentModalBody modalEvent={this.props.modalEvent} role={this.props.role} onActionButtonClick={(isSuccess) =>this.props.onActionButtonClick(isSuccess)}/>
                 </div></Modal.Body>
                 <Modal.Footer>
                     <AppointmentModalFooter onAppointmentDateChange={(id) => this.props.onAppointmentDateChange(id)} modalEvent={this.props.modalEvent} role={this.props.role}

@@ -1,0 +1,18 @@
+https://jasonwatmore.com/post/2018/09/11/react-basic-http-authentication-tutorial-example#private-route-jsx
+
+
+	.gitignore
+        .mvn/
+        mvnw
+        mvnw.cmd
+        pom.xml
+        src/
+        upload/
+
+git add frontend/react -- ':!frontend/react/node' ':!frontend/react/node_modules'
+
+git commit -m "login and registration feature"
+
+git remote add origin https://github.com/mawarop/centrum-dobrej-terapii-wat.git
+
+git push -u origin develop

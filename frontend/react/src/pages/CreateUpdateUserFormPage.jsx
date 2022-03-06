@@ -150,7 +150,7 @@ function CreateUpdateUserFormPage(props) {
           }
 
           <Button className="mt-2" type="submit" variant="primary">
-            Wyślij
+            Zarejestruj
           </Button>
           <div style={{ color: "#dc3545", textAlign: "center" }}>{credentialsFeedback}</div>
         </Form>

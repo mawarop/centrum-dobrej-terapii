@@ -91,7 +91,7 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
         }
         confirmationTokenService.setConfirmedDateTime(token);
         this.enableAppUser(confirmationToken.getAppUser().getEmail());
-        return "confirmed";
+        return "Email został potwierdzony";
     }
 
     @Override
@@ -165,8 +165,8 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
     private String buildEmail(String name, String link){
 //        return name + link;
-        return "<p>Dziękujemy za wybranie naszej placówki " + name + "</p>" +
-                "<p>Aby dokończyć proces rejestracji proszę aktywować poniższy link</p>"+
+        return "<p>Witaj " + name +"! Dziękujemy za wybranie naszej placówki</p>" +
+                "<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link</p>"+
                 "<p><a href=\"" + link + "\">"+ "Aktywuj" +"</a></p>" +
                 "<p>Link wygaśnie w ciągu 20 minut</p>";
     }

@@ -8,6 +8,7 @@ import InfoToast from "../InfoToast";
 function UploadPatientFile() {
     const [validated, setValidated] = useState(false);
     const [showToast, setShowToast] = useState(false);
+    const [isActionSuccess, setIsActionSuccess] = useState(false);
 
     const toggleShow = () => setShowToast(!showToast);
 
@@ -19,15 +20,19 @@ function UploadPatientFile() {
             event.preventDefault();
             event.stopPropagation();
         } else {
-            var formData = new FormData(event.target);
+            let formData = new FormData(event.target);
             let fileUploadPromise = DoctorService.fileUpload(formData)
             fileUploadPromise.then(
                 (res) =>
                 {console.log(res.status)
                     setShowToast(true);
-                    console.log("test");
+                    setIsActionSuccess(true);
+
                 }
-            ).catch((error) => console.log(error))
+            ).catch((error) =>
+            {console.log(error);
+                setShowToast(true);
+                setIsActionSuccess(false);})
 
         }
         setValidated(true);
@@ -57,7 +62,11 @@ function UploadPatientFile() {
                 </Button>
             </Form>
         </Container>
-            <InfoToast bodyContent="Przesłano pomyślnie plik" headerContent = "Potwierdzenie akcji" showToast={showToast} onClose={() => handleToastClose()} />
+            {/*<InfoToast bodyContent="Przesłano pomyślnie plik" headerContent = "Potwierdzenie akcji" showToast={showToast} onClose={() => handleToastClose()} />*/}
+            <InfoToast showToast={showToast} isActionSuccess={isActionSuccess} onClose={()=>{
+                setShowToast(false);
+                // setIsActionSuccess(false)
+                }}/>
             </>
         );
 

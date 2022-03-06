@@ -5,5 +5,7 @@ import com.example.centrum_dobrej_terapii.dtos.NamePathFileResponse;
 import java.util.List;
 
 public interface DocumentService {
-    List<NamePathFileResponse> getPatientDocuments(String pesel);
+    List<NamePathFileResponse> getAllPatientDocuments(String pesel);
+    List<NamePathFileResponse> getPatientDocumentsByLoggedInDoctor(String patientPesel, String doctorPesel);
+
 }

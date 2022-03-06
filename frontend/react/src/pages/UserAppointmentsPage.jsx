@@ -119,7 +119,6 @@ class UserAppointmentsPage extends Component {
     }
     onAppointmentDateChangeHandler(id)
     {
-        console.log("IDDD: " +id);
         this.setState({showAppointmentsCalendar: false});
         this.setState({appointmentIdToChangeDate: id});
         // this.setState({isAppointmentDateChange: true});

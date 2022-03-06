@@ -13,7 +13,12 @@ function AppointmentModalBody(props) {
         // event.stopPropagation();
         let details = event.target.elements.details.value;
         console.log(details);
-        DoctorService.updateAppointmentDetails(props.modalEvent.id, details).then((res)=> console.log(res));
+        DoctorService.updateAppointmentDetails(props.modalEvent.id, details).then((res)=>
+        {console.log(res);
+            let isSuccess = true;
+            props.onActionButtonClick(isSuccess)}).catch((error) =>{
+            let isSuccess = false;
+            props.onActionButtonClick(isSuccess)});
     }
 
     // function AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start){
@@ -28,7 +33,7 @@ function AppointmentModalBody(props) {
                     <Form id="appointment-details-form" onSubmit={handleDetailsFormSubmit}>
                     <InputGroup>
                         <InputGroup.Text> Szczegóły odnośnie wizyty:</InputGroup.Text>
-                        <FormControl name="details" as="textarea" defaultValue={props.modalEvent.extendedProps.details}  disabled={!AppointmentHelper.AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start)}/>
+                        <FormControl name="details" as="textarea" defaultValue={props.modalEvent.extendedProps.details}  disabled={!AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start)}/>
                     </InputGroup>
                     </Form>
                     </Card>

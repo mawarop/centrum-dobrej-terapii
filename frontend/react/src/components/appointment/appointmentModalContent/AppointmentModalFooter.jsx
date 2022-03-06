@@ -49,7 +49,7 @@ function  AppointmentModalFooter(props) {
             })
             props.onHide();
         }}>Zrezygnuj z wizyty </Button>
-            {props.role===Role.DOCTOR && <Button type="submit" form="appointment-details-form">Edytuj szczegóły</Button>}
+            {props.role===Role.DOCTOR && <Button type="submit" form="appointment-details-form" onClick={() =>{props.onHide();}} >Edytuj szczegóły</Button>}
             {props.role === Role.PATIENT && <Button onClick={() => {props.onAppointmentDateChange(props.modalEvent.id); props.onHide();}}>Zmień termin wizyty</Button>}
         </>
         );})(),

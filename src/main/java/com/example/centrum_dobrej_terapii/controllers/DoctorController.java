@@ -5,12 +5,14 @@ import com.example.centrum_dobrej_terapii.AppointmentStatus;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentResponse;
 import com.example.centrum_dobrej_terapii.dtos.NamePathFileResponse;
+import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.entities.Appointment;
 import com.example.centrum_dobrej_terapii.services.AppointmentService;
 import com.example.centrum_dobrej_terapii.services.DocumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +36,9 @@ private final AppointmentService appointmentService;
     @PostMapping("patient-documents-paths")
     public List<NamePathFileResponse> getPatientDocumentsPaths(@RequestBody Object pesel)
     {
-        System.out.println(pesel.toString());
-        return documentService.getPatientDocuments(pesel.toString());
+//        return documentService.getAllPatientDocuments(pesel.toString());
+        AppUser participantDoctor = (AppUser) SecurityContextHolder. getContext(). getAuthentication(). getPrincipal();
+        return documentService.getPatientDocumentsByLoggedInDoctor(pesel.toString(), participantDoctor.getPesel());
     }
 
     @GetMapping("appointments")

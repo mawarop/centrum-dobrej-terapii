@@ -26,7 +26,7 @@ public class EmailSenderImpl implements EmailSender {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
             mimeMessageHelper.setText(email, true);
             mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject("Confirm your email");
+            mimeMessageHelper.setSubject("Centrum dorej terapii - Potwierdź swój email");
             mimeMessageHelper.setFrom("mawarop44@gmail.com");
             mailSender.send(mimeMessage);
 
