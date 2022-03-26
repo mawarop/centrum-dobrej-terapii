@@ -29,6 +29,7 @@ public interface AppUserService {
     String confirmToken(String token);
 
     int enableAppUser(String email);
+
 //    Map<String, Long> getNumbersOfUsersAndPages();
 
 }
