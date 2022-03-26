@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, { useContext, useState } from "react";
 import FullCalendar from "@fullcalendar/react"; // must go before plugins
 import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
 // import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
@@ -7,7 +7,7 @@ import axios from "axios";
 import UserService from "../services/UserService";
 import { Form, Container, FormControl, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import {Role} from "../enums/role";
+import { Role } from "../enums/role";
 import userMainPath from "../utilities/pagePath/userMainPath";
 
 function LoginFormPage(props) {
@@ -19,7 +19,6 @@ function LoginFormPage(props) {
   const [validated, setValidated] = useState(false);
   const [credentialsFeedback, setCredentialsFeedback] = useState("");
   let navigate = useNavigate();
-
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -82,7 +81,14 @@ function LoginFormPage(props) {
         </Form.Group>
         <Form.Group className="mb-2">
           <Form.Label for="passwordInput">Hasło</Form.Label>
-          <Form.Control required type="password" name="password" className="form-control" id="passwordInput" placeholder="Wprowadź hasło" />
+          <Form.Control
+            required
+            type="password"
+            name="password"
+            className="form-control"
+            id="passwordInput"
+            placeholder="Wprowadź hasło"
+          />
         </Form.Group>
         {/* <div className="form-check"> */}
         {/*<Form.Group className="mb-2">*/}
@@ -99,10 +105,11 @@ function LoginFormPage(props) {
         <Button className="mb-2" type="submit" variant="primary">
           Zaloguj
         </Button>
-        <div style={{ color: "#dc3545", textAlign: "center" }}>{credentialsFeedback}</div>
+        <div style={{ color: "#dc3545", textAlign: "center" }}>
+          {credentialsFeedback}
+        </div>
         {/* <Form.Control. */}
       </Form>
-
     </Container>
   );
 }

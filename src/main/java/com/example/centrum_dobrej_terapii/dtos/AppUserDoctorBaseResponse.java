@@ -1,7 +1,10 @@
 package com.example.centrum_dobrej_terapii.dtos;
 
 import com.example.centrum_dobrej_terapii.Specialization;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

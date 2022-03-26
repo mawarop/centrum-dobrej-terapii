@@ -18,10 +18,10 @@ import java.util.List;
 @RequestMapping("api/patient")
 //@PreAuthorize("hasRole('PATIENT')")
 public class PatientController {
-        private final AppointmentService appointmentService;
-        private final AppUserService appUserService;
+    private final AppointmentService appointmentService;
+    private final AppUserService appUserService;
 
-//    @PostMapping("/appointment/add")
+    //    @PostMapping("/appointment/add")
 //    public ResponseEntity addAppointment(@RequestBody AppointmentRequest appointmentRequest){
 //        Optional<AppUser> doctor = appUserRepository.findByEmail(appointmentRequest.getSecond_participant());
 //        AppUser principal = (AppUser) SecurityContextHolder. getContext(). getAuthentication(). getPrincipal();
@@ -43,47 +43,45 @@ public class PatientController {
 //@PreAuthorize("hasRole('PATIENT')")
     @GetMapping("appointments")
 
-    public List<AppointmentResponse> getAppointmentsResponseWithDoctorsNames()
-    {
+    public List<AppointmentResponse> getAppointmentsResponseWithDoctorsNames() {
         List<Appointment> appointments = appointmentService.getParticipantAppointments();
         return appointments.stream().map(a -> new AppointmentResponse(a.getId(), a.getStart(), a.getEnd(), a.getDetails(),
                 a.getAppointmentStatus(), a.getDoctor().getFirstname(), a.getDoctor().getLastname())).toList();
     }
 
     @PatchMapping("appointment/{id}")
-    public ResponseEntity signUpFreeDateAppointment(@PathVariable("id") long id){
+    public ResponseEntity signUpFreeDateAppointment(@PathVariable("id") long id) {
         boolean updated = appointmentService.signUpFreeDateAppointment(id);
-        if(updated) {
+        if (updated) {
             return new ResponseEntity(HttpStatus.OK);
-        }
-        else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        } else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("doctors")
-    public List<AppUserDoctorBaseResponse>getDoctorsBaseData(){
+    public List<AppUserDoctorBaseResponse> getDoctorsBaseData() {
         return appUserService.getDoctorsBaseData();
     }
 
     @GetMapping("doctor-appointments")
-    public List<AppointmentResponse> getDoctorAppointmentsResponse(@RequestParam String email)
-    {
+    public List<AppointmentResponse> getDoctorAppointmentsResponse(@RequestParam String email) {
         List<Appointment> appointments = appointmentService.getUserAppointmentsByUserEmailAndAppointmentStatus(email, AppointmentStatus.FREE_DATE);
         return appointments.stream().map(a -> new AppointmentResponse(a.getId(), a.getStart(), a.getEnd(), a.getDetails(),
                 a.getAppointmentStatus(), a.getDoctor().getFirstname(), a.getDoctor().getLastname())).toList();
     }
 
     @PatchMapping("cancel-appointment/{id}")
-    ResponseEntity cancelAppointment(@PathVariable("id") long id){
+    ResponseEntity cancelAppointment(@PathVariable("id") long id) {
         boolean canceledAppointment = appointmentService.cancelAppointment(id);
-        if (canceledAppointment){
+        if (canceledAppointment) {
             return new ResponseEntity(HttpStatus.OK);
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     @PostMapping("change-appointment")
     ResponseEntity changeAppointment(@RequestParam("appointmentIdToCancel") long appointmentIdToCancel,
                                      @RequestParam("freeDateAppointmentId") long freeDateAppointmentId) {
-        if(appointmentService.changeAppointment(appointmentIdToCancel, freeDateAppointmentId))
+        if (appointmentService.changeAppointment(appointmentIdToCancel, freeDateAppointmentId))
             return new ResponseEntity(HttpStatus.OK);
         else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }

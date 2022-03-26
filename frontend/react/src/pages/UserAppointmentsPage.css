@@ -1,7 +1,7 @@
 .fc {
-    background-color: #fff !important;
-    margin-top: 5%;
-    /* text-decoration: none !important; */
+  background-color: #fff !important;
+  margin-top: 5%;
+  /* text-decoration: none !important; */
 }
 
 /*.fc-daygrid-event {*/
@@ -9,12 +9,12 @@
 /*}*/
 
 .fc-daygrid-day-number {
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 .fc-col-header-cell-cushion {
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 
-.fc-event{
-    cursor: pointer;
+.fc-event {
+  cursor: pointer;
 }

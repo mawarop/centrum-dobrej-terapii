@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface AppUserDoctorRepository extends JpaRepository<AppUserDoctor,Long> {
+public interface AppUserDoctorRepository extends JpaRepository<AppUserDoctor, Long> {
 //    @Query("Select new com.example.centrum_dobrej_terapii.dtos.AppUserDoctorWorkTimeResponse(aud.workHoursStart, aud.workHoursEnd) from AppUserDoctor aud  " +
 //            "where aud.doctor.email = :doctorEmail")
 //    Optional<AppUserDoctorWorkTimeResponse> findWorkHours(@Param("doctorEmail") String doctorEmail);

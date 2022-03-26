@@ -21,7 +21,7 @@ public class EmailSenderImpl implements EmailSender {
     @Override
     @Async
     public void send(String to, String email) {
-        try{
+        try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
             mimeMessageHelper.setText(email, true);
@@ -30,7 +30,7 @@ public class EmailSenderImpl implements EmailSender {
             mimeMessageHelper.setFrom("mawarop44@gmail.com");
             mailSender.send(mimeMessage);
 
-        }catch (MessagingException exception){
+        } catch (MessagingException exception) {
             LOGGER.error("failed to send email", exception);
             throw new IllegalStateException("failed to send email");
         }

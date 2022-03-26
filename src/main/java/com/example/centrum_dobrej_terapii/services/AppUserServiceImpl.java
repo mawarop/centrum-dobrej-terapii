@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class AppUserServiceImpl implements UserDetailsService,AppUserService {
+public class AppUserServiceImpl implements UserDetailsService, AppUserService {
 
     public static final int PAGE_SIZE = 5;
     private final AppUserRepository appUserRepository;
@@ -55,7 +55,7 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
             if (userWithPhoneNumberExists) {
                 throw new IllegalStateException("Phone number already taken");
             }
-        }catch (IllegalStateException illegalStateException){
+        } catch (IllegalStateException illegalStateException) {
             System.out.println(illegalStateException.getMessage());
             return false;
         }
@@ -74,24 +74,24 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
         final String LINK = "http://localhost:8080/api/registration/confirm?token=" + token;
         emailSender.send(appUser.getEmail(),
-                buildEmail(appUser.getFirstname() +" "+ appUser.getLastname(), LINK));
+                buildEmail(appUser.getFirstname() + " " + appUser.getLastname(), LINK));
 
-            return true;
-        }
+        return true;
+    }
 
     @Transactional()
-    public String confirmToken(String token){
+    public String confirmToken(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.getToken(token).orElseThrow(() -> new IllegalStateException("token not found"));
-        if(confirmationToken.getConfirmedDateTime() != null){
+        if (confirmationToken.getConfirmedDateTime() != null) {
             throw new IllegalStateException("email already confirmed");
         }
         LocalDateTime expiresDateTime = confirmationToken.getExpiresDateTime();
-        if(expiresDateTime.isBefore(LocalDateTime.now())){
+        if (expiresDateTime.isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("token expired");
         }
         confirmationTokenService.setConfirmedDateTime(token);
         this.enableAppUser(confirmationToken.getAppUser().getEmail());
-        return "Email został potwierdzony";
+        return "Email zostal potwierdzony";
     }
 
     @Override
@@ -124,24 +124,22 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
     public void updateAppUser(int id, AppUserRequest appUserRequest) {
         System.out.println("appuserRequest: " + appUserRequest);
         Optional<AppUser> appUserOptional = this.getAppUser(id);
-        if(appUserOptional.isPresent()){
+        if (appUserOptional.isPresent()) {
             AppUser user = appUserOptional.get();
             appUserMapper.updateAppUserFromAppUserRequest(appUserRequest, user);
             System.out.println("userUpdated: " + user);
             appUserRepository.save(user);
-        }
-        else throw new IllegalStateException("User not found");
+        } else throw new IllegalStateException("User not found");
     }
 
     @Override
     public void blockAppUser(int id) {
         Optional<AppUser> appUserOptional = this.getAppUser(id);
-        if(appUserOptional.isPresent()){
+        if (appUserOptional.isPresent()) {
             AppUser user = appUserOptional.get();
             user.setLocked(true);
             appUserRepository.save(user);
-        }
-        else throw new IllegalStateException("User not found");
+        } else throw new IllegalStateException("User not found");
     }
 
     @Override
@@ -151,7 +149,7 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 
     @Override
     public long getNumberOfPages(long numberOfUsers) {
-        return (long) Math.ceil((double)numberOfUsers/(double) PAGE_SIZE);
+        return (long) Math.ceil((double) numberOfUsers / (double) PAGE_SIZE);
     }
 
 //    @Override
@@ -163,11 +161,11 @@ public class AppUserServiceImpl implements UserDetailsService,AppUserService {
 //        return numbersOfUsersAndPages;
 //    }
 
-    private String buildEmail(String name, String link){
+    private String buildEmail(String name, String link) {
 //        return name + link;
-        return "<p>Witaj " + name +"! Dziękujemy za wybranie naszej placówki</p>" +
-                "<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link</p>"+
-                "<p><a href=\"" + link + "\">"+ "Aktywuj" +"</a></p>" +
+        return "<p>Witaj " + name + "! Dziękujemy za wybranie naszej placówki</p>" +
+                "<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link</p>" +
+                "<p><a href=\"" + link + "\">" + "Aktywuj" + "</a></p>" +
                 "<p>Link wygaśnie w ciągu 20 minut</p>";
     }
 }

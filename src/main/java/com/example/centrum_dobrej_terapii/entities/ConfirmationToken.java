@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
 @NoArgsConstructor
 @Getter
@@ -25,7 +26,7 @@ public class ConfirmationToken {
     @ManyToOne
     @JoinColumn(
             nullable = false,
-            name= "app_user_id"
+            name = "app_user_id"
     )
     private AppUser appUser;
 

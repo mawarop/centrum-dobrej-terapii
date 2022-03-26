@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Getter
 @NoArgsConstructor
-public class AppointmentResponse extends AppointmentBaseResponse{
+public class AppointmentResponse extends AppointmentBaseResponse {
 
     private String secondParticipantFirstname;
     private String secondParticipantLastname;

@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
     Optional<Document> findByName(String name);
+
     @Query("select d.name from Document d where d.patient.pesel = :pesel")
     List<String> findPathsByPatientPesel(@Param("pesel") String pesel);
 
@@ -19,6 +20,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
     List<String> findPathsByPatientPeselAndDoctorPesel(
             @Param("patient_pesel") String patientPesel,
             @Param("doctor_pesel") String doctorPesel
-            );
+    );
 
 }

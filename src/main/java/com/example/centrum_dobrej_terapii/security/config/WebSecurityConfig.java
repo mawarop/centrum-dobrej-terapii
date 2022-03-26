@@ -39,7 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //Brak autoryzacji do testów
@@ -73,9 +72,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         authenticationManagerBuilder.authenticationProvider(daoAuthenticationProvider());
     }
+
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider()
-    {
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(bCryptPasswordEncoder);
         provider.setUserDetailsService(appUserService);
@@ -87,20 +86,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        CorsConfiguration configuration = new CorsConfiguration();
 //        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
 //        configuration.setAllowedMethods(Arrays.asList("*"));
-            CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
-            configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-            configuration.setAllowCredentials(true);
+        CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
 
     }
+
     @Component
     public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
         @Override
         public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-            AppUser principal = (AppUser) SecurityContextHolder. getContext(). getAuthentication(). getPrincipal();
+            AppUser principal = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             String responseText = String.format("{\"role\": \"%s\", \"email\": \"%s\"}", principal.getUserRole().name(),
                     principal.getEmail());
             response.setStatus(HttpServletResponse.SC_OK);
@@ -117,8 +117,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
-
-
 
 
 }

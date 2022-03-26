@@ -54,7 +54,7 @@ class UserService {
     });
   }
 
-  logout(){
+  logout() {
     localStorage.clear();
     return axios.get("/logout", axiosLoggedInConfig);
   }

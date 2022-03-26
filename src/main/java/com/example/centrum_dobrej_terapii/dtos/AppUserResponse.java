@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class AppUserResponse extends AppUserBaseResponse{
+public class AppUserResponse extends AppUserBaseResponse {
 
     private long id;
     private String username;

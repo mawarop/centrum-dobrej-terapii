@@ -57,7 +57,7 @@ public class AppUser implements UserDetails {
     private String email;
 
     @NotBlank(message = "Numer telefonu nie może być pusty")
-    @Size(min = 9, max=9)
+    @Size(min = 9, max = 9)
     @Pattern(regexp = "\\d{9}", message = "Niepoprawny format numeru telefonu")
     @Column(unique = true)
     private String phone_number;
@@ -71,8 +71,7 @@ public class AppUser implements UserDetails {
     private Boolean enabled = false;
 
 
-
-    public AppUser(String username, String password, String PESEL, String firstname, String lastname, String email, String phone_number, UserRole userRole, Boolean locked, Boolean enabled, Appointment appointment) {
+    public AppUser(String username, String password, String PESEL, String firstname, String lastname, String email, String phone_number, UserRole userRole, Boolean locked, Boolean enabled) {
         this.username = username;
         this.password = password;
         this.pesel = PESEL;

@@ -21,16 +21,16 @@ public class RegistrationController {
     private final AppUserService appUserService;
 
     @PostMapping()
-    public ResponseEntity register( @RequestBody AppUserRequest request) {
+    public ResponseEntity register(@RequestBody AppUserRequest request) {
         boolean successfulCreatedUser = appUserService.signUpUser(new AppUser(request, UserRole.PATIENT));
-        if(successfulCreatedUser){
+        if (successfulCreatedUser) {
             return new ResponseEntity(HttpStatus.CREATED);
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @GetMapping("confirm")
-    public String confirm(@RequestParam("token") String token){
+    public String confirm(@RequestParam("token") String token) {
         return appUserService.confirmToken(token);
     }
 

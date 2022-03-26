@@ -14,13 +14,17 @@ import java.util.Optional;
 
 @Repository
 @Transactional()
-public interface AppUserRepository extends JpaRepository<AppUser, Long>{
+public interface AppUserRepository extends JpaRepository<AppUser, Long> {
 
     Optional<AppUser> findByEmail(String email);
+
     Optional<AppUser> findByPesel(String pesel);
+
     @Query("select u from AppUser u where u.phone_number= :phone_number")
     Optional<AppUser> findByPhone_number(@Param("phone_number") String phone_number);
+
     List<AppUser> findByUserRole(String userRole);
+
     @Query("select u from AppUser u")
     List<AppUser> findAllAppUsers(Pageable pageable);
 

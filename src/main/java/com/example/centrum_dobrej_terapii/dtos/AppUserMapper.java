@@ -11,6 +11,7 @@ import java.util.List;
 public interface AppUserMapper {
 
     List<AppUserResponse> appUsersToAppUserResponses(List<AppUser> appUser);
+
     void updateAppUserFromAppUserRequest(AppUserRequest appUserRequest, @MappingTarget AppUser appUser);
 
 }

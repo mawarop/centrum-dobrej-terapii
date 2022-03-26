@@ -12,27 +12,9 @@ import java.util.List;
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    //    @Query("Select new com.example.centrum_dobrej_terapii.dtos.AppointmentBaseResponse(a.id, a.start, a.end, a.details, a.appointmentStatus) from Appointment a inner join a.patient au where au.email = :email")
-//    List<AppointmentBaseResponse> findByDoctorEmail(@Param("email") String email);
+    List<Appointment> findAppointmentsByPatientEmail(String email);
 
-
-    // przed refaktoryzacja
-//    @Query("Select new com.example.centrum_dobrej_terapii.dtos.AppointmentResponse(a.id, a.start, a.end, a.details, a.appointmentStatus, a.doctor.firstname, a.doctor.lastname) " +
-//            "from Appointment a inner join a.patient au where au.email = :email")
-//    List<AppointmentResponse> findAppointmentAndDoctorFirstNameAndLastnameByPatientEmail(@Param("email") String email);
-//
-    // przed refaktoryzacja
-//    @Query("Select new com.example.centrum_dobrej_terapii.dtos.AppointmentResponse(a.id, a.start, a.end, a.details, a.appointmentStatus, a.patient.firstname, a.patient.lastname) " +
-//            "from Appointment a inner join a.doctor au where au.email = :email")
-//    List<AppointmentResponse> findAppointmentAndPatientFirstNameAndLastnameByDoctorEmail(@Param("email") String email);
-
-    // przed refaktoryzacja
-//    @Query("select new com.example.centrum_dobrej_terapii.dtos.AppointmentResponse(a.id, a.start, a.end, a.details, a.appointmentStatus, a.doctor.firstname, a.doctor.lastname) from Appointment a inner join a.doctor au where au.email = :email AND a.appointmentStatus=:status")
-//    List<AppointmentResponse> findAppointmentsByDoctorEmailAndAppointmentStatus(@Param("email") String email, @Param("status") AppointmentStatus status);
-
-
-    List<Appointment> findAppointmentByPatientEmail(String email);
-    List<Appointment> findAppointmentByDoctorEmail(String email);
+    List<Appointment> findAppointmentsByDoctorEmail(String email);
 
     @Query("select a from Appointment a inner join a.doctor au where au.email = :email AND a.appointmentStatus=:status")
     List<Appointment> findAppointmentsByDoctorEmailAndAppointmentStatus(@Param("email") String email, @Param("status") AppointmentStatus status);

@@ -3,7 +3,8 @@ import "./Sidebar.css";
 
 class Sidebar extends Component {
   render() {
-    return (// <nav className="navbar navbar-light bg-light navbar-fixed-left">
+    return (
+      // <nav className="navbar navbar-light bg-light navbar-fixed-left">
       // <a className="nav-link" href="#">
       //   Navbar
       // </a>
@@ -33,7 +34,6 @@ class Sidebar extends Component {
       </div>
     );
   }
-
 }
 
 export default Sidebar;

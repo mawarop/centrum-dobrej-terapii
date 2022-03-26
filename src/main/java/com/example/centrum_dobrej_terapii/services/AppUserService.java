@@ -9,15 +9,25 @@ import java.util.Optional;
 
 public interface AppUserService {
     boolean signUpUser(AppUser appUser);
+
     List<AppUserDoctorBaseResponse> getDoctorsBaseData();
+
     Optional<AppUser> getAppUser(String email);
+
     Optional<AppUser> getAppUser(long id);
+
     List<AppUser> getAllAppUsers(int page);
+
     void updateAppUser(int id, AppUserRequest appUserRequest);
+
     void blockAppUser(int id);
+
     long getNumberOfUsers();
+
     long getNumberOfPages(long numberOfUsers);
+
     String confirmToken(String token);
+
     int enableAppUser(String email);
 //    Map<String, Long> getNumbersOfUsersAndPages();
 

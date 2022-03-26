@@ -3,7 +3,6 @@ package com.example.centrum_dobrej_terapii.dtos;
 import lombok.*;
 
 
-
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode

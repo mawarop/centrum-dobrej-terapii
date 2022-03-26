@@ -6,5 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 public interface FileUploadService {
     boolean handleFileUpload(MultipartFile file, String userPesel);
+
     void handleFileDownload(HttpServletResponse httpServletResponse, String filename);
 }

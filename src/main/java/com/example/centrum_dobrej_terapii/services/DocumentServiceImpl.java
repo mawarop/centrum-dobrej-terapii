@@ -10,10 +10,9 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-public class DocumentServiceImpl implements  DocumentService{
+public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
-    private final String URL ="http://localhost:8080/api/documents/";
-
+    private final String URL = "http://localhost:8080/api/documents/";
 
 
     @Override
@@ -23,17 +22,18 @@ public class DocumentServiceImpl implements  DocumentService{
         return parseResponse(patientDocumentsNames);
     }
 
-    private void throwExceptionIfDocumentsListIsEmpty(List<String> patientDocumentsNames){
-        if(patientDocumentsNames.isEmpty()){
+    private void throwExceptionIfDocumentsListIsEmpty(List<String> patientDocumentsNames) {
+        if (patientDocumentsNames.isEmpty()) {
             throw new IllegalStateException("Użytkownik nie posiada dokumentów lub podany pesel jest nieprawidłowy");
         }
     }
-    private List<NamePathFileResponse> parseResponse(List<String> patientDocumentsNames){
+
+    private List<NamePathFileResponse> parseResponse(List<String> patientDocumentsNames) {
         List<NamePathFileResponse> namePathFileResponseList = new ArrayList<NamePathFileResponse>();
-        for (String name :patientDocumentsNames){
+        for (String name : patientDocumentsNames) {
             namePathFileResponseList.add(new NamePathFileResponse(name, URL + name));
         }
-        return  namePathFileResponseList;
+        return namePathFileResponseList;
     }
 
 

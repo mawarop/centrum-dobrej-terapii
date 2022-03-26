@@ -16,26 +16,27 @@ import java.util.Optional;
 @AllArgsConstructor
 public class AppointmentValidator {
     private final AppointmentRepository appointmentRepository;
-    public boolean appointmentOverlapsDateInDatabase(Appointment appointment){
+
+    public boolean appointmentOverlapsDateInDatabase(Appointment appointment) {
 
         LocalDateTime appStart = appointment.getStart();
         LocalDateTime appEnd = appointment.getEnd();
         List<Appointment> appointments = appointmentRepository.findAll();
-        Interval newAppointmentInterval = new Interval(appointment.getStart().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),(appointment.getEnd().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()));
-        for (Appointment a:
+        Interval newAppointmentInterval = new Interval(appointment.getStart().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), (appointment.getEnd().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()));
+        for (Appointment a :
                 appointments) {
-            Interval aInterval = new Interval(a.getStart().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),(a.getEnd().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()));
-            if(aInterval.overlaps(newAppointmentInterval)){
+            Interval aInterval = new Interval(a.getStart().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(), (a.getEnd().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()));
+            if (aInterval.overlaps(newAppointmentInterval)) {
                 return true;
             }
         }
         return false;
     }
 
-    public boolean isAppointmentCancellationPossible(Optional<Appointment> appointment){
+    public boolean isAppointmentCancellationPossible(Optional<Appointment> appointment) {
         final long DAY_IN_MINUTES = 1440;
         try {
-            if(appointment.isPresent()) {
+            if (appointment.isPresent()) {
                 LocalDateTime now = LocalDateTime.now();
                 Duration duration = Duration.between(now, appointment.get().getStart());
                 long difference = Math.abs(duration.toMinutes());
@@ -43,9 +44,8 @@ public class AppointmentValidator {
                 if (difference < DAY_IN_MINUTES || now.isAfter(appointment.get().getStart())) {
                     throw new IllegalStateException("Wizytę można anulować najpóźniej dzień przed");
                 }
-            }
-            else throw new IllegalStateException("Nie znaleziono wizyty");
-        }catch (Exception exception){
+            } else throw new IllegalStateException("Nie znaleziono wizyty");
+        } catch (Exception exception) {
             System.out.println(exception.getMessage());
             return false;
         }
