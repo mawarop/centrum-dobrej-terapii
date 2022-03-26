@@ -1,12 +1,9 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PatientService from "../services/PatientService";
-import {
-  APPOINTMENT_BG_COL,
-  TEXT_COL,
-} from "../enums/conditionalEnums/FullCalendarEnum";
+import {APPOINTMENT_BG_COL, TEXT_COL,} from "../enums/conditionalEnums/FullCalendarEnum";
 import AppointmentsCalendar from "../components/appointment/AppointmentsCalendar";
 import AppointmentModal from "../components/appointment/AppointmentModal";
-import { Button } from "react-bootstrap";
+import {Button} from "react-bootstrap";
 import "./UserAppointmentsPage.css";
 import InfoToast from "../components/InfoToast";
 import CenteredSpinner from "../components/CenteredSpinner";
@@ -136,7 +133,7 @@ class UserAppointmentsPage extends Component {
     this.setState({ isModalOpen: false });
   }
   actionButtonClickHandler(isSuccess) {
-    console.log("siccess: " + isSuccess);
+    console.log("success: " + isSuccess);
     if (isSuccess) {
       this.fetchAndSetAppointments();
     }
