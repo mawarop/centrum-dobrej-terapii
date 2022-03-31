@@ -2,7 +2,6 @@ package com.example.centrum_dobrej_terapii.services;
 
 import com.example.centrum_dobrej_terapii.AppointmentStatus;
 import com.example.centrum_dobrej_terapii.UserRole;
-import com.example.centrum_dobrej_terapii.configs.AppointmentValidator;
 import com.example.centrum_dobrej_terapii.data.AbstractTestDataFactory;
 import com.example.centrum_dobrej_terapii.data.AbstractTestDataFactoryProvider;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentMapper;
@@ -12,6 +11,7 @@ import com.example.centrum_dobrej_terapii.entities.Appointment;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppointmentRepository;
+import com.example.centrum_dobrej_terapii.util.beans.AppointmentValidator;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

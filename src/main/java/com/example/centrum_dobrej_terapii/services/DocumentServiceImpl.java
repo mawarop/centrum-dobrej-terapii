@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class DocumentServiceImpl implements DocumentService {
     private final DocumentRepository documentRepository;
-    private final String URL = "http://localhost:8080/api/documents/";
+    private final static String URL = "http://localhost:8080/api/documents/";
 
 
     @Override

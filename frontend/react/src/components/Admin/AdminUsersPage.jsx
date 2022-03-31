@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { Button, Container, Pagination, Table } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {Button, Container, Pagination, Table} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal";
 import AdminService from "../../services/AdminService";
 import CreateUpdateUserFormPage from "../../pages/CreateUpdateUserFormPage";
 import CenteredSpinner from "../CenteredSpinner";
 import InfoToast from "../InfoToast";
+import {RoleEngToPl} from "../../enums/langTranslateEnums/roleEngToPl";
 
 function AdminUsersPage(props) {
   const [users, setUsers] = useState(null);
@@ -95,12 +96,12 @@ function AdminUsersPage(props) {
                       <td>{user.username}</td>
                       <td>{user.email}</td>
                       <td>{user.phone_number}</td>
-                      <td>{user.userRole}</td>
+                      <td>{RoleEngToPl[user.userRole]}</td>
                       <td>
                         <Button
-                          onClick={() => {
-                            updateUserHandler(user);
-                          }}
+                            onClick={() => {
+                              updateUserHandler(user);
+                            }}
                         >
                           Aktualizuj
                         </Button>

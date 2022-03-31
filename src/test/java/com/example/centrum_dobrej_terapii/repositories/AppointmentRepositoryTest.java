@@ -45,7 +45,6 @@ class AppointmentRepositoryTest {
         // then
         assertThat(expected).isEqualTo(appointments);
     }
-
     @Test
     void should_NotFindAppointmentsByPatientEmail_When_EmailNotExist() {
         // given

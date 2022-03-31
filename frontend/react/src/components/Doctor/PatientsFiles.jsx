@@ -1,16 +1,14 @@
 import DoctorService from "../../services/DoctorService";
-import React, { useState } from "react";
-import { Button, Container, Form } from "react-bootstrap";
-import { preventDefault } from "@fullcalendar/core";
+import React, {useState} from "react";
+import {Button, Container, Form} from "react-bootstrap";
 import DocumentFile from "./DocumentFile";
-import { map } from "react-bootstrap/ElementChildren";
 
 function PatientsFiles(props) {
   const [patients, setPatients] = useState("");
   const [validated, setValidated] = useState(false);
   const [documentsPaths, setDocumentsPaths] = useState([]);
   const [documentsPathsDownloaded, setDocumentsPathsDownloaded] =
-    useState(false);
+      useState(false);
   const [credentialsFeedback, setCredentialsFeedback] = useState("");
   // useEffect(() => {
   //     preventDefault();
@@ -35,14 +33,14 @@ function PatientsFiles(props) {
           <Form.Group>
             <Form.Label for="pesel">Pesel</Form.Label>
             <Form.Control
-              required
-              type="text"
-              pattern="\d{11}"
-              name="pesel"
-              id="pesel"
-              placeholder="Enter pesel"
-              maxLength={11}
-              minLength={11}
+                required
+                type="text"
+                pattern="\d{11}"
+                name="pesel"
+                id="pesel"
+                placeholder="Podaj pesel"
+                maxLength={11}
+                minLength={11}
             />
           </Form.Group>
           <Button className="mt-2" type="submit" variant="primary">

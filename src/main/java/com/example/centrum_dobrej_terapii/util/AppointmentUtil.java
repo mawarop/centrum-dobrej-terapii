@@ -3,7 +3,12 @@ package com.example.centrum_dobrej_terapii.util;
 import com.example.centrum_dobrej_terapii.UserRole;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 
-public class AppointmentUtil {
+public final class AppointmentUtil {
+    private AppointmentUtil() {
+    }
+
+    ;
+
     public static boolean isDoctor(AppUser user) {
         return user.getUserRole().name().equals(UserRole.DOCTOR.name());
     }

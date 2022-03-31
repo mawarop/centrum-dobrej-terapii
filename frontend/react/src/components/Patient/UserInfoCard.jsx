@@ -1,5 +1,5 @@
 import {Button, Card} from "react-bootstrap";
-import {specializationEngToPl} from "../../enums/specializationEngToPl";
+import {SpecializationEngToPl} from "../../enums/langTranslateEnums/specializationEngToPl";
 
 function UserInfoCard(props) {
   return (
@@ -10,13 +10,13 @@ function UserInfoCard(props) {
             {props.firstname} {props.lastname}
           </Card.Title>
           <Card.Text>
-            <p>{specializationEngToPl[props.specialization]}</p>
+            <p>{SpecializationEngToPl[props.specialization]}</p>
           </Card.Text>
           <Button variant="primary" onClick={() => props.onClick()}>
             Wybierz specjalistę
           </Button>
-      </Card.Body>
-    </Card>
+        </Card.Body>
+      </Card>
   );
 }
 

@@ -1,8 +1,6 @@
-import { Button, Container, Form, ToastContainer } from "react-bootstrap";
-import React, { useState } from "react";
-import documentFile from "./DocumentFile";
+import {Button, Container, Form} from "react-bootstrap";
+import React, {useState} from "react";
 import DoctorService from "../../services/DoctorService";
-import { Toast } from "react-bootstrap";
 import InfoToast from "../InfoToast";
 
 function UploadPatientFile() {
@@ -52,14 +50,14 @@ function UploadPatientFile() {
           <Form.Group className="mb-3">
             <Form.Label for="userPesel">Pesel pacjenta</Form.Label>
             <Form.Control
-              required
-              type="text"
-              pattern="\d{11}"
-              name="userPesel"
-              id="userPesel"
-              placeholder="Enter pesel"
-              maxLength={11}
-              minLength={11}
+                required
+                type="text"
+                pattern="\d{11}"
+                name="userPesel"
+                id="userPesel"
+                placeholder="Podaj pesel"
+                maxLength={11}
+                minLength={11}
             />
           </Form.Group>
           <Form.Group controlId="formFile" className="mb-3">

@@ -1,7 +1,7 @@
 package com.example.centrum_dobrej_terapii.services;
 
 import com.example.centrum_dobrej_terapii.AppointmentStatus;
-import com.example.centrum_dobrej_terapii.configs.AppointmentValidator;
+import com.example.centrum_dobrej_terapii.UserRole;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentMapper;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequestWithParticipants;
@@ -11,6 +11,7 @@ import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppointmentRepository;
 import com.example.centrum_dobrej_terapii.util.AppointmentUtil;
+import com.example.centrum_dobrej_terapii.util.beans.AppointmentValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -54,7 +55,9 @@ public class AppointmentServiceImpl implements AppointmentService {
                     boolean patientHasRolePatient = AppointmentUtil.isPatient(patient.get());
                     Appointment appointment = new Appointment(appointmentRequest.getStart(), appointmentRequest.getEnd(),
                             participant, patient.get(), appointmentRequest.getDetails(), appointmentStatus);
-                    if (patientHasRolePatient && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment)) {
+                    boolean appointmentOverlapsDateInDatabase = appointmentValidator.appointmentOverlapsDateInDatabase(appointment, UserRole.PATIENT)
+                            || appointmentValidator.appointmentOverlapsDateInDatabase(appointment, UserRole.DOCTOR);
+                    if (patientHasRolePatient && !appointmentOverlapsDateInDatabase) {
                         appointmentRepository.save(appointment);
                     } else {
                         throw new IllegalStateException("Appointment overlaps another");
@@ -68,7 +71,9 @@ public class AppointmentServiceImpl implements AppointmentService {
                     boolean doctorHasRoleDoctor = AppointmentUtil.isDoctor(doctor.get());
                     Appointment appointment = new Appointment(appointmentRequest.getStart(), appointmentRequest.getEnd(),
                             doctor.get(), participant, appointmentRequest.getDetails(), appointmentStatus);
-                    if (doctorHasRoleDoctor && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment)) {
+                    boolean appointmentOverlapsDateInDatabase = appointmentValidator.appointmentOverlapsDateInDatabase(appointment, UserRole.PATIENT)
+                            || appointmentValidator.appointmentOverlapsDateInDatabase(appointment, UserRole.DOCTOR);
+                    if (doctorHasRoleDoctor && !appointmentOverlapsDateInDatabase) {
                         appointmentRepository.save(appointment);
                     } else {
                         throw new IllegalStateException("Appointment overlaps another");
@@ -98,7 +103,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 boolean doctorHasRoleDoctor = AppointmentUtil.isDoctor(doctor.get());
                 Appointment appointment = new Appointment(appointmentRequest.getStart(), appointmentRequest.getEnd(),
                         doctor.get(), patient.isPresent() ? patient.get() : null, "", appointmentRequest.getStatus());
-                if (doctorHasRoleDoctor && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment)) {
+                if (doctorHasRoleDoctor && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment, UserRole.DOCTOR)) {
                     appointmentRepository.save(appointment);
                 } else {
                     throw new IllegalStateException("Appointment overlaps another");
@@ -130,8 +135,9 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public boolean signUpFreeDateAppointment(long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
-        if (appointment.isPresent()) {
-            AppUser principal = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        AppUser principal = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        appointment.ifPresent(value -> value.setPatient(principal));
+        if (appointment.isPresent() && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment.get(), UserRole.PATIENT)) {
             appointment.get().setPatient(principal);
             appointment.get().setAppointmentStatus(AppointmentStatus.ACCEPTED);
             appointmentRepository.save(appointment.get());
@@ -173,7 +179,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     @Override
     public boolean changeAppointment(long appointmentIdToCancel, long freeDateAppointmentId) {
-        System.out.println("ToCancleId: " + appointmentIdToCancel + " FreeDateId: " + freeDateAppointmentId);
         if (!this.cancelAppointment(appointmentIdToCancel))
             return false;
         return this.signUpFreeDateAppointment(freeDateAppointmentId);
