@@ -5,6 +5,7 @@ import com.example.centrum_dobrej_terapii.dtos.AppUserMapper;
 import com.example.centrum_dobrej_terapii.dtos.AppUserRequest;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.entities.ConfirmationToken;
+import com.example.centrum_dobrej_terapii.exceptions.AppUserNotFoundException;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -26,6 +28,7 @@ import java.util.UUID;
 public class AppUserServiceImpl implements UserDetailsService, AppUserService {
 
     public static final int PAGE_SIZE = 5;
+    private static final String APP_USER_NOT_FOUND_MESSAGE = "AppUser not found in database";
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserDoctorRepository appUserDoctorRepository;
@@ -99,6 +102,7 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
         return appUserRepository.enableAppUser(email);
     }
 
+
     @Override
     public List<AppUserDoctorBaseResponse> getDoctorsBaseData() {
         List<AppUserDoctorBaseResponse> appUserDoctorBaseResponseList = appUserDoctorRepository.findAppUserDoctorBaseData();
@@ -143,23 +147,15 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
     }
 
     @Override
-    public long getNumberOfUsers() {
+    public long getNumberOfAllAppUsers() {
         return appUserRepository.count();
     }
 
     @Override
-    public long getNumberOfPages(long numberOfUsers) {
+    public long getNumberOfAllAppUsersPages(long numberOfUsers) {
         return (long) Math.ceil((double) numberOfUsers / (double) PAGE_SIZE);
     }
 
-//    @Override
-//    public Map<String, Long> getNumbersOfUsersAndPages() {
-//        Map<String, Long> numbersOfUsersAndPages = new HashMap<>();
-//        long numberOfUsers = this.getNumberOfUsers();
-//        numbersOfUsersAndPages.put("numberOfUsers", numberOfUsers);
-//        numbersOfUsersAndPages.put("numberOfPages", (long) Math.ceil((double)numberOfUsers/(double)PAGE_SIZE));
-//        return numbersOfUsersAndPages;
-//    }
 
     private String buildEmail(String name, String link) {
 //        return name + link;
@@ -167,5 +163,48 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
                 "<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link</p>" +
                 "<p><a href=\"" + link + "\">" + "Aktywuj" + "</a></p>" +
                 "<p>Link wygaśnie w ciągu 20 minut</p>";
+    }
+
+    @Override
+    public List<AppUser> getAppUsersByInput(String input, int page) {
+        List<String> splited;
+        List<AppUser> appUsers;
+        if (input.contains(" ")) {
+            splited = Arrays.stream(input.split("\\s+")).toList();
+            String nameNumbOne = splited.get(0);
+            String nameNumbTwo = splited.get(1);
+            appUsers = appUserRepository.findAppUsersByInput(nameNumbOne, nameNumbTwo, PageRequest.of(page, PAGE_SIZE));
+        } else {
+            appUsers = appUserRepository.findAppUsersByInput(
+                    input, PageRequest.of(page, PAGE_SIZE));
+        }
+
+        if (appUsers.isEmpty())
+            throw new AppUserNotFoundException(APP_USER_NOT_FOUND_MESSAGE);
+        return appUsers;
+    }
+
+    @Override
+    public long getNumberOfAppUsersByInput(String input) {
+        List<String> splited;
+        long numbOfAppUsers;
+        if (input.contains(" ")) {
+            splited = Arrays.stream(input.split("\\s+")).toList();
+            String nameNumbOne = splited.get(0);
+            String nameNumbTwo = splited.get(1);
+            numbOfAppUsers = appUserRepository.countAppUsersByInput(nameNumbOne, nameNumbTwo);
+        } else {
+            numbOfAppUsers = appUserRepository.countAppUsersByInput(input);
+        }
+
+        if (numbOfAppUsers == 0)
+            throw new AppUserNotFoundException(APP_USER_NOT_FOUND_MESSAGE);
+        return numbOfAppUsers;
+    }
+
+    @Override
+    public long getNumberOfAppUsersPagesByInput(long numberOfAppUsersByInput) {
+        return (long) Math.ceil((double) numberOfAppUsersByInput / (double) PAGE_SIZE);
+
     }
 }

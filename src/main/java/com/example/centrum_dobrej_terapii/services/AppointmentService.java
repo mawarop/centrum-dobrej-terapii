@@ -11,7 +11,8 @@ public interface AppointmentService {
     List<Appointment> getParticipantAppointments();
 
     boolean addAppointment(AppointmentRequest appointmentRequest, AppointmentStatus appointmentStatus);
-    boolean addAppointment(AppointmentRequestWithParticipants appointmentRequest);
+
+    boolean addAppointment(AppointmentRequestWithParticipants appointmentRequest, AppointmentStatus appointmentStatus);
 
     boolean cancelAppointment(long id);
 

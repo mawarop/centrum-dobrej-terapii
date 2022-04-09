@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,15 +95,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
     // admin
     @Override
-    public boolean addAppointment(AppointmentRequestWithParticipants appointmentRequest) {
-        Optional<AppUser> patient = appointmentRequest.getStatus() == AppointmentStatus.FREE_DATE ? Optional.empty() : appUserRepository.findByEmail(appointmentRequest.getPatientEmail());
+    public boolean addAppointment(AppointmentRequestWithParticipants appointmentRequest, AppointmentStatus appointmentStatus) {
+        Optional<AppUser> patient = appointmentStatus == AppointmentStatus.FREE_DATE ? Optional.empty() : appUserRepository.findByEmail(appointmentRequest.getPatientEmail());
         Optional<AppUser> doctor = appUserRepository.findByEmail(appointmentRequest.getDoctorEmail());
         try {
             if (doctor.isPresent()) {
 //                boolean patientHasRolePatient = AppointmentUtil.isPatient(patient.get());
                 boolean doctorHasRoleDoctor = AppointmentUtil.isDoctor(doctor.get());
                 Appointment appointment = new Appointment(appointmentRequest.getStart(), appointmentRequest.getEnd(),
-                        doctor.get(), patient.isPresent() ? patient.get() : null, "", appointmentRequest.getStatus());
+                        doctor.get(), patient.isPresent() ? patient.get() : null, "", appointmentStatus);
                 if (doctorHasRoleDoctor && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment, UserRole.DOCTOR)) {
                     appointmentRepository.save(appointment);
                 } else {
@@ -177,6 +178,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         return true;
     }
 
+    @Transactional
     @Override
     public boolean changeAppointment(long appointmentIdToCancel, long freeDateAppointmentId) {
         if (!this.cancelAppointment(appointmentIdToCancel))

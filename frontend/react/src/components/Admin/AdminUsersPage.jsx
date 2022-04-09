@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Button, Container, Pagination, Table} from "react-bootstrap";
+import {Button, Container, Form, Pagination, Table} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import ConfirmationModal from "./ConfirmationModal";
 import AdminService from "../../services/AdminService";
@@ -21,25 +21,63 @@ function AdminUsersPage(props) {
 
   const [showToast, setShowToast] = useState(false);
   const [isActionSuccess, setIsActionSuccess] = useState(false);
+  const [userTextInput, setUserTextInput] = useState(null);
+
   // const {page} = useParams();
+
+  function handleSearchSubmit(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    let userTextInput = event.target.elements.userTextInput.value;
+    setUserTextInput(userTextInput);
+  }
+
   useEffect(() => {
     fetchPageData();
   }, []);
 
+  useEffect(() => {
+    fetchPageData();
+  }, [userTextInput]);
+
   function fetchPageData(page = 0) {
-    props
-      .makeRequest(page)
-      .then((res) => {
-        setUsers(res.data.users);
-        // setTotalUsers(res.data.totalUsers);
-        setTotalPages(res.data.totalPages);
-        console.log(users);
-        setCurrentPage(res.data.currentPage);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    let userPromise;
+
+    if (userTextInput) {
+      userPromise = AdminService.getUsers(page, userTextInput);
+    } else {
+      userPromise = AdminService.getUsers(page);
+    }
+    userPromise
+        .then((res) => {
+          setUsers(res.data.users);
+          setTotalPages(res.data.totalPages);
+          setCurrentPage(res.data.currentPage);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status == 404) {
+            setUsers(null);
+            setTotalPages(0);
+            setCurrentPage(0);
+          }
+        });
   }
+
+  // function fetchPageData(page = 0) {
+  //   props
+  //     .makeRequest(page)
+  //     .then((res) => {
+  //       setUsers(res.data.users);
+  //       // setTotalUsers(res.data.totalUsers);
+  //       setTotalPages(res.data.totalPages);
+  //       console.log(users);
+  //       setCurrentPage(res.data.currentPage);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
   // const fetchRequest= useCallback(
   //     (number) => {
   //         fetchPageData(number)
@@ -63,24 +101,43 @@ function AdminUsersPage(props) {
       <>
         {(!users || !totalPages || currentPage === null) && <CenteredSpinner />}
 
-        <Container className="text-center mt-3">
+        <Container className="text-center mb-4 mt-3">
           <Button
-            onClick={() => {
-              navigate("/create-user");
-            }}
+              onClick={() => {
+                navigate("/create-user");
+              }}
           >
             Dodaj użytkownika
           </Button>
+
+          <Form onSubmit={handleSearchSubmit}>
+            <Form.Group className="my-2">
+              <Form.Label for="userTextInput">Szukaj użytkowników: </Form.Label>
+              <Form.Control
+                  type="text"
+                  name="userTextInput"
+                  className="form-control"
+                  id="userTextInput"
+                  aria-describedby="userTextInputHelp"
+                  placeholder="Wprowadź dane do wyszukiwania"
+              />
+
+              <Button className="mt-2" type="submit" variant="primary">
+                Szukaj
+              </Button>
+            </Form.Group>
+          </Form>
+
           <Table className="my-3" striped bordered hover>
             <thead>
-              <tr>
-                <th>id</th>
-                <th>Imię</th>
-                <th>Nazwisko</th>
-                <th>Nazwa użytkownika</th>
-                <th>Email</th>
-                <th>Number telefonu</th>
-                <th>Rola</th>
+            <tr>
+              <th>id</th>
+              <th>Imię</th>
+              <th>Nazwisko</th>
+              <th>Nazwa użytkownika</th>
+              <th>Email</th>
+              <th>Numer telefonu</th>
+              <th>Rola</th>
                 <th colSpan={2}>Akcje</th>
               </tr>
             </thead>

@@ -34,6 +34,43 @@ public interface AppUserRepository extends JpaRepository<AppUser, Long> {
             "set a.enabled = TRUE " +
             "WHERE a.email = ?1")
     int enableAppUser(String email);
+
+
+    @Query("SELECT  c from AppUser c WHERE " +
+            "(LOWER(c.firstname) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.lastname) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.username) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.email) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.phone_number) LIKE LOWER(CONCAT('%', :input, '%')))"
+    )
+    List<AppUser> findAppUsersByInput(@Param("input") String input, Pageable pageable);
+
+
+    @Query("SELECT  c from AppUser c WHERE " +
+            "((LOWER(c.firstname) LIKE LOWER(CONCAT('%', :nameNumberOne, '%'))) " +
+            "AND (LOWER(c.lastname) LIKE LOWER(CONCAT('%', :nameNumberTwo, '%'))))" +
+            "OR ((LOWER(c.firstname) LIKE LOWER(CONCAT('%', :nameNumberTwo, '%'))) " +
+            "AND (LOWER(c.lastname) LIKE LOWER(CONCAT('%', :nameNumberOne, '%')))) "
+
+    )
+    List<AppUser> findAppUsersByInput(@Param("nameNumberOne") String nameNumberOne, @Param("nameNumberTwo") String nameNumberTwo, Pageable pageable);
+
+    @Query("SELECT count(c) from AppUser c WHERE " +
+            "(LOWER(c.firstname) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.lastname) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.username) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.email) LIKE LOWER(CONCAT('%', :input, '%'))) " +
+            "OR (LOWER(c.phone_number) LIKE LOWER(CONCAT('%', :input, '%')))"
+    )
+    long countAppUsersByInput(@Param("input") String input);
+
+    @Query("SELECT count(c) from AppUser c WHERE " +
+            "((LOWER(c.firstname) LIKE LOWER(CONCAT('%', :nameNumberOne, '%'))) " +
+            "AND (LOWER(c.lastname) LIKE LOWER(CONCAT('%', :nameNumberTwo, '%'))))" +
+            "OR ((LOWER(c.firstname) LIKE LOWER(CONCAT('%', :nameNumberTwo, '%'))) " +
+            "AND (LOWER(c.lastname) LIKE LOWER(CONCAT('%', :nameNumberOne, '%')))) "
+    )
+    long countAppUsersByInput(@Param("nameNumberOne") String nameNumberOne, @Param("nameNumberTwo") String nameNumberTwo);
 }
 
 

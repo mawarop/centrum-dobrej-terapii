@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 import "../../pages/Form.css";
-import { Button, Container, Form } from "react-bootstrap";
-import $ from "jquery";
+import {Button, Container, Form} from "react-bootstrap";
 import InfoToast from "../InfoToast";
 
 function AdminAddAppointmentPage(props) {
@@ -78,27 +77,7 @@ function AdminAddAppointmentPage(props) {
               placeholder="Wprowadź datę zakończenia"
             />
           </Form.Group>
-          <Form.Group>
-            <Form.Label for="status">Status wizyty</Form.Label>
-            <Form.Select
-              required
-              name="status"
-              id="status"
-              onChange={(e) => {
-                console.log(e.target.value);
-                if (e.target.value === "FREE_DATE") {
-                  $("#patientEmail").val("");
-                  setIsPatientEmailDisabled(true);
-                } else if (isPatientEmailDisabled)
-                  setIsPatientEmailDisabled(false);
-              }}
-            >
-              <option value="ACCEPTED">Zarezerwowana</option>
-              <option value="FREE_DATE">Wolny blok wizyty</option>
-              <option value="CANCELED">Anulowana</option>
-              <option value="FINALIZED">Zrealizowana</option>
-            </Form.Select>
-          </Form.Group>
+
           <Form.Group>
             <Form.Label for="doctorEmail">Email doktora</Form.Label>
             <Form.Control
@@ -109,18 +88,7 @@ function AdminAddAppointmentPage(props) {
               placeholder="Wprowadź email doktora"
             />
           </Form.Group>
-          {/*email pacjenta nie jest wymagany*/}
-          <Form.Group>
-            <Form.Label for="patientEmail">Email pacjenta</Form.Label>
-            <Form.Control
-              required
-              type="text"
-              name="patientEmail"
-              id="patientEmail"
-              placeholder="Wprowadź email pacjenta"
-              disabled={isPatientEmailDisabled}
-            />
-          </Form.Group>
+
           <Button className="mt-2" type="submit" variant="primary">
             Zapisz
           </Button>

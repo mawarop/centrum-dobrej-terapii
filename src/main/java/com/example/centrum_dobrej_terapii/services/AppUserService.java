@@ -22,13 +22,20 @@ public interface AppUserService {
 
     void blockAppUser(int id);
 
-    long getNumberOfUsers();
+    long getNumberOfAllAppUsers();
 
-    long getNumberOfPages(long numberOfUsers);
+    long getNumberOfAllAppUsersPages(long numberOfUsers);
 
     String confirmToken(String token);
 
     int enableAppUser(String email);
+
+    List<AppUser> getAppUsersByInput(String input, int page);
+
+    long getNumberOfAppUsersByInput(String input);
+
+    long getNumberOfAppUsersPagesByInput(long numberOfAppUsersByInput);
+
 
 //    Map<String, Long> getNumbersOfUsersAndPages();
 

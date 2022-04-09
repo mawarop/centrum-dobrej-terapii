@@ -22,4 +22,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("select a from Appointment a inner join a.patient au where au.email = :email AND a.appointmentStatus=:status")
     List<Appointment> findAppointmentsByPatientEmailAndAppointmentStatus(@Param("email") String email, @Param("status") AppointmentStatus status);
 
+
 }

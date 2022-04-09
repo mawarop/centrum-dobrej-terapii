@@ -16,7 +16,7 @@ function NavbarLinks(props) {
   const adminLinks = [
     {name: "Edytuj użytkownika", href: "/show-users"},
     {name: "Dodaj użytkownika", href: "/create-user"},
-    {name: "Dodaj blok wizyty", href: "/add-appointment"},
+    {name: "Dodaj wolny blok wizyty", href: "/add-appointment"},
   ];
   let links;
 
