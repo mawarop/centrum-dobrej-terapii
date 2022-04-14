@@ -16,18 +16,19 @@ import javax.mail.internet.MimeMessage;
 public class EmailSenderImpl implements EmailSender {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailSenderImpl.class);
+    public static final String FROM = "mawarop44@gmail.com";
     private final JavaMailSender mailSender;
 
     @Override
     @Async
-    public void send(String to, String email) {
+    public void send(String to, String subject, String email) {
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, "utf-8");
             mimeMessageHelper.setText(email, true);
             mimeMessageHelper.setTo(to);
-            mimeMessageHelper.setSubject("Centrum dorej terapii - Potwierdź swój email");
-            mimeMessageHelper.setFrom("mawarop44@gmail.com");
+            mimeMessageHelper.setSubject(subject);
+            mimeMessageHelper.setFrom(FROM);
             mailSender.send(mimeMessage);
 
         } catch (MessagingException exception) {

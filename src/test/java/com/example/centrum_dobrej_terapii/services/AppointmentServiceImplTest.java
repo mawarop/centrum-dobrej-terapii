@@ -8,6 +8,7 @@ import com.example.centrum_dobrej_terapii.dtos.AppointmentMapper;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.entities.Appointment;
+import com.example.centrum_dobrej_terapii.events.AppointmentEventPublisher;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppointmentRepository;
@@ -44,14 +45,18 @@ class AppointmentServiceImplTest {
     @Mock private AppUserRepository appUserRepository;
     @Mock private AppointmentRepository appointmentRepository;
     @Mock private AppUserDoctorRepository appUserDoctorRepository;
-    @Mock private AppointmentValidator appointmentValidator;
-    @Spy private AppointmentMapper appointmentMapper;
+    @Mock
+    private AppointmentValidator appointmentValidator;
+    @Mock
+    private AppointmentEventPublisher appointmentEventPublisher;
+    @Spy
+    private AppointmentMapper appointmentMapper;
 
     @BeforeEach
     void beforeAll() {
         appointmentMapper = Mappers.getMapper(AppointmentMapper.class);
         appointmentServiceUnderTest = spy(new AppointmentServiceImpl(appUserRepository, appointmentRepository,
-                appUserDoctorRepository,appointmentValidator,appointmentMapper));
+                appUserDoctorRepository, appointmentValidator, appointmentMapper, appointmentEventPublisher));
 //        serviceSpy = spy(appointmentServiceUnderTest);
     }
 

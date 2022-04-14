@@ -7,6 +7,7 @@ import com.example.centrum_dobrej_terapii.dtos.AppointmentRequest;
 import com.example.centrum_dobrej_terapii.dtos.AppointmentRequestWithParticipants;
 import com.example.centrum_dobrej_terapii.entities.AppUser;
 import com.example.centrum_dobrej_terapii.entities.Appointment;
+import com.example.centrum_dobrej_terapii.events.AppointmentEventPublisher;
 import com.example.centrum_dobrej_terapii.repositories.AppUserDoctorRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppUserRepository;
 import com.example.centrum_dobrej_terapii.repositories.AppointmentRepository;
@@ -28,6 +29,7 @@ public class AppointmentServiceImpl implements AppointmentService {
     final AppUserDoctorRepository appUserDoctorRepository;
     final AppointmentValidator appointmentValidator;
     final AppointmentMapper appointmentMapper;
+    private final AppointmentEventPublisher appointmentEventPublisher;
 
 
     // patient, doctor
@@ -90,6 +92,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             return false;
         }
 
+
         return true;
     }
 
@@ -127,6 +130,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         if (isCancellationPossible) {
             appointment.get().setAppointmentStatus(AppointmentStatus.CANCELED);
             appointmentRepository.save(appointment.get());
+            appointmentEventPublisher.publishAppointmentCanceledEvent(appointment.get());
             return true;
         }
         return false;
@@ -137,11 +141,12 @@ public class AppointmentServiceImpl implements AppointmentService {
     public boolean signUpFreeDateAppointment(long id) {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         AppUser principal = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        appointment.ifPresent(value -> value.setPatient(principal));
+//        appointment.ifPresent(value -> value.setPatient(principal));
         if (appointment.isPresent() && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment.get(), UserRole.PATIENT)) {
             appointment.get().setPatient(principal);
             appointment.get().setAppointmentStatus(AppointmentStatus.ACCEPTED);
             appointmentRepository.save(appointment.get());
+            appointmentEventPublisher.publishAppointmentSignedUpEvent(appointment.get());
             return true;
         }
         return false;
@@ -178,8 +183,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         return true;
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public boolean changeAppointment(long appointmentIdToCancel, long freeDateAppointmentId) {
         if (!this.cancelAppointment(appointmentIdToCancel))
             return false;

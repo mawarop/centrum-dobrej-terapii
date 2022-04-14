@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="'Witaj ' + ${name} + '! Dziękujemy za wybranie naszej placówki.'"></p>
+<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link:</p>
+<p><a th:href="${link}">Aktywuj</a></p>
+<p>Link wygaśnie w ciągu 20 minut.</p>
+</body>
+</html>

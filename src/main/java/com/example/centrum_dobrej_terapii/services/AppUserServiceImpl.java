@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -29,12 +31,14 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
 
     public static final int PAGE_SIZE = 5;
     private static final String APP_USER_NOT_FOUND_MESSAGE = "AppUser not found in database";
+    public static final String EMAIL_SUBJECT = "Centrum dorej terapii - Potwierdź swój email";
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AppUserDoctorRepository appUserDoctorRepository;
     private final AppUserMapper appUserMapper;
     private final ConfirmationTokenService confirmationTokenService;
     private final EmailSender emailSender;
+    private final TemplateEngine templateEngine;
 
 
     @Override
@@ -76,8 +80,8 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
         confirmationTokenService.saveConfirmationToken(confirmationToken);
 
         final String LINK = "http://localhost:8080/api/registration/confirm?token=" + token;
-        emailSender.send(appUser.getEmail(),
-                buildEmail(appUser.getFirstname() + " " + appUser.getLastname(), LINK));
+        emailSender.send(appUser.getEmail(), EMAIL_SUBJECT,
+                buildRegistrationResponseEmailContent(appUser.getFirstname() + " " + appUser.getLastname(), LINK));
 
         return true;
     }
@@ -157,12 +161,15 @@ public class AppUserServiceImpl implements UserDetailsService, AppUserService {
     }
 
 
-    private String buildEmail(String name, String link) {
-//        return name + link;
-        return "<p>Witaj " + name + "! Dziękujemy za wybranie naszej placówki</p>" +
-                "<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link</p>" +
-                "<p><a href=\"" + link + "\">" + "Aktywuj" + "</a></p>" +
-                "<p>Link wygaśnie w ciągu 20 minut</p>";
+    private String buildRegistrationResponseEmailContent(String name, String link) {
+//        return "<p>Witaj " + name + "! Dziękujemy za wybranie naszej placówki</p>" +
+//                "<p>Aby dokończyć proces rejestracji proszę kliknąć poniższy link</p>" +
+//                "<p><a href=\"" + link + "\">" + "Aktywuj" + "</a></p>" +
+//                "<p>Link wygaśnie w ciągu 20 minut</p>";
+        final Context ctx = new Context();
+        ctx.setVariable("name", name);
+        ctx.setVariable("link", link);
+        return templateEngine.process("html/user_registration_email_resp.html", ctx);
     }
 
     @Override

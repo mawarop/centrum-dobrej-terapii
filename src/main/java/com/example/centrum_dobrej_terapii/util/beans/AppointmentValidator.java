@@ -62,7 +62,7 @@ public class AppointmentValidator {
                 LocalDateTime now = LocalDateTime.now();
                 Duration duration = Duration.between(now, appointment.get().getStart());
                 long difference = Math.abs(duration.toMinutes());
-//            System.out.println("Roznica: " + difference);
+
                 if (difference < DAY_IN_MINUTES || now.isAfter(appointment.get().getStart())) {
                     throw new IllegalStateException("Wizytę można anulować najpóźniej dzień przed");
                 }

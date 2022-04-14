@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:remove="all"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<p th:text="'Witaj '+ ${firstName} + ' ' + ${lastName} +'! ' + ' Zarezerwowano pomyślnie wizyte na date ' + ${appointmentStart}"></p>
+<p>Dziękujemy za skorzystanie z usług centrum dobrej terapii.</p>
+</body>
+</html>
