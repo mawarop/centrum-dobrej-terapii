@@ -1,48 +1,37 @@
 import axios from "axios";
-import axiosLoggedInConfig from "./AxiosLoggedInConfig";
 
 class UserService {
-  // basic auth
+  //form auth
   // login(email, password) {
-  //   // return axios.post(PRODUCT_API_BASE_URL + "login", {
-  //   //   username: email,
-  //   //   password: password,
-  //   // });
-  //   // axios.defaults.withCredentials = true;
-  //   let auth = Buffer.from(email + ":" + password).toString("base64");
-  //   console.log(auth);
-  //   axiosInstance.defaults.headers.common["Authorization"] = "Basic " + auth;
-  //   return axiosInstance.post(
-  //     "api/user",
-  //     {
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Origin": "*",
-  //       },
+  //   let bodyFormData = new FormData();
+  //   bodyFormData.append("username", email);
+  //   bodyFormData.append("password", password);
+  //
+  //   return axios.post("/login", bodyFormData, {
+  //     withCredentials: true,
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //       "Access-Control-Allow-Origin": "http://localhost:3000/",
   //     },
-  //     {
-  //       auth: {
-  //         username: email,
-  //         password: password,
-  //       },
-  //     }
-  //   );
+  //   });
+  // }
+  //
+  // register(jsonFormData) {
+  //   return axios.post("/api/registration", jsonFormData, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "Access-Control-Allow-Origin": "http://localhost:3000/",
+  //     },
+  //   });
+  // }
+  //
+  // logout() {
+  //   localStorage.clear();
+  //   return axios.get("/logout", _oldAxiosLoggedInFormConfig);
   // }
 
-  //form auth
   login(email, password) {
-    let bodyFormData = new FormData();
-    bodyFormData.append("username", email);
-    bodyFormData.append("password", password);
-
-    return axios.post("/login", bodyFormData, {
-      withCredentials: true,
-      headers: {
-        "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": "http://localhost:3000/",
-      },
-    });
+    return axios.post("/login", {username: email, password: password});
   }
 
   register(jsonFormData) {
@@ -56,12 +45,10 @@ class UserService {
 
   logout() {
     localStorage.clear();
-    return axios.get("/logout", axiosLoggedInConfig);
+    sessionStorage.clear();
   }
 
-  // testGet() {
-  //   return axios.get("/api/user", axiosLoggedInConfig);
-  // }
+  AxiosJwtConfig;
 }
 
 export default new UserService();

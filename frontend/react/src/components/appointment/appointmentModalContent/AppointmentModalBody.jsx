@@ -1,8 +1,8 @@
 import moment from "moment";
-import { Role } from "../../../enums/role";
-import { Card, Form, FormControl, InputGroup } from "react-bootstrap";
+import {Role} from "../../../enums/role";
+import {Card, Form, FormControl, InputGroup} from "react-bootstrap";
 import React from "react";
-import { appointmentStatus } from "../../../enums/appointmentStatus";
+import {appointmentStatus} from "../../../enums/appointmentStatus";
 import DoctorService from "../../../services/DoctorService";
 import AppointmentHelper from "../../../utilities/AppointmentHelper";
 
@@ -18,10 +18,16 @@ function AppointmentModalBody(props) {
         let isSuccess = true;
         props.onActionButtonClick(isSuccess);
       })
-      .catch((error) => {
-        let isSuccess = false;
-        props.onActionButtonClick(isSuccess);
-      });
+        .catch((error) => {
+          let isSuccess = false;
+          props.onActionButtonClick(isSuccess);
+        });
+  }
+
+  function addDayToDate(date) {
+    let newDate = new Date(date);
+    newDate.setDate(date.getDate() + 1);
+    return newDate;
   }
 
   // function AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start){
@@ -30,8 +36,9 @@ function AppointmentModalBody(props) {
 
   const appointmentStatusConditionalBodyContentEnum = {
     [appointmentStatus.ACCEPTED]: (() => {
+      const DAY_IN_MILLISECONDS = parseInt(3600 * 1000 * 24);
       return (
-        <div>
+          <div>
           {props.role === Role.DOCTOR && (
             <Card body>
               <Form
@@ -46,7 +53,7 @@ function AppointmentModalBody(props) {
                     defaultValue={props.modalEvent.extendedProps.details}
                     disabled={
                       !AppointmentHelper.isAppointmentAfterTodayDate(
-                        props.modalEvent.start
+                          addDayToDate(props.modalEvent.end)
                       )
                     }
                   />

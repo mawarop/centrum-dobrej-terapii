@@ -1,39 +1,36 @@
 import axios from "axios";
-import axiosLoggedInConfig from "./AxiosLoggedInConfig";
+import axiosJwtConfig from "./AxiosConfig";
 
 class AdminService {
   getUsers(page, input) {
     if (input)
       return axios.get(
           "/api/admin/users" + "?page=" + page + "&" + "input=" + input,
-          axiosLoggedInConfig
+          axiosJwtConfig()
       );
     else
-      return axios.get(
-          "/api/admin/users" + "?page=" + page,
-          axiosLoggedInConfig
-      );
+      return axios.get("/api/admin/users" + "?page=" + page, axiosJwtConfig());
   }
 
   createUser(user, role) {
     return axios.post("/api/admin/users", user, {
       params: {userRoleParam: role},
-      ...axiosLoggedInConfig,
+      ...axiosJwtConfig(),
     });
   }
 
   updateUser(user, id) {
-    return axios.patch("/api/admin/users/" + id, user, axiosLoggedInConfig);
+    return axios.patch("/api/admin/users/" + id, user, axiosJwtConfig());
   }
   blockUser(id) {
     return axios.patch(
         "/api/admin/users/" + id + "/block",
         null,
-        axiosLoggedInConfig
+        axiosJwtConfig()
     );
   }
   addAppointment(data) {
-    return axios.post("/api/admin/appointment/add", data, axiosLoggedInConfig);
+    return axios.post("/api/admin/appointment/add", data, axiosJwtConfig());
   }
 }
 

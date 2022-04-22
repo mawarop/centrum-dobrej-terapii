@@ -1,32 +1,33 @@
 import axios from "axios";
-import axiosLoggedInConfig from "./AxiosLoggedInConfig";
+import axiosJwtConfig from "./AxiosConfig";
+
 class PatientService {
   getAppointments() {
-    return axios.get("/api/patient/appointments", axiosLoggedInConfig);
+    return axios.get("/api/patient/appointments", axiosJwtConfig());
   }
 
   appointmentSignUp(id) {
     return axios.patch(
-      "/api/patient/appointment/" + id,
-      null,
-      axiosLoggedInConfig
+        "/api/patient/appointment/" + id,
+        null,
+        axiosJwtConfig()
     );
   }
 
   getDoctorsBaseData() {
-    return axios.get("/api/patient/doctors", axiosLoggedInConfig);
+    return axios.get("/api/patient/doctors", axiosJwtConfig());
   }
   getDoctorFreeDates(email) {
     return axios.get("/api/patient/doctor-appointments", {
-      params: { email: email },
-      ...axiosLoggedInConfig,
+      params: {email: email},
+      ...axiosJwtConfig(),
     });
   }
   cancelAppointment(id) {
     return axios.patch(
       "/api/patient/cancel-appointment/" + id,
       null,
-      axiosLoggedInConfig
+        axiosJwtConfig()
     );
   }
 
@@ -42,7 +43,7 @@ class PatientService {
         appointmentIdToCancel: appointmentIdToCancel,
         freeDateAppointmentId: freeDateAppointmentId,
       },
-      ...axiosLoggedInConfig,
+      ...axiosJwtConfig(),
     });
   }
 }

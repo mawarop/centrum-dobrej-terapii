@@ -8,6 +8,7 @@ import "./UserAppointmentsPage.css";
 import InfoToast from "../components/InfoToast";
 import CenteredSpinner from "../components/CenteredSpinner";
 import SignUpNewAppointmentPage from "../components/patient/SignUpNewAppointmentPage";
+import {appointmentStatus} from "../enums/appointmentStatus";
 
 const eventTitlePrefix = {
   DOCTOR: "Wizyta pacjenta ",
@@ -43,12 +44,14 @@ class UserAppointmentsPage extends Component {
         let events = response.data.map((d) => {
           return {
             id: d.id,
-            title: d.secondParticipantFirstname
-              ? eventTitlePrefix[this.props.role] +
-                d.secondParticipantFirstname +
-                " " +
-                d.secondParticipantLastname
-              : "Wolny blok",
+            title:
+                d.secondParticipantFirstname &&
+                d.appointmentStatus !== appointmentStatus.FREE_DATE
+                    ? eventTitlePrefix[this.props.role] +
+                    d.secondParticipantFirstname +
+                    " " +
+                    d.secondParticipantLastname
+                    : "Wolny blok",
             start: new Date(d.start),
             end: new Date(d.end),
             backgroundColor: APPOINTMENT_BG_COL[d.appointmentStatus],

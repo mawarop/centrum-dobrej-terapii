@@ -16,7 +16,7 @@ import javax.mail.internet.MimeMessage;
 public class EmailSenderImpl implements EmailSender {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailSenderImpl.class);
-    public static final String FROM = "mawarop44@gmail.com";
+    public static final String FROM = "cdt@gmail.com";
     private final JavaMailSender mailSender;
 
     @Override

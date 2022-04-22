@@ -1,13 +1,9 @@
-import React, { useContext, useState } from "react";
-import FullCalendar from "@fullcalendar/react"; // must go before plugins
-import dayGridPlugin from "@fullcalendar/daygrid"; // a plugin!
+import React, {useState} from "react";
 // import interactionPlugin from "@fullcalendar/interaction"; // needed for dayClick
 import "./Form.css";
-import axios from "axios";
 import UserService from "../services/UserService";
-import { Form, Container, FormControl, Button, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { Role } from "../enums/role";
+import {Button, Container, Form} from "react-bootstrap";
+import {useNavigate} from "react-router-dom";
 import userMainPath from "../utilities/pagePath/userMainPath";
 
 function LoginFormPage(props) {
@@ -42,6 +38,7 @@ function LoginFormPage(props) {
             localStorage.setItem("logged-in", "true");
             console.log(response.data.role);
             localStorage.setItem("participant-role", response.data.role);
+            sessionStorage.setItem("jwt-token", response.headers.authorization);
             // localStorage.setItem("participant-email", response.data.email);
             let redirectPath = userMainPath.getPath();
             navigate(redirectPath);

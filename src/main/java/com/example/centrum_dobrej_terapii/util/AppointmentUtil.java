@@ -7,7 +7,6 @@ public final class AppointmentUtil {
     private AppointmentUtil() {
     }
 
-    ;
 
     public static boolean isDoctor(AppUser user) {
         return user.getUserRole().name().equals(UserRole.DOCTOR.name());
