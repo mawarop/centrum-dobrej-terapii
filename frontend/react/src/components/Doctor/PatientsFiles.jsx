@@ -56,7 +56,8 @@ function PatientsFiles(props) {
     return (
       <Container>
         {documentsPaths.map((d) => {
-          return <DocumentFile href={d.path} name={d.name} />;
+          // return <DocumentFile href={d.path} name={d.name} />;
+          return <DocumentFile name={d.name}/>;
         })}
       </Container>
     );

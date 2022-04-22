@@ -10,16 +10,16 @@ function AppointmentModalFooter(props) {
     function makeCancelAppointmentRequest(role, appointmentId) {
         console.log("role:" + role);
         switch (role) {
-      case Role.PATIENT:
-        return PatientService.cancelAppointment(appointmentId);
-        break;
-      case Role.DOCTOR:
-        return DoctorService.cancelAppointment(appointmentId);
-        break;
-      default:
-        throw new Error("Nie mozesz anulowac wizyty");
+            case Role.PATIENT:
+                return PatientService.cancelAppointment(appointmentId);
+                break;
+            case Role.DOCTOR:
+                return DoctorService.cancelAppointment(appointmentId);
+                break;
+            default:
+                throw new Error("Nie mozesz anulowac wizyty");
+        }
     }
-  }
 
   function chooseAndMakeAppointmentSignUpRequest() {
     console.log("appointmentIdtoChange: " + props.appointmentIdToChangeDate);
@@ -40,7 +40,7 @@ function AppointmentModalFooter(props) {
     [appointmentStatus.ACCEPTED]: (() => {
       return (
         AppointmentHelper.isAppointmentAfterTodayDate(
-          props.modalEvent.start
+            AppointmentHelper.addDayToDate(props.modalEvent.end)
         ) && (
           <>
             <Button
@@ -106,16 +106,16 @@ function AppointmentModalFooter(props) {
                                 let isSuccess = true;
                                 props.onActionButtonClick(isSuccess);
                             })
-                .catch((error) => {
-                  console.log(error);
-                  let isSuccess = false;
-                  props.onActionButtonClick(isSuccess);
-                });
-              props.onHide();
-            }}
-          >
-            Zapisz się na wizytę
-          </Button>
+                            .catch((error) => {
+                                console.log(error);
+                                let isSuccess = false;
+                                props.onActionButtonClick(isSuccess);
+                            });
+                        props.onHide();
+                    }}
+                >
+                    Zapisz się na wizytę
+                </Button>
         );
     })(),
   };

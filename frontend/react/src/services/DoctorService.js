@@ -19,13 +19,25 @@ class DoctorService {
     return axios.post("/api/documents/upload", formData, axiosJwtConfig());
   }
 
+  fileDownload(name) {
+    return axios.get("api/documents/" + name, {
+      responseType: "blob",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: sessionStorage.getItem("jwt-token"),
+      },
+    });
+  }
+
   getAppointments() {
     return axios.get("/api/doctor/appointments", axiosJwtConfig());
   }
+
   cancelAppointment(id) {
     return axios.patch(
-      "/api/doctor/cancel-appointment/" + id,
-      null,
+        "/api/doctor/cancel-appointment/" + id,
+        null,
         axiosJwtConfig()
     );
   }

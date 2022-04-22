@@ -63,7 +63,7 @@ public class AppointmentTasks {
     }
 
     private boolean isAppointmentEndedOneDayAgo(Appointment appointment) {
-        return appointment.getEnd().isBefore(LocalDateTime.now().plusDays(1));
+        return appointment.getEnd().isBefore(LocalDateTime.now().minusDays(1));
     }
 
     private boolean isDateBetweenOrEqual(LocalDateTime date, LocalDateTime rangeStart, LocalDateTime rangeEnd) {

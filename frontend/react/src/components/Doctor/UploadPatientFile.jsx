@@ -70,7 +70,7 @@ function UploadPatientFile() {
             />
           </Form.Group>
           <Button className="mb-2" type="submit" variant="primary">
-            Submit
+            Prześlij
           </Button>
         </Form>
       </Container>

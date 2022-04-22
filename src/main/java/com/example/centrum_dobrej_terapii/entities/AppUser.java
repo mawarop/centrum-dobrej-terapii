@@ -31,6 +31,7 @@ public class AppUser implements UserDetails {
     private long id;
 
     @NotBlank(message = "Username nie może być pusty")
+    @Column(unique = true)
     @Size(min = 3)
     private String username;
 

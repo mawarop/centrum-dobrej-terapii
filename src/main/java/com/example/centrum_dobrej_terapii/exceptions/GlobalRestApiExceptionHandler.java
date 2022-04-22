@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
-    private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+public class GlobalRestApiExceptionHandler {
+    private static final Logger LOG = LoggerFactory.getLogger(GlobalRestApiExceptionHandler.class);
 
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -17,4 +17,5 @@ public class GlobalExceptionHandler {
     public void handleNotFound(AppUserNotFoundException notFoundException) {
         LOG.error(notFoundException.getMessage());
     }
+
 }

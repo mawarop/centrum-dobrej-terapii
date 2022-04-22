@@ -19,8 +19,10 @@ public class Document {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @NotBlank
+    @Column(unique = true)
     private String path;
     @NotBlank
+    @Column(unique = true)
     private String name;
     @ManyToOne
     AppUser doctor;

@@ -13,21 +13,15 @@ function AppointmentModalBody(props) {
     let details = event.target.elements.details.value;
     console.log(details);
     DoctorService.updateAppointmentDetails(props.modalEvent.id, details)
-      .then((res) => {
-        console.log(res);
-        let isSuccess = true;
-        props.onActionButtonClick(isSuccess);
-      })
+        .then((res) => {
+          console.log(res);
+          let isSuccess = true;
+          props.onActionButtonClick(isSuccess);
+        })
         .catch((error) => {
           let isSuccess = false;
           props.onActionButtonClick(isSuccess);
         });
-  }
-
-  function addDayToDate(date) {
-    let newDate = new Date(date);
-    newDate.setDate(date.getDate() + 1);
-    return newDate;
   }
 
   // function AppointmentHelper.isAppointmentAfterTodayDate(props.modalEvent.start){
@@ -36,24 +30,23 @@ function AppointmentModalBody(props) {
 
   const appointmentStatusConditionalBodyContentEnum = {
     [appointmentStatus.ACCEPTED]: (() => {
-      const DAY_IN_MILLISECONDS = parseInt(3600 * 1000 * 24);
       return (
           <div>
-          {props.role === Role.DOCTOR && (
-            <Card body>
-              <Form
-                id="appointment-details-form"
-                onSubmit={handleDetailsFormSubmit}
-              >
-                <InputGroup>
-                  <InputGroup.Text> Szczegóły odnośnie wizyty:</InputGroup.Text>
-                  <FormControl
-                    name="details"
+            {props.role === Role.DOCTOR && (
+                <Card body>
+                  <Form
+                      id="appointment-details-form"
+                      onSubmit={handleDetailsFormSubmit}
+                  >
+                    <InputGroup>
+                      <InputGroup.Text> Szczegóły odnośnie wizyty:</InputGroup.Text>
+                      <FormControl
+                          name="details"
                     as="textarea"
                     defaultValue={props.modalEvent.extendedProps.details}
                     disabled={
                       !AppointmentHelper.isAppointmentAfterTodayDate(
-                          addDayToDate(props.modalEvent.end)
+                          AppointmentHelper.addDayToDate(props.modalEvent.end)
                       )
                     }
                   />
