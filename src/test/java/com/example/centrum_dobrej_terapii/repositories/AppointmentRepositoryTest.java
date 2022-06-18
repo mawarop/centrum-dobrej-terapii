@@ -154,7 +154,7 @@ class AppointmentRepositoryTest {
 
     private AppUser createExampleDoctor(){
         return new AppUser(
-                "pkowal",
+                "snow2",
                 "qwerty123",
                 "60120215391",
                 "Sebastian",
