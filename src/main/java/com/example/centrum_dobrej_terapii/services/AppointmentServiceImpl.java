@@ -142,6 +142,9 @@ public class AppointmentServiceImpl implements AppointmentService {
         Optional<Appointment> appointment = appointmentRepository.findById(id);
         AppUser principal = (AppUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        appointment.ifPresent(value -> value.setPatient(principal));
+        if (!Optional.ofNullable(appointment.get().getPatient()).isPresent()) {
+            appointment.get().setPatient(principal);
+        }
         if (appointment.isPresent() && !appointmentValidator.appointmentOverlapsDateInDatabase(appointment.get(), UserRole.PATIENT)) {
             appointment.get().setPatient(principal);
             appointment.get().setAppointmentStatus(AppointmentStatus.ACCEPTED);

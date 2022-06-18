@@ -21,15 +21,15 @@ function AppointmentModalFooter(props) {
         }
     }
 
-  function chooseAndMakeAppointmentSignUpRequest() {
-    console.log("appointmentIdtoChange: " + props.appointmentIdToChangeDate);
-    if (props.appointmentIdToChangeDate)
-      return PatientService.changeAppointment(
-        props.appointmentIdToChangeDate,
-        props.modalEvent.id
-      );
+    function chooseAndMakeAppointmentSignUpRequest() {
+        console.log("appointmentIdtoChange: " + props.appointmentIdToChangeDate);
+        if (props.appointmentIdToChangeDate)
+            return PatientService.changeAppointment(
+                props.appointmentIdToChangeDate,
+                props.modalEvent.id
+            );
 
-    return PatientService.appointmentSignUp(props.modalEvent.id);
+        return PatientService.appointmentSignUp(props.modalEvent.id);
   }
 
   const isPatient = () => {
@@ -116,7 +116,7 @@ function AppointmentModalFooter(props) {
                 >
                     Zapisz się na wizytę
                 </Button>
-        );
+            );
     })(),
   };
 

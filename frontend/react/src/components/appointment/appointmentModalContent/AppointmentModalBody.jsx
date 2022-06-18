@@ -42,16 +42,16 @@ function AppointmentModalBody(props) {
                       <InputGroup.Text> Szczegóły odnośnie wizyty:</InputGroup.Text>
                       <FormControl
                           name="details"
-                    as="textarea"
-                    defaultValue={props.modalEvent.extendedProps.details}
-                    disabled={
-                      !AppointmentHelper.isAppointmentAfterTodayDate(
-                          AppointmentHelper.addDayToDate(props.modalEvent.end)
-                      )
-                    }
-                  />
-                </InputGroup>
-              </Form>
+                          as="textarea"
+                          defaultValue={props.modalEvent.extendedProps.details}
+                          disabled={
+                            !AppointmentHelper.isAppointmentAfterTodayDate(
+                                AppointmentHelper.addDayToDate(props.modalEvent.end)
+                            )
+                          }
+                      />
+                    </InputGroup>
+                  </Form>
             </Card>
           )}
           {props.role !== Role.DOCTOR && (

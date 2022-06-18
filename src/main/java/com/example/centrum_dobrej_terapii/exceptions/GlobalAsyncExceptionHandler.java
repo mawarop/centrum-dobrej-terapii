@@ -25,6 +25,7 @@ public class GlobalAsyncExceptionHandler extends SimpleAsyncUncaughtExceptionHan
     @Override
     public void handleUncaughtException(Throwable ex, Method method, Object... params) {
 
+
         if (MailSendException.class.equals(ex.getClass())) {
             strategy = new MailSendExceptionHandleStrategy(emailHost, emailPort);
 

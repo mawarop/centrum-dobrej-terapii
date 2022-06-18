@@ -22,8 +22,8 @@ function DocumentFile(props) {
                         <Download size={28} color={"black"}/> {props.name}
                     </a>
                 </ListGroup.Item>
-      </ListGroup>
-    </div>
-  );
+            </ListGroup>
+        </div>
+    );
 }
 export default DocumentFile;
